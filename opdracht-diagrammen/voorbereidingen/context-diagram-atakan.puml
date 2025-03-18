@@ -1,0 +1,30 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title Systeem Context Diagram voor Triptop Applicatie
+
+Person(traveller , "Reiziger", "Een reiziger die de applicatie gebruikt.")
+Person(travel_agent, "Reis Agent", "Helpt de reiziger wanneer de reiziger hulp nodig heeft.")
+
+System(triptop_system, "Triptop Applicatie", "Een reisapplicatie die helpt met het plannen van een reis.")
+
+System_Ext(identity_system, "Central Identity Provider", "Identiteit systeem waarmee reizigers kunnen inloggen.")
+
+System_Ext(booking_system, "Booking.com API", "Booking systeem waarmee reizigers accomodaties kunnen reserveren.")
+System_Ext(ns_system, "NS API", "Vervoer systeem waarmee reiziger kan reizen met de bus of trein.")
+System_Ext(klm_system, "KLM API", "Vliegtuig vervoer waarmee de reiziger naar zijn bestemming kan vliegen.")
+System_Ext(sixt_system, "Sixt API", "Auto huur systeem voor de reiziger om een auto te huren tijdens de reis.")
+System_Ext(tripadvisor_system, "Trip Advisor API", "Aanbevelingen systeem om excursies en activiteiten aan de reiziger te bieden.")
+System_Ext(takeaway_system, "Takeaway API", "Eten- en drinkensysteem om te voeding te bestellen tijdens de reis.")
+
+Rel(traveller, triptop_system, "Plant zijn reis via")
+Rel(triptop_system, identity_system, "Zorgt voor inlog mechanisme")
+Rel(triptop_system, booking_system, "Vraagt accomodatie gegevens op")
+Rel(travel_agent, triptop_system, "Communiceert met reiziger via")
+Rel(triptop_system, ns_system, "Vraagt trein- en bus tijden op")
+Rel(triptop_system, sixt_system, "Krijgt alle beschikbare auto's voor de reis")
+Rel(triptop_system, klm_system, "Vraagt vliegtuig tijden op")
+Rel(triptop_system, tripadvisor_system, "Vraagt beschikbare excursies en activiteiten op")
+Rel(triptop_system, takeaway_system, "Vraagt beschikbare bedrijven waarbij je kan bestellen")
+
+@enduml
