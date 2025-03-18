@@ -1,0 +1,31 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+'LAYOUT_WITH_LEGEND()
+
+title C4 Context diagram voor Triptop
+
+Person(reiziger, "Reiziger", "Een reiziger die een reis wil samenstellen.")
+Person(reisagent, "Reisagent", "Medewerker van een reisbureau die de reiziger helpt met vragen en problemen.")
+
+System(triptop_systeem, "Triptop", "Applicatie die reiziger in staat stelt om een reis samen te stellen door verschillende opties te gebruiken.")
+
+System_Ext(overnacht_system, "Overnachtingsprovider (Booking.com, AirBNB)", "Geeft informatie over accomodaties, de beschikbaarheid en reserveringen.")
+System_Ext(vervoer_systeem, "Vervoersprovider (NS, KLM)", "Toont reisinformatie, de beschikbaarheid hiervan en boekt tickets.")
+System_Ext(autohuur_systeem, "Autohuurprovider (Hertz, Sixt)", "Toont huurauto's, de beschikbaarheid hiervan en boekt deze.")
+System_Ext(activiteit_systeem, "Excursies / Activiteiten provider (Tripadvisor, GetYourGuide)", "Toont excursies en activiteiten, hun beschikbaarheid en maakt reserveringen.")
+System_Ext(eten_en_drinken_systeem, "Eten en drinken provider (Takeaway, Eet.nu)", "Toont restaurants en maakt reserveringen.")
+System_Ext(identeits_systeem, "Identiteitsprovider", "Authenticatieservice die reizigers hun identiteit verifieert door SSO (single sign-on).")
+System_Ext(maps_systeem, "Google Maps API", "Geeft kaart weer en plant routes.")
+
+Rel(reiziger, triptop_systeem, "Kan reis samensetellen, boeken, aanpassen, annuleren en betalen via")
+Rel(reisagent, triptop_systeem, "Is bereikbaar voor vragen en problemen via")
+Rel(triptop_systeem, overnacht_system, "Controleert beschikbaarheid en boekt overnachting via")
+Rel(triptop_systeem, vervoer_systeem, "Controleert beschikbaarheid en boekt tickets via")
+Rel(triptop_systeem, autohuur_systeem, "Controleert beschikbaarheid en boekt autoreserveringen via")
+Rel(triptop_systeem, activiteit_systeem, "Controleert beschikbaarheid en boekt excursies en activiteiten via")
+Rel(triptop_systeem, eten_en_drinken_systeem, "Boekt maaltijden en reserveringen via")
+Rel(triptop_systeem, identeits_systeem, "Verifieert gebruikersidentiteit via")
+Rel(triptop_systeem, maps_systeem, "Toont routeinformatie via")
+
+@enduml
