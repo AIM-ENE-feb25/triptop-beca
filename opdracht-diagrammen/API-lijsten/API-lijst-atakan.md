@@ -14,7 +14,7 @@
 
 ## Excursies / Activiteitenprovider
 
-- Tripadvisor API, [Link naar de API](https://rapidapi.com/Chetan11dev/api/tripadvisor-scraper)
+- Tripadvisor API, [Link naar de API](https://rapidapi.com/ntd119/api/tripadvisor-com1)
 
 ## Eten- en drinkenprovider
 
@@ -23,4 +23,3 @@
 ## Route / Mappenprovider
 
 - Maps Data, [Link naar de API](https://rapidapi.com/alexanderxbx/api/maps-data)
-- Google API, [Link naar de API](https://rapidapi.com/rphrp1985/api/google-api31)
