@@ -1,0 +1,21 @@
+@startuml
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Container diagram voor Triptop Applicatie
+
+Person(reiziger, Reiziger, "Een reiziger die een reis wil samenstellen.")
+
+System_Boundary(c1, "Triptop omgeving") {
+    Container(frontend, "Frontend Applicatie", "React.js, Vite", "De website waar de reiziger zijn reis kan samenstellen en hulp kan vragen aan de reisagenten wanneer nodig.")
+    Container(backend, "Backend", "Java, Spring Boot", "De achterkant van de applicatie, waar alle logica wordt beheerd en verstuurd door de voorkant en opslag van het systeem.")
+    ContainerDb(database, "Database", "SQL", "De opslagplaats voor alle informatie over de gebruikers en reisinformatie.")
+}
+
+
+Rel(reiziger,frontend, "1. Plant reis via", "JSON / HTTPS")
+Rel(frontend, backend, "2. Stuurt reis gegevens door naar", "JSON / HTTPS")
+Rel(backend, database, "3. Slaat reisgegevens op", "SQL")
+Rel(backend, frontend, "4. Stuurt bevestiging naar", "JSON / HTTPS")
+Rel(frontend, reiziger, "5. Heeft een succesvolle reis geboekt", "JSON / HTTPS")
+@enduml

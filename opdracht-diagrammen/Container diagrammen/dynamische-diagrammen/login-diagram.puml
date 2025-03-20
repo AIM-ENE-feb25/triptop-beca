@@ -1,0 +1,24 @@
+@startuml
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Container diagram voor Triptop Applicatie
+
+Person(reiziger, Reiziger, "Een reiziger die een reis wil samenstellen.")
+
+System_Boundary(c1, "Triptop omgeving") {
+    Container(frontend, "Frontend Applicatie", "React.js, Vite", "De website waar de reiziger zijn reis kan samenstellen en hulp kan vragen aan de reisagenten wanneer nodig.")
+    Container(backend, "Backend", "Java, Spring Boot", "De achterkant van de applicatie, waar alle logica wordt beheerd en verstuurd door de voorkant en opslag van het systeem.")
+    ContainerDb(database, "Database", "SQL", "De opslagplaats voor alle informatie over de gebruikers en reisinformatie.")
+}
+
+System_Ext(identiteit, "WireMock API", "Authenticatieservice die reizigers hun identiteit verifieert door SSO (single sign-on).")
+
+Rel(reiziger,frontend, "1. Stuurt inloggegevens naar", "JSON / HTTPS")
+Rel(frontend, identiteit, "2. Verstuurt authenticatieverzoek naar SSO-provider", "JSON / HTTPS")
+Rel(identiteit, frontend, "3. Verzendt token na succesvolle verificatie", "JSON / HTTPS")
+Rel(frontend, backend, "4. Stuurt token voor verdere validatie naar", "JSON / HTTPS")
+Rel(backend, database, "5. Haalt gebruikersgegevens op op basis van token", "SQL")
+Rel(backend, frontend, "6. Stuurt inlog resultaat naar", "JSON / HTTPS")
+Rel(frontend, reiziger, "7. Reiziger is ingelogd", "JSON / HTTPS")
+@enduml

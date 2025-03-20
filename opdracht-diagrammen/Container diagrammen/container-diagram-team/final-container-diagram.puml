@@ -20,12 +20,12 @@ System_Ext(eten, "Uber Eats API", "Toont restaurants en maakt reserveringen.")
 System_Ext(identiteit, "WireMock API", "Authenticatieservice die reizigers hun identiteit verifieert door SSO (single sign-on).")
 System_Ext(maps, "Maps Data API", "Geeft kaart weer en plant routes.")
 
-Rel(reiziger, frontend, "Kan reis samenstellen, boeken, aanpassen, annuleren en betalen via", "HTTP")
-Rel(reis_agent, frontend, "Is bereikbaar voor vragen en problemen via", "HTTP")
+Rel(reiziger, frontend, "Kan reis samenstellen, boeken, aanpassen, annuleren en betalen via", "HTTPS")
+Rel(reis_agent, frontend, "Is bereikbaar voor vragen en problemen via", "HTTPS")
 
-Rel(frontend, backend, "Krijgt reisinformatie via", "JSON / HTTP")
+Rel(frontend, backend, "Krijgt reisinformatie via", "JSON / HTTPS")
 Rel(backend, database, "Stuurt en ontvang relevante data via", "?")
-Rel(backend, api_gateway, "Roept externe providers aan via", "JSON / HTTP")
+Rel(backend, api_gateway, "Roept externe providers aan via", "JSON / HTTPS")
 
 Rel(api_gateway, overnachting_vervoer, "Controleert beschikbaarheid en boekt via", "HTTPS / JSON")
 Rel(api_gateway, eten, "Bestelt maaltijden en boekt reserveringen via", "HTTPS / JSON")
