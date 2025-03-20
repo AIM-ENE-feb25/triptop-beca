@@ -92,8 +92,30 @@ Voordat deze casusomschrijving tot stand kwam, heeft de opdrachtgever de volgend
 
 ###     7.1. Containers
 
-> [!IMPORTANT]
-> Voeg toe: Container Diagram plus een Dynamic Diagram van een aantal scenario's inclusief begeleidende tekst.
+#### 7.1.1 Statische container diagram van de Triptop applicatie
+![Afbeelding van statisch container diagram](https://raw.githubusercontent.com/AIM-ENE-feb25/triptop-beca/refs/heads/container-diagrammen/opdracht-diagrammen/Container%20diagrammen/container-diagram-team/final-container-diagram.png)
+
+Dit diagram beschrijf de architectuur van de Triptop applicatie en de interacties tussen verschillende bouwstenen. De gebruikers van de applicatie zijn de reiziger en de reisagent. De reiziger is de eindgebruiker die zijn reis wil samenstellen en boeken via de website, en kan contact opnemen met de reisagent voor hulp bij vragen of problemen. De reisagent is een medewerker van Triptop die de reiziger ondersteunt bij het plannen en aanpassen van de reis.
+
+De applicatie is opgebouwd uit verschillende containers. De frontend applicatie, gebouwd met React.js en Vite, is de interface waar de reiziger zijn reis kan samenstellen, boeken, aanpassen, annuleren en betalen. De backend is ontwikkeld met Java en Spring Boot en beheert de logica van de applicatie. De backend ontvangt verzoeken van de frontend en communiceert met de database, waarin alle gegevens over gebruikers en reizen worden opgeslagen. Verder is er een API Gateway, die als poort fungeert tussen de backend en de externe systemen.
+
+Daarnaast maakt de applicatie gebruik van verschillende externe systemen via de API Gateway. De Booking COM API biedt informatie over accommodaties, vluchten, autohuur en attracties, en maakt het mogelijk om deze te boeken. De Uber Eats API toont restaurants en maakt het mogelijk om maaltijden te bestellen of reserveringen te maken. Via de WireMock API wordt de identiteit van de reiziger geverifieerd door middel van Single Sign-On (SSO). Tot slot biedt de Maps Data API route-informatie en kaarten om reizen te plannen.
+
+De frontend applicatie communiceert met de backend, die de benodigde gegevens uit de database haalt en de externe systemen via de API Gateway aanroept om aanvullende informatie op te halen of handelingen uit te voeren, zoals het boeken van tickets of het verifiëren van de identiteit van de reiziger.
+
+#### 7.1.2 Dynamisch container diagram voor Inloggen scenario
+![Afbeelding van dynamisch login container diagram](https://raw.githubusercontent.com/AIM-ENE-feb25/triptop-beca/refs/heads/container-diagrammen/opdracht-diagrammen/Container%20diagrammen/dynamische-diagrammen/login-diagram.png)
+
+Dit diagram beschrijft de dynamische architectuur van de Triptop applicatie tijdens het inloggen van een reiziger. De reiziger start de authenticatie door zijn inloggegevens in te voeren op de frontend applicatie, die ontwikkeld is met React.js en Vite. De frontend stuurt vervolgens een authenticatieverzoek naar de WireMock API. Als de verificatie succesvol is, ontvangt de frontend een token van de WireMock API.
+
+Met deze token stuurt de frontend een validatieverzoek naar de backend, die ontwikkeld is met Java en Spring Boot. De backend controleert de token en haalt de bijbehorende gegevens op uit de database. Na het ophalen van de gegevens stuurt de backend het resultaat van de inlogpoging terug naar de frontend. Als alles correct is verlopen, wordt de reiziger ingelogd en krijgt hij/zij toegang tot de applicatie.
+
+#### 7.1.3 Dynamisch container diagram voor Reis boeken scenario
+![Afbeelding van dynamisch reis boeken container diagram](https://raw.githubusercontent.com/AIM-ENE-feb25/triptop-beca/refs/heads/container-diagrammen/opdracht-diagrammen/Container%20diagrammen/dynamische-diagrammen/boeken-diagram.png)
+
+Dit diagram beschrijft de dynamische architectuur van de Triptop applicatie wanneer een reiziger een reis plant en boekt. De reiziger begint door een reis samen te stellen via de frontend applicatie, die ontwikkeld id met React.js en Vite. De frontend stuurt de ingevoerde reisgegevens door naar de backend, die ontwikkeld is met Java en Spring Boot.
+
+De backend verwerkt deze gegevens en slaat de boeking op in de database. Zodra het opslaan van de data voltooid is, stuurt de backend een bevestiging terug naar de frontend. De frontend toont vervolgens de bevestiging aan de reiziger, die hiermee geïnformeerd wordt dat zijn/haar reis succesvol is geboekt.
 
 ###     7.2. Components
 
