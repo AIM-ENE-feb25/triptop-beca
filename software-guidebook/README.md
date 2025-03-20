@@ -8,14 +8,27 @@ Dit software guidebook geeft een overzicht van de Triptop-applicatie. Het bevat 
 1. De architectuur van de infrastructuur en hoe de software kan worden geinstalleerd. 
 
 ## 2. Context
+Context diagram van de Triptop applicatie:
+![Afbeelding van Context diagram](image.png)
 
-> [!IMPORTANT]
-> Werk zelf dit hoofdstuk uit met context diagrammen en een beschrijving van de context van de software.
+Dit diagram toont de omgeving waarin Triptop zich bevindt. Triptop is een online systeem, wat communiceert met verschillende externe systemen. 
 
-Toelichting op de context van de software inclusief System Context Diagram:
 * Functionaliteit
+De Triptop applicatie biedt reizigers de volgende mogelijkheden:
+- Reizigers kunnen zelf hun reis samenstellen door verschillende bouwstenen te combineren.
+- Reizigers kunnen zelf hun reis aanpassen, boeken, betalen en annuleren.
+- Reizigers kunnen hun reisstatus bewaren.
+
 * Gebruikers
+Het systeem heeft twee soorten gebruikers, namelijk:
+> Reiziger
+De reiziger is de primaire gebruiker van het systeem en heeft toegang tot bovenstaande functionaliteiten. 
+
+> Reisagent
+De reisagent biedt tweedelijns ondersteuning aan de reiziger, door bijvoorbeeld vragen te beantwoorden of risico-inschattingen te maken.
+
 * Externe systemen
+De Triptop applicatie maakt gebruik van verschillende externe systemen. Er is gekozen om nog geen betalingsprovider toe te voegen, omdat er gebruik gemaakt wordt van de betalingsproviders uit de geselecteerde API's.
 
 ## 3. Functional Overview
 
