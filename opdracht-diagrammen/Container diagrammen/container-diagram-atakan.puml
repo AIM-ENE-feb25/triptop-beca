@@ -1,0 +1,38 @@
+@startuml
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+
+title Container diagram voor Triptop Applicatie
+
+Person(reiziger, Reiziger, "Een reiziger die een reis wil samenstellen.")
+Person(reis_agent, Reisagent, "Medewerker van een reisbureau die de reiziger helpt met vragen en problemen.")
+
+System_Boundary(c1, "Triptop omgeving") {
+    Container(frontend, "Frontend Applicatie", "React.js, Vite", "De website waar de reiziger zijn reis kan samenstellen en hulp kan vragen aan de reisagenten wanneer nodig.")
+    Container(backend, "Backend", "Java, Spring Boot", "De achterkant van de applicatie, waar alle logica wordt beheerd en verstuurd door de voorkant en opslag van het systeem.")
+    ContainerDb(database, "Database", "NoSQL", "De opslagplaats voor alle informatie over de gebruikers en reisinformatie.")
+    Container(api_gateway, "API Gateway", "?", "De poort tussen de triptop omgeving en informatie wat wordt verkregen van buitenaf.")
+}
+
+System_Ext(overnachting_vervoer, "Booking COM API", "Geeft zowel informatie over accommodaties, reisinformatie, autohuur-informatie, de beschikbaarheid hiervan en boekt tickets.")
+System_Ext(excursies, "Trip Advisor API", "Toont excursies en activiteiten, hun beschikbaarheid en maakt reserveringen.")
+System_Ext(eten, "Uber Eats API", "Toont restaurants en maakt reserveringen.")
+System_Ext(identiteit, "WireMock API", "Authenticatieservice die reizigers hun identiteit verifieert door SSO (single sign-on).")
+System_Ext(maps, "Maps Data API", "Geeft kaart weer en plant routes.")
+
+Rel(reiziger, frontend, "Stelt reis samen via", "HTTP")
+Rel(reis_agent, frontend, "Helpt reizigers via", "HTTP")
+
+Rel(frontend, backend, "Krijgt reisinformatie via", "HTTP, JSON")
+Rel(backend, database, "Stuurt en ontvang relevante data via", "JSON")
+Rel(backend, api_gateway, "Maakt connectie met systemen van buitenaf via", "HTTP")
+
+Rel(api_gateway, overnachting_vervoer, "Krijgt data van", "HTTPS, JSON")
+Rel(api_gateway, excursies, "Krijgt data van", "HTTPS, JSON")
+Rel(api_gateway, eten, "Krijgt data van", "HTTPS, JSON")
+Rel(api_gateway, identiteit, "Krijgt data van", "HTTPS, JSON")
+Rel(api_gateway, maps, "Krijgt data van", "HTTPS, JSON")
+
+
+@enduml
