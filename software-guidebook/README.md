@@ -12,34 +12,36 @@ Dit software guidebook geeft een overzicht van de Triptop-applicatie. Het bevat 
 ## 2. Context
 
 Context diagram van de Triptop applicatie:
-![Afbeelding van Context diagram](./context-diagram.png)
+![Afbeelding van Context diagram](./context-diagram-team.svg)
 
 Dit diagram toont de omgeving waarin Triptop zich bevindt. Triptop is een online systeem, wat communiceert met verschillende externe systemen.
 
-- Functionaliteit  
+- Functionaliteit
 
 De Triptop applicatie biedt reizigers de volgende mogelijkheden:
 
-1. Reizigers kunnen zelf hun reis samenstellen door verschillende bouwstenen te combineren.  
+1. Reizigers kunnen zelf hun reis samenstellen door verschillende bouwstenen te combineren.
 
-2. Reizigers kunnen zelf hun reis aanpassen, boeken, betalen en annuleren.  
+2. Reizigers kunnen zelf hun reis aanpassen, boeken, betalen en annuleren.
 
 3. Reizigers kunnen hun reisstatus bewaren.
 
-- Gebruikers  
+- Gebruikers
 
 Het systeem heeft twee soorten gebruikers, namelijk:
-  > Reiziger  
+
+> Reiziger
 
 De reiziger is de primaire gebruiker van het systeem en heeft toegang tot bovenstaande functionaliteiten. De reiziger kan contact opnemen met de reisagent voor hulp bij vragen of problemen.
 
-> Reisagent  
+> Reisagent
 
-De reisagent is een medewerker van Triptop die de reiziger ondersteunt bij het plannen en aanpassen van de reis. De reisagent biedt tweedelijns ondersteuning, door bijvoorbeeld vragen te beantwoorden of risico-inschattingen te maken. 
+De reisagent is een medewerker van Triptop die de reiziger ondersteunt bij het plannen en aanpassen van de reis. De reisagent biedt tweedelijns ondersteuning, door bijvoorbeeld vragen te beantwoorden of risico-inschattingen te maken.
 
-- Externe systemen  
+- Externe systemen
 
 De Triptop applicatie maakt gebruik van verschillende externe systemen. Er is gekozen om nog geen betalingsprovider toe te voegen, omdat er gebruik gemaakt wordt van de betalingsproviders uit de geselecteerde API's.
+
 > verwijzen naar ADR
 
 ## 3. Functional Overview
@@ -107,24 +109,32 @@ Voordat deze casusomschrijving tot stand kwam, heeft de opdrachtgever de volgend
 
 #### 7.1.1 Statische container diagram van de Triptop applicatie
 
-![Afbeelding van statisch container diagram](./final-container-diagram.png)
+![Afbeelding van statisch container diagram](./final-container-diagram.svg)
 
-Dit diagram beschrijft de architectuur van de Triptop applicatie en de interacties tussen de verschillende bouwstenen. De gebruikers van de applicatie zijn de reiziger en de reisagent. 
+Dit diagram beschrijft de architectuur van de Triptop applicatie en de interacties tussen de verschillende bouwstenen. De gebruikers van de applicatie zijn de reiziger en de reisagent.
 
 De applicatie is opgebouwd uit verschillende containers. De frontend applicatie, gebouwd met React.js en Vite, is de interface waar de reiziger zijn reis kan samenstellen, boeken, aanpassen, annuleren en betalen. De backend is ontwikkeld met Java en Spring Boot en beheert de logica van de applicatie. De backend ontvangt verzoeken van de frontend en communiceert met de database, waarin alle gegevens over gebruikers en reizen worden opgeslagen. Verder is er een API Gateway, die als poort fungeert tussen de backend en de externe systemen.
+
 > uitleggen api gateway waarom we deze toegevoegd hebben - hier verwijzen naar ADR
 
+<<<<<<< Updated upstream
 Daarnaast maakt de applicatie gebruik van verschillende externe systemen via de API Gateway. De Booking COM API biedt informatie over accommodaties, vluchten, autohuur en attracties. De Uber Eats API toont restaurants. Via de WireMock API wordt de identiteit van de reiziger geverifieerd door middel van Single Sign-On (SSO). Tot slot biedt de Maps Data API informatie over locaties. Voor het prototype wordt gebruik gemaakt van de Maps Data API. De Google Maps API, die daadwerkelijk routes en kaarten levert, werkt met een betaald model en is niet geschikt voor ontwikkeling zonder kosten. 
 
 In het containerdiagram is het aantal externe providers lager ten opzichte van het contextdiagram. Dit komt doordat de Booking COM API als primaire provider wordt gebruikt voor meerdere bouwstenen. Deze keuze is gemaakt om het aantal integraties te verlagen en wordt toegelicht in ADR-002 - Booking COM API als primaire externe dataprovider.
 > link naar adr
+=======
+Daarnaast maakt de applicatie gebruik van verschillende externe systemen via de API Gateway. De Booking COM API biedt informatie over accommodaties, vluchten, autohuur en attracties, en maakt het mogelijk om deze te boeken. De Uber Eats API toont restaurants en maakt het mogelijk om maaltijden te bestellen of reserveringen te maken. Via de WireMock API wordt de identiteit van de reiziger geverifieerd door middel van Single Sign-On (SSO). Tot slot biedt de Maps Data API route-informatie en kaarten om reizen te plannen.
+
+> waarom nu alleen booking en niet verschillende providers - in adr of hier toelichten
+>>>>>>> Stashed changes
 
 De frontend applicatie communiceert met de backend, die de benodigde gegevens uit de database haalt en de externe systemen via de API Gateway aanroept om aanvullende informatie op te halen of handelingen uit te voeren, zoals het boeken van tickets of het verifiëren van de identiteit van de reiziger.
+
 > moet wiremock via api gateway of frontend?
 
 #### 7.1.2 Dynamisch container diagram voor Inloggen scenario
 
-![Afbeelding van dynamisch login container diagram](./login-diagram.png)
+![Afbeelding van dynamisch login container diagram](./login-diagram.svg)
 
 Dit diagram beschrijft de dynamische architectuur van de Triptop applicatie tijdens het inloggen van een reiziger. De reiziger start de authenticatie door zijn inloggegevens in te voeren op de frontend applicatie, die ontwikkeld is met React.js en Vite. De frontend stuurt vervolgens een authenticatieverzoek naar de WireMock API. Als de verificatie succesvol is, ontvangt de frontend een token van de WireMock API.
 
@@ -132,7 +142,7 @@ Met deze token stuurt de frontend een validatieverzoek naar de backend, die ontw
 
 #### 7.1.3 Dynamisch container diagram voor Reis boeken scenario
 
-![Afbeelding van dynamisch reis boeken container diagram](./boeken-diagram.png)
+![Afbeelding van dynamisch reis boeken container diagram](./boeken-diagram.svg)
 
 Dit diagram beschrijft de dynamische architectuur van de Triptop applicatie wanneer een reiziger een reis plant en boekt. De reiziger begint door een reis samen te stellen via de frontend applicatie, die ontwikkeld is met React.js en Vite. De frontend stuurt de ingevoerde reisgegevens door naar de backend, die ontwikkeld is met Java en Spring Boot.
 
