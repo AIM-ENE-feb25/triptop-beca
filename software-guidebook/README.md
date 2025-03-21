@@ -40,6 +40,7 @@ De reisagent biedt tweedelijns ondersteuning aan de reiziger, door bijvoorbeeld 
 - Externe systemen  
 
 De Triptop applicatie maakt gebruik van verschillende externe systemen. Er is gekozen om nog geen betalingsprovider toe te voegen, omdat er gebruik gemaakt wordt van de betalingsproviders uit de geselecteerde API's.
+> verwijzen naar ADR
 
 ## 3. Functional Overview
 
