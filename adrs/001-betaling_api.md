@@ -10,9 +10,18 @@ Geaccepteerd
 
 Tijdens het maken van de context diagram kwamen mijn groepsleden en ik erachter of we echt een Betaling API nodig hebben (Bijvoorbeeld Stripe) om de betalingen bij te houden, omdat we andere API's hebben zoals de Booking COM API en Uber Eats API, die waarschijnlijk betalingen kunnen afhandelen, waardoor we geen Betaling API nodig hebben.
 
+## Alternatieven
+
+| Criteria                                | Betaling API (Bijv. Stripe) | Externe API's (Booking COM en Uber Eats) |
+| --------------------------------------- | --------------------------- | ---------------------------------------- |
+| Implementatiecomplexiteit               | - (Hoog)                    | + (Laag)                                 |
+| Afhankelijkheid van andere partijen     | + (Beperkt)                 | - (Hoog)                                 |
+| Kosten                                  | - (Kan hoog zijn)           | + (Inbegrepen)                           |
+| Ondersteuning voor affiliate betalingen | - (Niet standaard)          | + (Ja)                                   |
+
 ## Beslissing
 
-We hebben besloten om geen aparte Betaling API te integreren. In plaats daarvan werken we met de affiliate programma's van de bestaande API's zoals Uber Eats en Booking COM, om de betaling door te voeren, maar ook onze deel krijgen.
+We hebben besloten om geen aparte Betaling API te integreren, omdat we de voordelen van een aparte Betaling API niet nodig hebben. In plaats daarvan werken we met de affiliate programma's van de bestaande API's zoals Uber Eats en Booking COM, om de betaling door te voeren, maar ook onze deel krijgen.
 
 ## Consequencies
 
