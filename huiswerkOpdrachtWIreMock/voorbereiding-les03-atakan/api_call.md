@@ -3,7 +3,7 @@
 Getest met Insomnia en gewijzigd naar CURL:
 
 ```
-curl --request GET \
+curl --request POST \
   --url https://triptop-identity.wiremockapi.cloud/login \
   --header 'Content-Type: application/json' \
   --header 'User-Agent: insomnia/10.3.1' \
