@@ -31,11 +31,11 @@ De Triptop applicatie biedt reizigers de volgende mogelijkheden:
 Het systeem heeft twee soorten gebruikers, namelijk:
   > Reiziger  
 
-De reiziger is de primaire gebruiker van het systeem en heeft toegang tot bovenstaande functionaliteiten.
+De reiziger is de primaire gebruiker van het systeem en heeft toegang tot bovenstaande functionaliteiten. De reiziger kan contact opnemen met de reisagent voor hulp bij vragen of problemen.
 
 > Reisagent  
 
-De reisagent biedt tweedelijns ondersteuning aan de reiziger, door bijvoorbeeld vragen te beantwoorden of risico-inschattingen te maken.
+De reisagent is een medewerker van Triptop die de reiziger ondersteunt bij het plannen en aanpassen van de reis. De reisagent biedt tweedelijns ondersteuning, door bijvoorbeeld vragen te beantwoorden of risico-inschattingen te maken. 
 
 - Externe systemen  
 
@@ -110,8 +110,6 @@ Voordat deze casusomschrijving tot stand kwam, heeft de opdrachtgever de volgend
 ![Afbeelding van statisch container diagram](./final-container-diagram.png)
 
 Dit diagram beschrijft de architectuur van de Triptop applicatie en de interacties tussen de verschillende bouwstenen. De gebruikers van de applicatie zijn de reiziger en de reisagent. 
-
-> De reiziger is de eindgebruiker die zijn reis wil samenstellen en boeken via de website, en kan contact opnemen met de reisagent voor hulp bij vragen of problemen. De reisagent is een medewerker van Triptop die de reiziger ondersteunt bij het plannen en aanpassen van de reis. - hoort dit stuk tekst niet bij context ipv container? 
 
 De applicatie is opgebouwd uit verschillende containers. De frontend applicatie, gebouwd met React.js en Vite, is de interface waar de reiziger zijn reis kan samenstellen, boeken, aanpassen, annuleren en betalen. De backend is ontwikkeld met Java en Spring Boot en beheert de logica van de applicatie. De backend ontvangt verzoeken van de frontend en communiceert met de database, waarin alle gegevens over gebruikers en reizen worden opgeslagen. Verder is er een API Gateway, die als poort fungeert tussen de backend en de externe systemen.
 > uitleggen api gateway waarom we deze toegevoegd hebben - hier verwijzen naar ADR
