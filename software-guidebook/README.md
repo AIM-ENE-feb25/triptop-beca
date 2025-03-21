@@ -20,11 +20,11 @@ Dit diagram toont de omgeving waarin Triptop zich bevindt. Triptop is een online
 
 De Triptop applicatie biedt reizigers de volgende mogelijkheden:
 
-> Reizigers kunnen zelf hun reis samenstellen door verschillende bouwstenen te combineren.  
+1. Reizigers kunnen zelf hun reis samenstellen door verschillende bouwstenen te combineren.  
 
-> Reizigers kunnen zelf hun reis aanpassen, boeken, betalen en annuleren.  
+2. Reizigers kunnen zelf hun reis aanpassen, boeken, betalen en annuleren.  
 
-> Reizigers kunnen hun reisstatus bewaren.
+3. Reizigers kunnen hun reisstatus bewaren.
 
 - Gebruikers  
 
