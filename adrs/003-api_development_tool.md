@@ -4,7 +4,7 @@
 
 ## Status
 
-**Proposed**
+**Voorstel**
 
 ## Context
 
@@ -14,11 +14,11 @@ gaan gebruiken onderling, zodat er meer consistentie en efficiëntie is in de sa
 
 ## Alternatieven
 
-| Criteria           | Postman                        | Insomnia                | Unirest                        | HttpClient         |
-|-------------------|--------------------------------|-------------------------|--------------------------------|--------------------|
-| UI/UX            | + (Gebruiksvriendelijk)        | + (Minimalistisch)      | - (Code-gebaseerd)             | - (Code-gebaseerd) |
-| Samenwerking      | + (Teamworkspaces, cloud sync) | - (Alleen lokaal)       | - (Alleen lokaal)              | - (Alleen lokaal)  |
-| Platform         | + (Windows, Mac, Linux)        | + (Windows, Mac, Linux) | + (Java, Python) | - (Java)           |
+| Criteria           | Postman                        | Insomnia                | Unirest            | HttpClient         |
+|-------------------|--------------------------------|-------------------------|--------------------|--------------------|
+| UI/UX            | + (Gebruiksvriendelijk)        | + (Minimalistisch)      | + (Code-gebaseerd) | + (Code-gebaseerd) |
+| Samenwerking      | + (Teamworkspaces, cloud sync) | - (Alleen lokaal)       | - (Alleen lokaal)  | - (Alleen lokaal)  |
+| Platform         | + (Windows, Mac, Linux)        | + (Windows, Mac, Linux) | + (Java, Python)   | - (Java)           |
 
 ## Beslissing
 
