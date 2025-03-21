@@ -1,6 +1,6 @@
 # ADR 001 - Betaling API
 
-**Datum:** 2025-03-21
+**Datum:** 03-21-2025
 
 ## Status
 
