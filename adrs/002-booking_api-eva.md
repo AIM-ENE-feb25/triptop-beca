@@ -12,13 +12,13 @@ Bij het maken van het containerdiagram werd duidelijk dat het grootste deel van 
 Hierdoor ontstond de keuze tussen de Booking COM API als primaire API te gebruiken of verschillende API’s inzetten voor verschillende bouwstenen.
 
 ## Alternatieven
-| Forces | Verschillende API's gebruiken | Booking.com als primaire API |
+| Forces | Verschillende API's gebruiken | Booking COM als primaire API |
 |------------------------------|----------------|-----|
-| Afhankelijkheid van één partij | + | - |
-| Hoeveelheid integraties | - | + |
-| Minder onderhoudslast | - | + |
-| Flexibiliteit in aanbod | + | - |
-| Eenvoudiger afspraken over affiliate marketing  | - | + |
+| Afhankelijkheid van één partij | + (afhankelijkheden verdeeld) | - (afhankelijk van Booking COM) |
+| Hoeveelheid integraties | - (meerdere providers) | + (alleen Booking COM) |
+| Minder onderhoudslast | - (verschillende API's controleren bij wijzigingen) | + (Alleen Booking COM controleren bij wijzigingen) |
+| Flexibiliteit in aanbod | + (aanbod van verschillende providers ) | - (aanbod wat op Booking COM staat) |
+| Eenvoudiger afspraken maken over affiliate marketing  | - (afspraken met meerdere bedrijven)| + (alleen afspraken met Booking COM) |
 
 
 ## Decision
