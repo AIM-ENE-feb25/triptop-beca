@@ -21,13 +21,13 @@ Hierdoor ontstond de keuze tussen de Booking COM API als primaire API te gebruik
 | Eenvoudiger afspraken maken over affiliate marketing  | - (afspraken met meerdere bedrijven)| + (alleen afspraken met Booking COM) |
 
 
-## Decision
+## Keuze
 Er is gekozen om de Booking COM API als primaire externe databron te gebruiken voor het ophalen van informatie over overnachtingen, autoverhuur, vluchten en excursies.
 Deze keuze is gemaakt omdat Booking COM een groot aantal diensten aanbiedt via één API, waardoor het aantal externe afhankelijkheden verminderd wordt, de technische implementatie eenvoudiger is, en er sneller ontwikkelt kan worden.
 
 Later kan de applicatie nog uitgebreidt worden met andere externe providers, zoals een API die trein- of busreizen biedt. Naast de Booking API is er een aparte API voor eten en drinken (Uber Eats API) en voor routeplanning. 
 
-## Consequences
+## Consequenties
 Risico's:
 - Grote afhankelijkheid van de Booking COM API. Bij problemen met deze API kunnen meerdere bouwstenen uitvallen.
 - Minder flexibiliteit om specifieke aanbieders weer te geven die niet via Booking COM beschikbaar zijn. 
