@@ -214,7 +214,7 @@ Hierdoor ontstond de keuze tussen de Booking COM API als primaire API te gebruik
 | ---------------------------------------------------- | --------------------------------------------------- | -------------------------------------------------- |
 | Afhankelijkheid van één partij                       | + (afhankelijkheden verdeeld)                       | - (afhankelijk van Booking COM)                    |
 | Hoeveelheid integraties                              | - (meerdere providers)                              | + (alleen Booking COM)                             |
-| Onderhoudslast                                       | - (verschillende API's controleren bij wijzigingen) | + (Alleen Booking COM controleren bij wijzigingen) |
+| Onderhoudslast                                       | - (verschillende API's controleren bij wijzigingen) | + (alleen Booking COM controleren bij wijzigingen) |
 | Flexibiliteit in aanbod                              | + (aanbod van verschillende providers )             | - (aanbod wat op Booking COM staat)                |
 | Eenvoudiger afspraken maken over affiliate marketing | - (afspraken met meerdere bedrijven)                | + (alleen afspraken met Booking COM)               |
 
