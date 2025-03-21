@@ -40,8 +40,7 @@ De reisagent is een medewerker van Triptop die de reiziger ondersteunt bij het p
 
 - Externe systemen
 
-De Triptop applicatie maakt gebruik van verschillende externe systemen. Er is gekozen om nog geen betalingsprovider toe te voegen, omdat er gebruik gemaakt wordt van de betalingsproviders uit de geselecteerde API's.
-
+De Triptop applicatie maakt gebruik van verschillende externe systemen. Er is gekozen om nog geen betalingsprovider toe te voegen, omdat er gebruik gemaakt zal worden van affiliate marketing. Dit wordt toegelicht in ADR 001.
 > verwijzen naar ADR
 
 ## 3. Functional Overview
