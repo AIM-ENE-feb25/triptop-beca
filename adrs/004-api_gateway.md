@@ -1,26 +1,26 @@
 # ADR 004 - API Gateway
 
-**Datum:** 2025-03-21
+**Datum:** 21-03-2025
 
 ## Status
 
 Geaccepteerd
 
 ## Context
-Onze applicatie maakt gebruik van meerdere externe API’s. Deze API’s kunnen verschillende services. Het is belangrijk om deze API’s te beheren en beveiligen op een centrale plek. Een API Gateway biedt een oplossing hiervoor door één punt te bieden voor alle inkomende API-aanvragen. Dit vermindert de complexiteit en maakt het makkelijker om API’s te beheren.
+Onze applicatie maakt gebruik van meerdere externe API’s. Deze API’s kunnen verschillende services. Het is belangrijk om deze API’s te beheren en beveiligen op een centrale plek, omdat dit het makkelijker maakt om authenticatie toe te voegen. Een API Gateway biedt een oplossing hiervoor door één punt te bieden voor alle inkomende API-aanvragen. Dit vermindert de complexiteit omdat er maar één plek is waar authenticatie en onderhoud uitgevoerd hoeft te worden.
 
 ## Alternatieven
-| Forces           | API Gateway                                                                                       | Geen gebruik van API Gateway                                                                                                   |
-|------------------|---------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
-| Beheer           | Biedt een centrale plek voor het beheren van alle API-aanvragen.                                  | Beheer moet per API                                                                                                            |
-| Beveiliging      | Biedt een centrale plek om authenticatie en authorisatie te implementeren                         | Beveiliging moet per API geïmplementeerd worden, wat voor inconsistentie kan zorgen                                            |
-| Foutgevoeligheid | Er is één plek voor fouten wat een risico kan veroorzaken voor de toegang tot alle externe API’s. | Fouten kunnen voorkomen bij elke externe API, maar dit heeft alleen impact voor de desbetreffende API en niet voor de anderen. |
-| Tijd             | Implementatie kan tijdrovend zijn door de setup van de Gateway en configuraties voor alle API’s.  | Geen grote implementatie, maar per API.                                                                                        |
+| Forces           | API Gateway                                                                                           | Geen gebruik van API Gateway                                                                                                       |
+|------------------|-------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|
+| Beheer           | (+) Biedt een centrale plek voor het beheren van alle API-aanvragen.                                  | (-) Beheer moet per API                                                                                                            |
+| Beveiliging      | (+) Biedt een centrale plek om authenticatie en authorisatie te implementeren                         | (-) Beveiliging moet per API geïmplementeerd worden, wat voor inconsistentie kan zorgen                                            |
+| Foutgevoeligheid | (-) Er is één plek voor fouten wat een risico kan veroorzaken voor de toegang tot alle externe API’s. | (+) Fouten kunnen voorkomen bij elke externe API, maar dit heeft alleen impact voor de desbetreffende API en niet voor de anderen. |
+| Tijd             | (-) Implementatie kan tijdrovend zijn door de setup van de Gateway en configuraties voor alle API’s.  | (+) Geen grote implementatie, maar per API.                                                                                        |
 
 ## Beslissing
-We hebben besloten  om een API Gateway in onze infrastructuur te implementeren. Dit zal dienen als centraal punt voor het beheren, beveiligen en monitoren van de externe API’s die we gebruiken. De API Gateway biedt ons controle voor authenticatie, en autorisatie.
+We hebben besloten  om een API Gateway in onze infrastructuur te implementeren. Dit zal dienen als centraal punt voor het beheren, beveiligen en monitoren van de externe API’s die we gebruiken. De API Gateway biedt ons controle voor authenticatie en autorisatie.
 
-Deze keuze is gemaakt omdat het een goede manier is om de complexiteit van het beheren van meerdere externe API’s te verminderen en de beveiliging en monitoring te verbeteren.
+Deze keuze is gemaakt omdat wij het een goede manier vonden om de complexiteit van het beheren van meerdere externe API’s te verminderen en de beveiliging en monitoring te verbeteren, omdat het kan leiden tot verspreide configuraties en inconsistenties.
 
 ## Consequencies
 ### Voordelen:
