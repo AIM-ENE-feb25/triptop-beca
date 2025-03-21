@@ -9,16 +9,18 @@ Person(reiziger, Reiziger, "Een reiziger die een reis wil samenstellen.")
 System_Boundary(c1, "Triptop omgeving") {
     Container(frontend, "Frontend Applicatie", "React.js, Vite", "De website waar de reiziger zijn reis kan samenstellen en hulp kan vragen aan de reisagenten wanneer nodig.")
     Container(backend, "Backend", "Java, Spring Boot", "De achterkant van de applicatie, waar alle logica wordt beheerd en verstuurd door de voorkant en opslag van het systeem.")
-    ContainerDb(database, "Database", "SQL", "De opslagplaats voor alle informatie over de gebruikers en reisinformatie.")
+    ContainerDb(database, "Database", "DBMS", "De opslagplaats voor alle informatie over de gebruikers en reisinformatie.")
+    Container(api_gateway, "API Gateway", "Javascript", "De poort tussen de triptop omgeving en informatie die wordt verkregen van buitenaf.")
 }
 
 System_Ext(identiteit, "WireMock API", "Authenticatieservice die reizigers hun identiteit verifieert door SSO (single sign-on).")
 
-Rel(reiziger,frontend, "1. Stuurt inloggegevens naar", "JSON / HTTPS")
-Rel(frontend, identiteit, "2. Verstuurt authenticatieverzoek naar SSO-provider", "JSON / HTTPS")
-Rel(identiteit, frontend, "3. Verzendt token na succesvolle verificatie", "JSON / HTTPS")
-Rel(frontend, backend, "4. Stuurt token voor verdere validatie naar", "JSON / HTTPS")
-Rel(backend, database, "5. Haalt gebruikersgegevens op op basis van token", "SQL")
-Rel(backend, frontend, "6. Stuurt inlog resultaat naar", "JSON / HTTPS")
-Rel(frontend, reiziger, "7. Reiziger is ingelogd", "JSON / HTTPS")
+Rel(reiziger,frontend, "1. Stuurt inlog gegevens naar", "JSON / HTTPS")
+Rel(frontend, backend, "2. Stuurt inlog gegevens naar", "JSON / HTTPS")
+Rel(backend, api_gateway, "3. Stuurt verzoek naar API voor authenticatie via", "JSON / HTTPS")
+Rel(api_gateway, identiteit, "4. Handelt authenticatie af en krijgt token", "JSON / HTTPS")
+Rel(api_gateway, backend, "5. Stuurt token door naar", "JSON / HTTPS")
+Rel(backend, database, "6. Vergelijkt token van API met in de database", "SQL")
+Rel(backend, frontend, "7. Stuurt inlog resultaat naar", "JSON / HTTPS")
+Rel(frontend, reiziger, "8. Reiziger is ingelogd", "JSON / HTTPS")
 @enduml

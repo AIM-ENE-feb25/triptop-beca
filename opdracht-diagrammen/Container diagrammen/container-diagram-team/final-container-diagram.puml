@@ -11,7 +11,7 @@ Person(reis_agent, Reisagent, "Medewerker van een reisbureau die de reiziger hel
 System_Boundary(c1, "Triptop omgeving") {
     Container(frontend, "Frontend Applicatie", "React.js, Vite", "De website waar de reiziger zijn reis kan samenstellen en hulp kan vragen aan de reisagenten wanneer nodig.")
     Container(backend, "Backend", "Java, Spring Boot", "De achterkant van de applicatie, waar alle logica wordt beheerd en verstuurd door de voorkant en opslag van het systeem.")
-    ContainerDb(database, "Database", "?", "De opslagplaats voor alle informatie over de gebruikers en reisinformatie.")
+    ContainerDb(database, "Database", "DBMS", "De opslagplaats voor alle informatie over de gebruikers en reisinformatie.")
     Container(api_gateway, "API Gateway", "Javascript", "De poort tussen de triptop omgeving en informatie die wordt verkregen van buitenaf.")
 }
 
@@ -24,7 +24,7 @@ Rel(reiziger, frontend, "Kan reis samenstellen, boeken, aanpassen, annuleren en 
 Rel(reis_agent, frontend, "Is bereikbaar voor vragen en problemen via", "HTTPS")
 
 Rel(frontend, backend, "Krijgt reisinformatie via", "JSON / HTTPS")
-Rel(backend, database, "Stuurt en ontvang relevante data via", "?")
+Rel(backend, database, "Stuurt en ontvang relevante data via", "SQL")
 Rel(backend, api_gateway, "Roept externe providers aan via", "JSON / HTTPS")
 
 Rel(api_gateway, overnachting_vervoer, "Controleert beschikbaarheid en boekt via", "HTTPS / JSON")

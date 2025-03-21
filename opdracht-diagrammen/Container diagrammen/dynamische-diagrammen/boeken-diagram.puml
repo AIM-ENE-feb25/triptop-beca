@@ -9,13 +9,25 @@ Person(reiziger, Reiziger, "Een reiziger die een reis wil samenstellen.")
 System_Boundary(c1, "Triptop omgeving") {
     Container(frontend, "Frontend Applicatie", "React.js, Vite", "De website waar de reiziger zijn reis kan samenstellen en hulp kan vragen aan de reisagenten wanneer nodig.")
     Container(backend, "Backend", "Java, Spring Boot", "De achterkant van de applicatie, waar alle logica wordt beheerd en verstuurd door de voorkant en opslag van het systeem.")
-    ContainerDb(database, "Database", "SQL", "De opslagplaats voor alle informatie over de gebruikers en reisinformatie.")
+    ContainerDb(database, "Database", "DBMS", "De opslagplaats voor alle informatie over de gebruikers en reisinformatie.")
+    Container(api_gateway, "API Gateway", "Javascript", "De poort tussen de triptop omgeving en informatie die wordt verkregen van buitenaf.")
 }
+
+System_Ext(overnachting_vervoer, "Booking COM API", "Geeft informatie over accommodaties, autohuur, vluchten en attracties, de beschikbaarheid hiervan en boekt tickets.")
+System_Ext(eten, "Uber Eats API", "Toont restaurants en maakt reserveringen.")
+System_Ext(maps, "Maps Data API", "Geeft kaart weer en plant routes.")
 
 
 Rel(reiziger,frontend, "1. Plant reis via", "JSON / HTTPS")
-Rel(frontend, backend, "2. Stuurt reis gegevens door naar", "JSON / HTTPS")
-Rel(backend, database, "3. Slaat reisgegevens op", "SQL")
-Rel(backend, frontend, "4. Stuurt bevestiging naar", "JSON / HTTPS")
-Rel(frontend, reiziger, "5. Heeft een succesvolle reis geboekt", "JSON / HTTPS")
+Rel(frontend, backend, "2. Stuurt reis data door naar", "JSON / HTTPS")
+Rel(backend, api_gateway, "3. Stuurt verzoek naar API's voor reis boeken via", "JSON / HTTPS")
+
+Rel(api_gateway, overnachting_vervoer, "4. Krijgt vervoer data, attractie data, accommodatie data en autohuur data van", "JSON / HTTPS")
+Rel(api_gateway, eten, "5. Krijgt restaurant data van", "JSON / HTTPS")
+Rel(api_gateway, maps, "6. Krijgt locatie data van", "JSON / HTTPS")
+
+Rel(api_gateway, backend, "7. Stuurt reis data naar", "JSON / HTTPS")
+Rel(backend, database, "8. Slaat reis data op", "SQL")
+Rel(backend, frontend, "9. Stuurt bevestiging naar", "JSON / HTTPS")
+Rel(frontend, reiziger, "10. Heeft een succesvolle reis geboekt", "JSON / HTTPS")
 @enduml
