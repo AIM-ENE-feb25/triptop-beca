@@ -117,16 +117,10 @@ De applicatie is opgebouwd uit verschillende containers. De frontend applicatie,
 
 > uitleggen api gateway waarom we deze toegevoegd hebben - hier verwijzen naar ADR
 
-<<<<<<< Updated upstream
 Daarnaast maakt de applicatie gebruik van verschillende externe systemen via de API Gateway. De Booking COM API biedt informatie over accommodaties, vluchten, autohuur en attracties. De Uber Eats API toont restaurants. Via de WireMock API wordt de identiteit van de reiziger geverifieerd door middel van Single Sign-On (SSO). Tot slot biedt de Maps Data API informatie over locaties. Voor het prototype wordt gebruik gemaakt van de Maps Data API. De Google Maps API, die daadwerkelijk routes en kaarten levert, werkt met een betaald model en is niet geschikt voor ontwikkeling zonder kosten. 
 
 In het containerdiagram is het aantal externe providers lager ten opzichte van het contextdiagram. Dit komt doordat de Booking COM API als primaire provider wordt gebruikt voor meerdere bouwstenen. Deze keuze is gemaakt om het aantal integraties te verlagen en wordt toegelicht in ADR-002 - Booking COM API als primaire externe dataprovider.
 > link naar adr
-=======
-Daarnaast maakt de applicatie gebruik van verschillende externe systemen via de API Gateway. De Booking COM API biedt informatie over accommodaties, vluchten, autohuur en attracties, en maakt het mogelijk om deze te boeken. De Uber Eats API toont restaurants en maakt het mogelijk om maaltijden te bestellen of reserveringen te maken. Via de WireMock API wordt de identiteit van de reiziger geverifieerd door middel van Single Sign-On (SSO). Tot slot biedt de Maps Data API route-informatie en kaarten om reizen te plannen.
-
-> waarom nu alleen booking en niet verschillende providers - in adr of hier toelichten
->>>>>>> Stashed changes
 
 De frontend applicatie communiceert met de backend, die de benodigde gegevens uit de database haalt en de externe systemen via de API Gateway aanroept om aanvullende informatie op te halen of handelingen uit te voeren, zoals het boeken van tickets of het verifiëren van de identiteit van de reiziger.
 
