@@ -16,7 +16,7 @@ Hierdoor ontstond de keuze tussen de Booking COM API als primaire API te gebruik
 |------------------------------|----------------|-----|
 | Afhankelijkheid van één partij | + (afhankelijkheden verdeeld) | - (afhankelijk van Booking COM) |
 | Hoeveelheid integraties | - (meerdere providers) | + (alleen Booking COM) |
-| Minder onderhoudslast | - (verschillende API's controleren bij wijzigingen) | + (Alleen Booking COM controleren bij wijzigingen) |
+| Onderhoudslast | - (verschillende API's controleren bij wijzigingen) | + (Alleen Booking COM controleren bij wijzigingen) |
 | Flexibiliteit in aanbod | + (aanbod van verschillende providers ) | - (aanbod wat op Booking COM staat) |
 | Eenvoudiger afspraken maken over affiliate marketing  | - (afspraken met meerdere bedrijven)| + (alleen afspraken met Booking COM) |
 
@@ -28,8 +28,15 @@ Deze keuze is gemaakt omdat Booking COM een groot aantal diensten aanbiedt via �
 Later kan de applicatie nog uitgebreidt worden met andere externe providers, zoals een API die trein- of busreizen biedt. Naast de Booking API is er een aparte API voor eten en drinken (Uber Eats API) en voor routeplanning. 
 
 ## Consequenties
-Risico's:
+Positieve consequenties:
+- Lagere technische complexiteit door minder externe providers.
+- Minder onderhoudslast omdat alleen de wijzigingen van Booking COM gecontroleerd moeten worden.
+- Snellere ontwikkeltijd omdat er minder verschillende providers geimplementeerd moeten worden.
+- Met één partij afspraken maken over affiliate marketing in plaats van met meerdere.
+
+Negatieve consequenties/risico's:
 - Grote afhankelijkheid van de Booking COM API. Bij problemen met deze API kunnen meerdere bouwstenen uitvallen.
 - Minder flexibiliteit om specifieke aanbieders weer te geven die niet via Booking COM beschikbaar zijn. 
 
 Deze problemen zouden later opgelost kunnen worden door de applicatie uit te breiden met andere externe providers. 
+
