@@ -113,9 +113,10 @@ Dit diagram beschrijft de architectuur van de Triptop applicatie en de interacti
 
 De applicatie is opgebouwd uit verschillende containers. De frontend applicatie, gebouwd met React.js en Vite, is de interface waar de reiziger zijn reis kan samenstellen, boeken, aanpassen, annuleren en betalen. De backend is ontwikkeld met Java en Spring Boot en beheert de logica van de applicatie. De backend ontvangt verzoeken van de frontend en communiceert met de database, waarin alle gegevens over gebruikers en reizen worden opgeslagen. Verder is er een API Gateway, die als poort fungeert tussen de backend en de externe systemen. Deze keuze wordt toegelicht in ADR 004.
 
-Daarnaast maakt de applicatie gebruik van verschillende externe systemen via de API Gateway. De Booking COM API biedt informatie over accommodaties, vluchten, autohuur en attracties. De Uber Eats API toont restaurants. Via de WireMock API wordt de identiteit van de reiziger geverifieerd door middel van Single Sign-On (SSO). Tot slot biedt de Maps Data API informatie over locaties. Voor het prototype wordt gebruik gemaakt van de Maps Data API. De Google Maps API, die daadwerkelijk routes en kaarten levert, werkt met een betaald model en is niet geschikt voor ontwikkeling zonder kosten. 
+Daarnaast maakt de applicatie gebruik van verschillende externe systemen via de API Gateway. De Booking COM API biedt informatie over accommodaties, vluchten, autohuur en attracties. De Uber Eats API toont restaurants. Via de WireMock API wordt de identiteit van de reiziger geverifieerd door middel van Single Sign-On (SSO). Tot slot biedt de Maps Data API informatie over locaties. Voor het prototype wordt gebruik gemaakt van de Maps Data API. De Google Maps API, die daadwerkelijk routes en kaarten levert, werkt met een betaald model en is niet geschikt voor ontwikkeling zonder kosten.
 
 In het containerdiagram is het aantal externe providers lager ten opzichte van het contextdiagram. Dit komt doordat de Booking COM API als primaire provider wordt gebruikt voor meerdere bouwstenen. Deze keuze is gemaakt om het aantal integraties te verlagen en wordt toegelicht in ADR-002 - Booking COM API als primaire externe dataprovider.
+
 > link naar adr
 
 De frontend applicatie communiceert met de backend, die de benodigde gegevens uit de database haalt en de externe systemen via de API Gateway aanroept om aanvullende informatie op te halen of handelingen uit te voeren, zoals het boeken van tickets of het verifiëren van de identiteit van de reiziger.
@@ -153,125 +154,174 @@ De backend verwerkt deze gegevens en slaat de boeking op in de database. Zodra h
 > [!IMPORTANT]
 > Voeg toe: 3 tot 5 ADR's die beslissingen beschrijven die zijn genomen tijdens het ontwerpen en bouwen van de software.
 
-### 8.1. ADR-001 TITLE
+## 8.1 ADR 001 - Betaling API
 
-> [!TIP]
-> These documents have names that are short noun phrases. For example, "ADR 1: Deployment on Ruby on Rails 3.0.10" or "ADR 9: LDAP for Multitenant Integration". The whole ADR should be one or two pages long. We will write each ADR as if it is a conversation with a future developer. This requires good writing style, with full sentences organized into paragraphs. Bullets are acceptable only for visual style, not as an excuse for writing sentence fragments. (Bullets kill people, even PowerPoint bullets.)
+**Datum:** 21-03-2025
 
-#### Context
+### Status
 
-> [!TIP]
-> This section describes the forces at play, including technological, political, social, and project local. These forces are probably in tension, and should be called out as such. The language in this section is value-neutral. It is simply describing facts about the problem we're facing and points out factors to take into account or to weigh when making the final decision.
+Geaccepteerd
 
-#### Considered Options
+### Context
 
-> [!TIP]
-> This section describes the options that were considered, and gives some indication as to why the chosen option was selected.
+Tijdens het maken van de context diagram werd er gedacht door het team of er een aparte Betaling API (Bijvoorbeeld Stripe) nodig is om de betalingen bij te houden, omdat er andere API's zijn zoals de Booking COM API en Uber Eats API, waarmee samengewerkt kan worden om betalingen te maken.
 
-#### Decision
+### Alternatieven
 
-> [!TIP]
-> This section describes our response to the forces/problem. It is stated in full sentences, with active voice. "We will …"
+| Criteria                                | Betaling API (Bijv. Stripe) | Externe API's (Booking COM en Uber Eats) |
+| --------------------------------------- | --------------------------- | ---------------------------------------- |
+| Implementatiecomplexiteit               | - (Hoog)                    | + (Laag)                                 |
+| Afhankelijkheid van andere partijen     | + (Beperkt)                 | - (Hoog)                                 |
+| Kosten                                  | - (Kan hoog zijn)           | + (Inbegrepen)                           |
+| Ondersteuning voor affiliate betalingen | - (Niet standaard)          | + (Ja)                                   |
 
-#### Status
+### Beslissing
 
-> [!TIP]
-> A decision may be "proposed" if the project stakeholders haven't agreed with it yet, or "accepted" once it is agreed. If a later ADR changes or reverses a decision, it may be marked as "deprecated" or "superseded" with a reference to its replacement.
+Er is besloten om geen aparte Betaling API te integreren, omdat de voordelen van een aparte Betaling API voor dit domein niet nodig zijn. In plaats daarvan wordt er gewerkt met affiliate programma's van de bestaande API's zoals Uber Eats en Booking COM, om de betaling door te voeren en er een deel naar de makers gaat.
 
-#### Consequences
+### Consequencies
 
-> [!TIP]
-> This section describes the resulting context, after applying the decision. All consequences should be listed here, not just the "positive" ones. A particular decision may have positive, negative, and neutral consequences, but all of them affect the team and project in the future.
+#### Voordelen:
 
-### 8.2. ADR-002 TITLE
+- **Minder ontwikkelcomplexiteit:** Er is geen extra API die moet worden geïntegreerd en beheerd.
+- **Snellere implementatie:** Er kan direct gebruikt gemaakt worden van de betalingsfunctionaliteiten van externe API's.
 
-> [!TIP]
-> These documents have names that are short noun phrases. For example, "ADR 1: Deployment on Ruby on Rails 3.0.10" or "ADR 9: LDAP for Multitenant Integration". The whole ADR should be one or two pages long. We will write each ADR as if it is a conversation with a future developer. This requires good writing style, with full sentences organized into paragraphs. Bullets are acceptable only for visual style, not as an excuse for writing sentence fragments. (Bullets kill people, even PowerPoint bullets.)
+#### Nadelen:
 
-#### Context
+- **Verspreide betalingsinformatie:** Betalingsgegevens zijn niet gecentraliseerd, wat het lastiger maakt om de betaling services te beheren.
+- **Afhankelijkheid van externe API's:** Er is vertrouwen op de betrouwbaarheid en consistentie van verschillende externe systemen.
+- **Mogelijke beperkingen:** Niet alle externe API's bieden dezelfde betalingsopties of flexibiliteit als een dedicated Betaling API.
 
-> [!TIP]
-> This section describes the forces at play, including technological, political, social, and project local. These forces are probably in tension, and should be called out as such. The language in this section is value-neutral. It is simply describing facts about the problem we're facing and points out factors to take into account or to weigh when making the final decision.
+## 8.2 002. Booking COM API als primaire externe dataprovider
 
-#### Considered Options
+Datum: 21-03-2025
 
-> [!TIP]
-> This section describes the options that were considered, and gives some indication as to why the chosen option was selected.
+### Status
 
-#### Decision
+Geaccepteerd
 
-> [!TIP]
-> This section describes our response to the forces/problem. It is stated in full sentences, with active voice. "We will …"
+### Context
 
-#### Status
+In het contextdiagram is gekozen om verschillende externe providers weer te geven voor de verschillende bouwstenen van een reis. Er is weergegeven welke bouwstenen er nodig zijn en welke functionaliteit deze moeten leveren, met voorbeelden van welke providers er gebruikt zouden kunnen worden hiervoor. Dit geeft een volledig beeld van welke externe informatie nodig is voor het plannen van een reis.
 
-> [!TIP]
-> A decision may be "proposed" if the project stakeholders haven't agreed with it yet, or "accepted" once it is agreed. If a later ADR changes or reverses a decision, it may be marked as "deprecated" or "superseded" with a reference to its replacement.
+Bij het maken van het containerdiagram werd duidelijk dat het grootste deel van de externe data uit de Booking COM API gehaald kon worden. Booking COM biedt namelijk niet alleen overnachtingen aan, maar ook aanvullende services zoals autoverhuur, vluchten en excursies.
 
-#### Consequences
+Hierdoor ontstond de keuze tussen de Booking COM API als primaire API te gebruiken of verschillende API’s inzetten voor verschillende bouwstenen.
 
-> [!TIP]
-> This section describes the resulting context, after applying the decision. All consequences should be listed here, not just the "positive" ones. A particular decision may have positive, negative, and neutral consequences, but all of them affect the team and project in the future.
+### Alternatieven
 
-### 8.3. ADR-003 TITLE
+| Forces                                               | Verschillende API's gebruiken                       | Booking COM als primaire API                       |
+| ---------------------------------------------------- | --------------------------------------------------- | -------------------------------------------------- |
+| Afhankelijkheid van één partij                       | + (afhankelijkheden verdeeld)                       | - (afhankelijk van Booking COM)                    |
+| Hoeveelheid integraties                              | - (meerdere providers)                              | + (alleen Booking COM)                             |
+| Onderhoudslast                                       | - (verschillende API's controleren bij wijzigingen) | + (Alleen Booking COM controleren bij wijzigingen) |
+| Flexibiliteit in aanbod                              | + (aanbod van verschillende providers )             | - (aanbod wat op Booking COM staat)                |
+| Eenvoudiger afspraken maken over affiliate marketing | - (afspraken met meerdere bedrijven)                | + (alleen afspraken met Booking COM)               |
 
-> [!TIP]
-> These documents have names that are short noun phrases. For example, "ADR 1: Deployment on Ruby on Rails 3.0.10" or "ADR 9: LDAP for Multitenant Integration". The whole ADR should be one or two pages long. We will write each ADR as if it is a conversation with a future developer. This requires good writing style, with full sentences organized into paragraphs. Bullets are acceptable only for visual style, not as an excuse for writing sentence fragments. (Bullets kill people, even PowerPoint bullets.)
+### Keuze
 
-#### Context
+Er is gekozen om de Booking COM API als primaire externe databron te gebruiken voor het ophalen van informatie over overnachtingen, autoverhuur, vluchten en excursies.
+Deze keuze is gemaakt omdat Booking COM een groot aantal diensten aanbiedt via één API, waardoor het aantal externe afhankelijkheden verminderd wordt, de technische implementatie eenvoudiger is, en er sneller ontwikkelt kan worden.
 
-> [!TIP]
-> This section describes the forces at play, including technological, political, social, and project local. These forces are probably in tension, and should be called out as such. The language in this section is value-neutral. It is simply describing facts about the problem we're facing and points out factors to take into account or to weigh when making the final decision.
+Later kan de applicatie nog uitgebreidt worden met andere externe providers, zoals een API die trein- of busreizen biedt. Naast de Booking API is er een aparte API voor eten en drinken (Uber Eats API) en voor routeplanning.
 
-#### Considered Options
+### Consequenties
 
-> [!TIP]
-> This section describes the options that were considered, and gives some indication as to why the chosen option was selected.
+Positieve consequenties:
 
-#### Decision
+- Lagere technische complexiteit door minder externe providers.
+- Minder onderhoudslast omdat alleen de wijzigingen van Booking COM gecontroleerd moeten worden.
+- Snellere ontwikkeltijd omdat er minder verschillende providers geimplementeerd moeten worden.
+- Met één partij afspraken maken over affiliate marketing in plaats van met meerdere.
 
-> [!TIP]
-> This section describes our response to the forces/problem. It is stated in full sentences, with active voice. "We will …"
+Negatieve consequenties/risico's:
 
-#### Status
+- Grote afhankelijkheid van de Booking COM API. Bij problemen met deze API kunnen meerdere bouwstenen uitvallen.
+- Minder flexibiliteit om specifieke aanbieders weer te geven die niet via Booking COM beschikbaar zijn.
 
-> [!TIP]
-> A decision may be "proposed" if the project stakeholders haven't agreed with it yet, or "accepted" once it is agreed. If a later ADR changes or reverses a decision, it may be marked as "deprecated" or "superseded" with a reference to its replacement.
+Deze problemen zouden later opgelost kunnen worden door de applicatie uit te breiden met andere externe providers.
 
-#### Consequences
+## 8.3 ADR 003 - API Development Tool
 
-> [!TIP]
-> This section describes the resulting context, after applying the decision. All consequences should be listed here, not just the "positive" ones. A particular decision may have positive, negative, and neutral consequences, but all of them affect the team and project in the future.
+**Datum:** 21-03-2025
 
-### 8.4. ADR-004 TITLE
+### Status
 
-> [!TIP]
-> These documents have names that are short noun phrases. For example, "ADR 1: Deployment on Ruby on Rails 3.0.10" or "ADR 9: LDAP for Multitenant Integration". The whole ADR should be one or two pages long. We will write each ADR as if it is a conversation with a future developer. This requires good writing style, with full sentences organized into paragraphs. Bullets are acceptable only for visual style, not as an excuse for writing sentence fragments. (Bullets kill people, even PowerPoint bullets.)
+**Voorstel**
 
-#### Context
+### Context
 
-> [!TIP]
-> This section describes the forces at play, including technological, political, social, and project local. These forces are probably in tension, and should be called out as such. The language in this section is value-neutral. It is simply describing facts about the problem we're facing and points out factors to take into account or to weigh when making the final decision.
+Voor het testen van de API calls worden er tussen de teamleden
+verschillende software gebruikt. Er is besloten om één tool te
+gaan gebruiken onderling, zodat er meer consistentie en efficiëntie is in de samenwerking.
 
-#### Considered Options
+### Alternatieven
 
-> [!TIP]
-> This section describes the options that were considered, and gives some indication as to why the chosen option was selected.
+| Criteria     | Postman                        | Insomnia                | Unirest            | HttpClient         |
+| ------------ | ------------------------------ | ----------------------- | ------------------ | ------------------ |
+| UI/UX        | + (Gebruiksvriendelijk)        | + (Minimalistisch)      | + (Code-gebaseerd) | + (Code-gebaseerd) |
+| Samenwerking | + (Teamworkspaces, cloud sync) | - (Alleen lokaal)       | - (Alleen lokaal)  | - (Alleen lokaal)  |
+| Platform     | + (Windows, Mac, Linux)        | + (Windows, Mac, Linux) | + (Java, Python)   | - (Java)           |
 
-#### Decision
+### Beslissing
 
-> [!TIP]
-> This section describes our response to the forces/problem. It is stated in full sentences, with active voice. "We will …"
+Er is besloten om **Postman** als standaard API development tool te gebruiken,  
+vanwege de brede ondersteuning, gebruiksvriendelijkheid en samenwerkingstools.
 
-#### Status
+### Consequencies
 
-> [!TIP]
-> A decision may be "proposed" if the project stakeholders haven't agreed with it yet, or "accepted" once it is agreed. If a later ADR changes or reverses a decision, it may be marked as "deprecated" or "superseded" with a reference to its replacement.
+✅ **Voordelen:**
 
-#### Consequences
+- één tool binnen het team.
+- Mogelijkheid om API-requests te delen en testen te automatiseren.
+- Ondersteuning voor REST, GraphQL en andere API-types.
 
-> [!TIP]
-> This section describes the resulting context, after applying the decision. All consequences should be listed here, not just the "positive" ones. A particular decision may have positive, negative, and neutral consequences, but all of them affect the team and project in the future.
+❌ **Nadelen:**
+
+- De gekozen software is niet bij elk teamlid bekend,  
+  waardoor er een leercurve is.
+- Sommige geavanceerde features vereisen een betaald account.
+
+## 8.4 ADR 004 - API Gateway
+
+**Datum:** 21-03-2025
+
+### Status
+
+Geaccepteerd
+
+### Context
+
+Onze applicatie maakt gebruik van meerdere externe API’s. Deze API’s kunnen verschillende services. Het is belangrijk om deze API’s te beheren en beveiligen op een centrale plek, omdat dit het makkelijker maakt om authenticatie toe te voegen. Een API Gateway biedt een oplossing hiervoor door één punt te bieden voor alle inkomende API-aanvragen. Dit vermindert de complexiteit omdat er maar één plek is waar authenticatie en onderhoud uitgevoerd hoeft te worden.
+
+### Alternatieven
+
+| Forces           | API Gateway                                                                                           | Geen gebruik van API Gateway                                                                                                       |
+| ---------------- | ----------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Beheer           | (+) Biedt een centrale plek voor het beheren van alle API-aanvragen.                                  | (-) Beheer moet per API                                                                                                            |
+| Beveiliging      | (+) Biedt een centrale plek om authenticatie en authorisatie te implementeren                         | (-) Beveiliging moet per API geïmplementeerd worden, wat voor inconsistentie kan zorgen                                            |
+| Foutgevoeligheid | (-) Er is één plek voor fouten wat een risico kan veroorzaken voor de toegang tot alle externe API’s. | (+) Fouten kunnen voorkomen bij elke externe API, maar dit heeft alleen impact voor de desbetreffende API en niet voor de anderen. |
+| Tijd             | (-) Implementatie kan tijdrovend zijn door de setup van de Gateway en configuraties voor alle API’s.  | (+) Geen grote implementatie, maar per API.                                                                                        |
+
+### Beslissing
+
+We hebben besloten om een API Gateway in onze infrastructuur te implementeren. Dit zal dienen als centraal punt voor het beheren, beveiligen en monitoren van de externe API’s die we gebruiken. De API Gateway biedt ons controle voor authenticatie en autorisatie.
+
+Deze keuze is gemaakt omdat wij het een goede manier vonden om de complexiteit van het beheren van meerdere externe API’s te verminderen en de beveiliging en monitoring te verbeteren, omdat het kan leiden tot verspreide configuraties en inconsistenties.
+
+### Consequencies
+
+#### Voordelen:
+
+- Centraal punt: Alle aanvragen voor de externe API’s gaan via één plek, waardoor het gemakkelijker wordt om deze API’s te beheren.
+- Beveiliging: Het biedt een centraal punt voor het implementeren van beveiliging zoals authenticatie en autorisatie.
+- Monitoring: Het maakt het makkelijk om statistieken en logs voor alle API-aanroepen te verzamelen, wat kan helpen bij foutopsporing.
+- Beheer van externe API’s: Maakt het mogelijk om wijzigingen in de externe API’s door te voeren zonder dat dit invloed heeft op de interne systemen.
+
+#### Nadelen:
+
+- Eén punt voor fouten: De API Gateway wordt een belangrijk onderdeel van de infrastructuur en als deze problemen/bugs heeft, kan de toegang tot alle externe API’s onbruikbaar worden.
+- Tijd: Het maken van de API Gateway kost tijd om te implementeren.
 
 ### 8.5. ADR-005 TITLE
 
