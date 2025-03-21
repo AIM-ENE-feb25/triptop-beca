@@ -18,7 +18,6 @@ efficiëntie is in de samenwerking.
 | Criteria           | Postman   | Insomnia  | Unirest  | HttpClient |
 |-------------------|----------|----------|---------|------------|
 | UI/UX            | Gebruiksvriendelijk | Minimalistisch | Code-gebaseerd | Code-gebaseerd |
-| Ondersteunde API's | REST, GraphQL, SOAP | REST, GraphQL | REST, HTTP | REST, HTTP |
 | Samenwerking      | Teamworkspaces, cloud sync | Export/import JSON | Alleen lokaal | Alleen lokaal |
 | Platform         | Windows, Mac, Linux | Windows, Mac, Linux | Java, Python, JS libraries | Java library |
 
