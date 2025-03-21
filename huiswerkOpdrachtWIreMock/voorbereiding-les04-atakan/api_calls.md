@@ -50,7 +50,7 @@ curl --request POST \
 }
 ```
 
-## Google Maps API
+## Maps Data API
 
 ```
 curl --request GET \
