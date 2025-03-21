@@ -16,23 +16,30 @@ Context diagram van de Triptop applicatie:
 
 Dit diagram toont de omgeving waarin Triptop zich bevindt. Triptop is een online systeem, wat communiceert met verschillende externe systemen.
 
-- Functionaliteit
-  De Triptop applicatie biedt reizigers de volgende mogelijkheden:
+- Functionaliteit  
 
-* Reizigers kunnen zelf hun reis samenstellen door verschillende bouwstenen te combineren.
-* Reizigers kunnen zelf hun reis aanpassen, boeken, betalen en annuleren.
-* Reizigers kunnen hun reisstatus bewaren.
+De Triptop applicatie biedt reizigers de volgende mogelijkheden:
 
-- Gebruikers
-  Het systeem heeft twee soorten gebruikers, namelijk:
-  > Reiziger
-  > De reiziger is de primaire gebruiker van het systeem en heeft toegang tot bovenstaande functionaliteiten.
+> Reizigers kunnen zelf hun reis samenstellen door verschillende bouwstenen te combineren.  
 
-> Reisagent
-> De reisagent biedt tweedelijns ondersteuning aan de reiziger, door bijvoorbeeld vragen te beantwoorden of risico-inschattingen te maken.
+> Reizigers kunnen zelf hun reis aanpassen, boeken, betalen en annuleren.  
 
-- Externe systemen
-  De Triptop applicatie maakt gebruik van verschillende externe systemen. Er is gekozen om nog geen betalingsprovider toe te voegen, omdat er gebruik gemaakt wordt van de betalingsproviders uit de geselecteerde API's.
+> Reizigers kunnen hun reisstatus bewaren.
+
+- Gebruikers  
+
+Het systeem heeft twee soorten gebruikers, namelijk:
+  > Reiziger  
+
+De reiziger is de primaire gebruiker van het systeem en heeft toegang tot bovenstaande functionaliteiten.
+
+> Reisagent  
+
+De reisagent biedt tweedelijns ondersteuning aan de reiziger, door bijvoorbeeld vragen te beantwoorden of risico-inschattingen te maken.
+
+- Externe systemen  
+
+De Triptop applicatie maakt gebruik van verschillende externe systemen. Er is gekozen om nog geen betalingsprovider toe te voegen, omdat er gebruik gemaakt wordt van de betalingsproviders uit de geselecteerde API's.
 
 ## 3. Functional Overview
 
