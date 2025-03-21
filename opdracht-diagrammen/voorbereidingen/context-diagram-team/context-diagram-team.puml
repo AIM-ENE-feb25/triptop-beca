@@ -16,7 +16,7 @@ System_Ext(autohuur_systeem, "Autohuurprovider (Hertz, Sixt)", "Toont huurauto's
 System_Ext(activiteit_systeem, "Excursies / Activiteiten provider (Tripadvisor, GetYourGuide)", "Toont excursies en activiteiten, hun beschikbaarheid en maakt reserveringen.")
 System_Ext(eten_en_drinken_systeem, "Eten en drinken provider (Takeaway, Eet.nu)", "Toont restaurants en maakt reserveringen.")
 System_Ext(identeits_systeem, "Identiteitsprovider", "Authenticatieservice die reizigers hun identiteit verifieert door SSO (single sign-on).")
-System_Ext(maps_systeem, "Google Maps API", "Geeft kaart weer en plant routes.")
+System_Ext(maps_systeem, "Maps Data API", "Geeft kaart weer en plant routes.")
 
 Rel(reiziger, triptop_systeem, "Kan reis samensetellen, boeken, aanpassen, annuleren en betalen via")
 Rel(reisagent, triptop_systeem, "Is bereikbaar voor vragen en problemen via")
