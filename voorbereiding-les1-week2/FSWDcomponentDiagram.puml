@@ -1,0 +1,31 @@
+@startuml
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+
+title Component diagram FSWD backend - TravelExpensePro
+
+Container(frontend, "Front-End", "React.js, Vite", "Geeft de gebruikersinterface voor de authenticatie en het beheren voor expenses")
+ContainerDb(h2db, "Database", "H2", "Slaat informatie op van expenses en gebruikers")
+
+
+Container_Boundary(fswdBackend, "Back-end FSWD") {
+    Component(authController, "AuthController", "Spring MVC Rest Controller", "Authentiseert gebruikers voor de TravelExpensePro applicatie en verwerkt log-outs van gebruikers")
+    Component(expenseController, "ExpenseController", "Spring MVC Rest Controller", "Laat gebruikers hun expenses zien en stelt ze in staat om een nieuwe expense toe te voegen")
+    Component(expenseService, "ExpenseService", "Spring Service", "Haalt de lijst van expenses op, controleert of een expense toegevoegd mag worden en, als dit het geval is, voegt het de expense toe ")
+    Component(userRepository, "UserRepository", "Spring Repository", "Repository klassen voor User domain object en opvragen van gebruikersinformatie uit de database")
+    Component(expenseRepository, "ExpenseRepository", "Spring Repository", "Repository klassen voor Expense domain object, het opslaan en het ophalen van expense informatie uit de database")
+
+    expenseController ..> expenseService
+    expenseService ..> expenseRepository
+    authController ..> userRepository
+}
+
+Rel(frontend, expenseController, "Ophalen en toevoegen van expenses", "JSON / HTTPs")
+Rel(frontend, authController, "Handelt login- en logoutverzoeken af via", "JSON / HTTPs")
+
+Rel(userRepository, h2db, "Haalt gebruikersinformatie op via", "JDBC")
+Rel(expenseRepository, h2db, "Leest en schrijft expensesinformatie via", "JDBC")
+
+@enduml
+
