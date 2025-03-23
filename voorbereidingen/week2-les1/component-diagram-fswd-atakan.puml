@@ -1,0 +1,45 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+' uncomment the following line and comment the first to use locally
+' !include C4_Component.puml
+
+
+title Component diagram voor FSWD (TravelExpensePro)
+
+Container(txp_app, "TravelExpensePro Applicatie", "React, Vite", "Applicatie om je reiskosten te beheren.")
+ContainerDb(db, "Database", "H2", "Bewaart alle informatie over gebruikers, kosten en tokens.")
+
+Container_Boundary(api, "TravelExpensePro omgeving") {
+    Component(auth, "Auth Controller", "Rest Controller", "Zorgt ervoor dat gebruikers kunnen inloggen")
+    Component(expense, "Expense Controller", "Rest Controller", "Zorgt ervoor dat gebruikers kosten kunnen bekijken en toevoegen")
+
+    Component(expense_service, "Expense Service", "Service Bean", "Alle logica voor het ophalen en maken van kosten")
+    Component(auth_service, "Authentication Service", "Service Bean", "Alle logica voor het maken van cookies en checken of gebruikers ingelogd zijn")
+    Component(token_service, "UserToken Service", "Service Bean", "Vindt tokens van gebruikers en voegt ze toe aan de gebruiker")
+    Component(user_service, "User Service", "Service Bean", "Alle logica voor het opslaan en ophalen van gebruikers")
+
+    Component(token_dao, "UserToken DAO", "Repository Bean", "Logica voor het ophalen, verwijderen en opslaan van tokens in de database")
+    Component(expense_dao, "Expense DAO", "Repository Bean", "Logica voor het ophalen en opslaan van kosten")
+    Component(user_dao, "User DAO", "Repository Bean", "Logica voor het ophalen en opslaan van gebruikers")
+
+    Rel(txp_app, auth, "Gebruikt")
+    Rel(txp_app, expense, "Gebruikt")
+
+    Rel(expense, expense_service, "Gebruikt")
+    Rel(expense, auth_service, "Gebruikt")
+    Rel(auth, auth_service, "Gebruikt")
+    Rel(auth, user_service, "Gebruikt")
+    Rel(auth_service, token_service, "Gebruikt")
+    Rel(expense_service, token_service, "Gebruikt")
+    Rel(expense_service, token_dao, "Gebruikt")
+
+    Rel(token_service, token_dao, "Gebruikt")
+    Rel(expense_service, expense_dao, "Gebruikt")
+    Rel(user_service, user_dao, "Gebruikt")
+
+    Rel(token_dao, db, "Lezen en schrijven naar", "JDBC")
+    Rel(expense_dao, db, "Lezen en schrijven naar", "JDBC")
+    Rel(user_dao, db, "Lezen en schrijven naar", "JDBC")
+}
+
+@enduml
