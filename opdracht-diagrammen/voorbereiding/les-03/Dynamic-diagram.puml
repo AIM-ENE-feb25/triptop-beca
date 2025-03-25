@@ -1,0 +1,34 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Triptop - Component Diagram (Boekingsverzoeken)
+
+Container(trip_trop, "TripTop", "React, Spring Boot", "Hoofdapplicatie")
+Container(db, "Database", "SSMS", "Opslag van gegevens")
+System_Ext(booking_com_api, "Booking.com API", "Geeft informatie over accommodaties, vluchten, en autohuur, en maakt boekingen.")
+
+Container_Boundary(backend, "API Calls System") {
+    Component(reservatie_controller, "Reservatie Controller", "Spring Boot", "Verstuurt boeking aanvragen")
+    Component(volgorde_checker, "Volgorde Checker", "Spring Boot", "Handelt meerdere aanroepen correct af")
+    Component(booking_adapter, "Booking Adapter", "Spring Boot", "Connecteert met Booking.com en zorgt voor correcte informatie afhandeling")
+    Component(trip_repository, "Trip Repository", "Spring Boot", "Slaat alle data op in de database")
+}
+
+Rel(trip_trop, reservatie_controller, "1. Maakt boekingsverzoek via", "REST")
+Rel(reservatie_controller, booking_adapter, "2. Verstuurt boekingsverzoek naar", "REST")
+Rel(booking_adapter, volgorde_checker, "3. Verstuurt gegevens voor verwerking naar", "REST")
+Rel(volgorde_checker, trip_repository, "4. Verzamelt verwerkte gegevens in", "REST")
+Rel(trip_repository, db, "5. Slaat gegevens op in", "JDBC")
+
+Rel(booking_adapter, booking_com_api, "6. Haalt boeking informatie op van", "JSON / HTTPS")
+Rel(volgorde_checker, booking_com_api, "7. Verstuurt boeking verzoeken naar", "JSON / HTTPS")
+Rel(booking_com_api, booking_adapter, "8. Ontvangt boekingsbevestiging van", "JSON / HTTPS")
+Rel(booking_adapter, volgorde_checker, "9. Verstuurt bevestigde boekingsdata naar", "REST")
+
+Rel(volgorde_checker, trip_repository, "10. Slaat de definitieve boekingsinformatie op in", "REST")
+Rel(trip_repository, db, "11. Gegevens opgeslagen in de database", "JDBC")
+
+Rel(backend, trip_trop, "12. Stuurt bevestiging naar frontend", "JSON / HTTPS")
+Rel(trip_trop, trip_trop, "13. Reiziger ontvangt bevestiging", "JSON / HTTPS")
+
+@enduml

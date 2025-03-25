@@ -1,0 +1,37 @@
+@startuml
+class ReservationController {
+  + bookTrip(request: BookingRequest) : BookingResponse
+}
+
+class BookingVolgorde {
+  + processBooking(request: BookingRequest) : BookingResponse
+}
+
+interface IAdapter {
+  + checkAvailability(request: BookingRequest) : boolean
+  + bookHotel(request: BookingRequest) : HotelBookingResponse
+  + bookFlight(request: BookingRequest) : FlightBookingResponse
+  + bookCar(request: BookingRequest) : CarRentalResponse
+}
+
+interface IRepository {
+  + saveBooking(booking: BookingEntity) : void
+}
+
+class BookingAdapter {
+  + checkAvailability(request: BookingRequest) : boolean
+  + bookHotel(request: BookingRequest) : HotelBookingResponse
+  + bookFlight(request: BookingRequest) : FlightBookingResponse
+  + bookCar(request: BookingRequest) : CarRentalResponse
+}
+
+class TripRepository {
+  + saveBooking(booking: BookingEntity) : void
+}
+
+ReservationController --> BookingVolgorde
+BookingVolgorde --> BookingAdapter
+BookingVolgorde --> TripRepository
+BookingAdapter <|.. IAdapter
+TripRepository <|.. IRepository
+@enduml
