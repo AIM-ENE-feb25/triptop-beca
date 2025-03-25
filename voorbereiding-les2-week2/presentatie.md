@@ -10,7 +10,7 @@ Het gebruik van abstractie, polymorfisme en overerving stelt je in staat nieuwe 
 ## Consequenties van het toepassen van het Open/Closed principe
 Voordelen:
 - Makkelijk uit te breiden -> Bij het toevoegen van nieuwe functionaliteit kan je bestaande code uitbreiden in plaats van herschrijven.
-- Lager risico op bug -> Door de bestaande code niet te wijzigen, verlaag je de kans dat je per ongeluk de werkende functionaliteit breekt.
+- Lager risico op bugs -> Door de bestaande code niet te wijzigen, verlaag je de kans dat je per ongeluk de werkende functionaliteit breekt.
 - Flexibeler -> Door het gebruik van polymorfisme kan je makkelijk nieuwe implementaties toevoegen.
 
 Nadelen:
@@ -20,6 +20,11 @@ Nadelen:
 Zie voorbeeld rekenmachine
 
 ## Op welk design property of properties is het principe gebaseerd
+- Extensibility
+- Information Hiding
+- Separation of Concerns
+
+## Design patterns
 - Abstract Factory
 - Template Method
-- Stategy
+- Strategy
