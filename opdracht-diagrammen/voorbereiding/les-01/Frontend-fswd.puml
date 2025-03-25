@@ -1,0 +1,38 @@
+@startuml
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Component diagram voor FSWD Frontend (TravelExpensePro)
+
+Container(spa, "TravelExpensePro UI", "React", "Single Page Application")
+
+Component(app, "App", "React", "Hoofdcomponent, rendert de applicatie")
+Component(main, "Main", "React", "Root van de applicatie, rendert App")
+
+Component(enter_expense_page, "Enter Expense Page", "React", "Pagina om uitgaven in te voeren")
+Component(enter_expense_form, "Enter Expense Form", "React", "Formulier om uitgaven toe te voegen")
+
+Component(expense_overview, "Expense Overview", "React", "Overzicht van alle uitgaven")
+Component(expense_list, "Expense List", "React", "Lijst met uitgaven")
+Component(expense, "Expense", "React", "Weergave van een enkele uitgave")
+Component(expense_title, "Expense Title", "React", "Weergave van de titel van een uitgave")
+Component(expense_total, "Expense Total", "React", "Weergave van het totaal van de uitgaven")
+
+Component(login, "Login", "React", "Login pagina")
+Component(login_form, "Login Form", "React", "Formulier voor inloggen")
+
+Rel(main, app, "Render")
+Rel(app, enter_expense_page, "Navigeert naar")
+Rel(enter_expense_page, enter_expense_form, "Bevat")
+
+Rel(app, expense_overview, "Navigeert naar")
+Rel(expense_overview, expense_list, "Bevat")
+Rel(expense_overview, expense_title, "Bevat")
+Rel(expense_overview, expense_total, "Bevat")
+Rel(expense_list, expense, "Bevat meerdere")
+Rel(spa, main, "Roept calls aan")
+
+Rel(app, login, "Navigeert naar")
+Rel(login, login_form, "Bevat")
+
+@enduml

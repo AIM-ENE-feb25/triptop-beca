@@ -1,0 +1,32 @@
+@startuml
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Component diagram voor FSWD (TravelExpensePro)
+
+Container(travel_expense_pro, "TravelExpensePro", "React, Spring Boot", "Hoofdapplicatie")
+ContainerDb(db, "Database", "H2", "Opslag van gegevens")
+
+Container_Boundary(api, "Backend API") {
+    Component(enter_expense_controller, "Enter Expense Controller", "Spring Boot", "Voegt nieuwe uitgaven toe")
+    Component(show_expenses_controller, "Show Expenses Controller", "Spring Boot", "Toont uitgaven")
+    Component(user_controller, "User Controller", "Spring Boot", "Beheert gebruikersacties")
+
+    Component(user_service, "User Service", "Spring Boot", "Beheert gebruikers")
+
+    Component(expense_dao, "Expense DAO", "Spring Boot", "Ophalen en opslaan van uitgaven")
+    Component(user_dao, "User DAO", "Spring Boot", "Ophalen en opslaan van gebruikers")
+
+    Rel(travel_expense_pro, enter_expense_controller, "Maakt API calls naar", "REST")
+    Rel(travel_expense_pro, show_expenses_controller, "Maakt API calls naar", "REST")
+    Rel(travel_expense_pro, user_controller, "Maakt API calls naar", "REST")
+
+    Rel(user_controller, user_service, "Gebruikt", "Spring Service Call")
+    Rel(enter_expense_controller, expense_dao, "Schrijft naar", "JDBC")
+    Rel(show_expenses_controller, expense_dao, "Leest gegevens van", "JDBC")
+    Rel(user_service, user_dao, "Leest/schrijft gebruikersdata", "JDBC")
+    Rel(expense_dao, db, "Schrijft naar", "JDBC")
+    Rel(user_dao, db, "Schrijft naar", "JDBC")
+}
+
+@enduml
