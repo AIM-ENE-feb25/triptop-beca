@@ -1,0 +1,30 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Component Diagram voor Triptop (met API Gateway)
+
+Container(tt_app, "Triptop Applicatie", "React, Vite", "De website waar de reiziger zijn reis kan samenstellen en hulp kan vragen aan de reisagenten.")
+Container(api_gateway, "API Gateway", "Node.js", "Routeert API-verzoeken naar de juiste backend services.")
+ContainerDb(db, "Database", "DBMS", "Opslagplaats voor restaurant- en gebruikersinformatie.")
+System_Ext(eats_api, "UberEats API", "Externe bron voor restaurantgegevens.")
+
+Container_Boundary(api, "Triptop Backend") {
+    Component(controller, "EatsController", "SpringBoot MVC RestController", "Verwerkt API-aanvragen en roept service methodes aan.")
+    Component(facade, "EatsFacade", "Facade", "Bevat de logica voor het afhandelen van requests en interactie met de EatsService.")
+    Component(service, "EatsService", "SpringBoot Service Bean", "Bevat de businesslogica voor manipuleren van de Uber Eats API.")
+    Component(cache, "EatsCache", "Redis", "Cache voor het tijdelijk opslaan van restaurantdata voor fallback.")
+    Component(repository, "EatsRepository", "SpringBoot Repository Bean", "Zorgt voor interactie met database.")
+
+    Rel(api_gateway, controller, "Stuurt API-verzoeken naar", "JSON / HTTPS")
+    Rel(controller, facade, "Maakt gebruik van", "JSON / HTTPS")
+    Rel(facade, service, "Maakt gebruik van")
+    Rel(service, repository, "Haalt data op via")
+    Rel(service, cache, "Maakt gebruik van")
+    Rel(cache, repository, "Maakt gebruik van")
+    Rel(repository, db, "Leest en schrijft naar", "SQL")
+}
+
+Rel(tt_app, api_gateway, "Stuurt API-calls naar", "JSON / HTTPS")
+Rel(api_gateway, eats_api, "Stuurt externe API-verzoeken door naar", "JSON / HTTPS")
+
+@enduml

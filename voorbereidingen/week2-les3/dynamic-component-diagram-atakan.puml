@@ -1,0 +1,33 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Dynamic Component Diagram voor Triptop (met API Gateway)
+
+Container(tt_app, "Triptop Applicatie", "React, Vite", "De website waar de reiziger zijn reis kan samenstellen en hulp kan vragen aan de reisagenten.")
+Container(api_gateway, "API Gateway", "Node.js", "Routeert API-verzoeken naar de juiste backend services.")
+ContainerDb(db, "Database", "DBMS", "Opslagplaats voor restaurant- en gebruikersinformatie.")
+System_Ext(eats_api, "UberEats API", "Externe bron voor restaurantgegevens.")
+
+Container_Boundary(api, "Triptop Backend") {
+    Component(controller, "EatsController", "SpringBoot MVC RestController", "Verwerkt API-aanvragen en roept service methodes aan.")
+    Component(facade, "EatsFacade", "Facade", "Bevat de logica voor het afhandelen van requests die fout kunnen gaan met fallback en interactie met de EatsService.")
+    Component(service, "EatsService", "SpringBoot Service Bean", "Bevat de businesslogica voor manipuleren van de Uber Eats API.")
+    Component(repository, "EatsRepository", "SpringBoot Repository Bean", "Zorgt voor interactie met database.")
+    Component(cache, "EatsCache", "Redis", "Cache voor het tijdelijk opslaan van restaurantdata voor fallback.")
+
+    Rel(tt_app, api_gateway, "1. Stuurt verzoek met restaurantdetails naar", "JSON / HTTPS")
+    Rel(api_gateway, controller, "3. Stuurt restaurant data naar", "JSON / HTTPS")
+    Rel(controller, service, "4. Stuurt restaurant data naar", "JSON / HTTPS")
+    Rel(service, facade, "5. Stuurt restaurant data naar", "JSON / HTTPS")
+    Rel(facade, repository, "6. Slaat restaurant data op", "JSON / HTTPS")
+    Rel(repository, db, "7. Slaat restaurant data op in database", "SQL")
+    Rel(service, cache, "8. Controleert beschikbaarheid in cache", "JSON / Redis")
+    Rel(cache, repository, "9. Haalt fallback data op indien nodig", "Redis")
+    Rel(service, controller, "10. Stuurt resultaat op", "JSON / HTTPS")
+    Rel(controller, api_gateway, "11. Stuurt resultaat op", "JSON / HTTPS")
+    Rel(api_gateway, tt_app, "12. Stuurt resultaat op", "JSON / HTTPS")
+}
+
+Rel(api_gateway, eats_api, "2. Stuurt en ontvangt API data van", "JSON / HTTPS")
+
+@enduml

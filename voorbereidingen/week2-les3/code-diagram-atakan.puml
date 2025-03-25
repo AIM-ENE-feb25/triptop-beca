@@ -1,0 +1,67 @@
+@startuml
+
+title Triptop Component Class Diagram
+
+class EatsController {
+  - EatsService eatsService
+  + processRestaurantRequest(details)
+  + sendResultToApiGateway()
+}
+
+class EatsFacade {
+  - EatsService eatsService
+  - EatsRepository eatsRepository
+  + handleRequest(data)
+  + manageFallbackLogic()
+}
+
+class EatsService {
+  - UberEatsApiClient apiClient
+  - EatsCache cache
+  + fetchRestaurantData()
+  + processRestaurantInformation()
+  + checkCacheAvailability()
+}
+
+class EatsRepository {
+  - JDBCTemplate JdbcTemplate
+  + saveRestaurantData(data)
+  + retrieveRestaurantData()
+}
+
+class EatsCache {
+  - RedisClient redisClient
+  + storeInCache(data)
+  + retrieveFromCache()
+  + checkCacheAvailability()
+}
+
+class UberEatsApiClient {
+  + fetchRestaurantData()
+  + sendRequest()
+  + receiveResponse()
+}
+
+class EatsFallbackException {
+
+}
+
+EatsController --> EatsService : gebruikt
+EatsController --> EatsFacade : gebruikt
+EatsFacade --> EatsService : gebruikt
+EatsFacade --> EatsRepository : gebruikt
+EatsFacade --> EatsFallbackException : gebruikt
+EatsService --> EatsCache : beheert
+EatsService --> UberEatsApiClient : werkt met
+EatsService --> EatsRepository : gebruikt
+
+note right of EatsFacade
+ Regelt request logica en
+ mogelijke fallbacks
+end note
+
+note right of EatsService
+  Businesslogica om
+  systeem werkend te houden
+end note
+@enduml
