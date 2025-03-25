@@ -1,0 +1,28 @@
+@startuml
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+
+title Dynamic Component Diagram - Hoe zorg je ervoor dat je makkelijk een nieuwe externe service kan toevoegen?
+
+
+Container(frontend, "Front-End", "React.js, Vite", "De website waar de reiziger zijn reis kan samenstellen.")
+System_Ext(uberEatsAPI, "Uber Eats Scraper API", "Toont restaurants.")
+
+
+Container_Boundary(ttBackend, "Back-end TripTop") {
+    Component(restaurantController, "RestaurantController", "Spring MVC Rest Controller", "Handelt HTTP-verzoeken af over restaurants.")
+    Component(restaurantService, "RestaurantService", "Spring Service", "Bevat restaurant businesslogica en vraagt data op over restaurants via de port.")
+    Component(uberEatsAdapter, "UberEatsScraperAdapter", "Spring ?", "Regelt communicatie met de externe Uber Eats Scraper API.")
+}
+
+Rel(frontend, restaurantController, "GET /restaurants endpoint aanroepen om restaurants op te halen", "JSON / HTTPs", 1)
+Rel(restaurantController, restaurantService, "getRestaurantsForLocation() aanroepen om restaurants op te vragen", "methode aanroep", 2)
+Rel(restaurantService, uberEatsAdapter, "Vraagt restaurantdata op met getRestaurantsForLocation()", "methode aanroep", 3)
+Rel(uberEatsAdapter, uberEatsAPI, "Haalt restaurantdata op", "JSON / HTTPs", 4)
+Rel(uberEatsAdapter, restaurantService, "Geeft restaurantlijst terug", "", 5)
+Rel(restaurantService, restaurantController, "Geeft restaurantlijst terug", "", 6)
+Rel(restaurantController, frontend, "Geeft restaurantlijst terug", "JSON", 7)
+
+@enduml
+
