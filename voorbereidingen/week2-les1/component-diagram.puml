@@ -1,0 +1,30 @@
+@startuml
+!define C4Component
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_TOP_DOWN()
+
+title Componentendiagram voor FSWD-applicatie
+
+Container_Boundary(c1, "FSWD-applicatie") {
+    Component(c2, "EnterExpenseController", "Spring MVC Controller", "Verwerkt uitgaveninvoer")
+    Component(c3, "ShowExpensesController", "Spring MVC Controller", "Haalt uitgavenoverzicht op")
+    Component(c4, "UserController", "Spring MVC Controller", "Behandelt gebruikersauthenticatie")
+    Component(c5, "UserService", "Spring Service", "Businesslogica voor gebruikersbeheer")
+    Component(c6, "ExpenseDAO", "Spring Repository", "Data-opslaglaag voor uitgaven")
+    Component(c7, "UserJDBCDao", "Spring Repository", "Data-opslaglaag voor gebruikers")
+    Component(c8, "JwtUtil", "Spring Component", "Hulpprogramma voor JWT-tokens")
+    ComponentDb(c9, "Database", "Relationele database", "Slaat applicatiegegevens op")
+
+    Rel(c2, c6, "Haalt uit op")
+    Rel(c2, c8, "Authentiseert via")
+    Rel(c3, c6, "Haalt uit op")
+    Rel(c3, c8, "Authentiseert via")
+    Rel(c4, c5, "Haalt uit op")
+    Rel(c4, c8, "Authentiseert via")
+    Rel(c5, c7, "")
+    Rel(c6, c9, "")
+    Rel(c7, c9, "")
+}
+
+@enduml
