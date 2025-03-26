@@ -14,21 +14,15 @@ Container_Boundary(backend, "API Calls System") {
     Component(trip_repository, "Trip Repository", "Spring Boot", "Slaat alle data op in de database")
 }
 
-Rel(trip_trop, reservatie_controller, "1. Maakt boekingsverzoek via", "REST")
+Rel(trip_trop, reservatie_controller, "1. Maakt boeking aan via", "REST")
 Rel(reservatie_controller, booking_adapter, "2. Verstuurt boekingsverzoek naar", "REST")
-Rel(booking_adapter, volgorde_checker, "3. Verstuurt gegevens voor verwerking naar", "REST")
-Rel(volgorde_checker, trip_repository, "4. Verzamelt verwerkte gegevens in", "REST")
-Rel(trip_repository, db, "5. Slaat gegevens op in", "JDBC")
+Rel(booking_adapter, booking_com_api, "3. Haalt boeking informatie op van", "JSON / HTTPS")
+Rel(booking_adapter, volgorde_checker, "4. Verstuurt gegevens voor verwerking naar", "REST")
+Rel(volgorde_checker, trip_repository, "5. Slaat de definitieve boekingsinformatie op in", "REST")
+Rel(trip_repository, db, "6. Slaat gegevens op in", "JDBC")
+Rel(trip_repository, booking_adapter, "7. Stuurt opgeslagen gegevens terug naar", "REST")
+Rel(booking_adapter, reservatie_controller, "8. Stuurt bevestigde gegevens naar", "REST")
+Rel(reservatie_controller, trip_trop, "9. Stuurt bevestiging naar gebruiker", "JSON / HTTPS")
 
-Rel(booking_adapter, booking_com_api, "6. Haalt boeking informatie op van", "JSON / HTTPS")
-Rel(volgorde_checker, booking_com_api, "7. Verstuurt boeking verzoeken naar", "JSON / HTTPS")
-Rel(booking_com_api, booking_adapter, "8. Ontvangt boekingsbevestiging van", "JSON / HTTPS")
-Rel(booking_adapter, volgorde_checker, "9. Verstuurt bevestigde boekingsdata naar", "REST")
-
-Rel(volgorde_checker, trip_repository, "10. Slaat de definitieve boekingsinformatie op in", "REST")
-Rel(trip_repository, db, "11. Gegevens opgeslagen in de database", "JDBC")
-
-Rel(backend, trip_trop, "12. Stuurt bevestiging naar frontend", "JSON / HTTPS")
-Rel(trip_trop, trip_trop, "13. Reiziger ontvangt bevestiging", "JSON / HTTPS")
 
 @enduml
