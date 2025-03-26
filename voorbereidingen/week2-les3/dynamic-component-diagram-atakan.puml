@@ -11,15 +11,17 @@ Container_Boundary(api, "Triptop Backend") {
     Component(controller, "EatsController", "SpringBoot MVC RestController", "Verwerkt API-aanvragen en roept service methodes aan.")
     Component(service, "EatsService", "SpringBoot Service Bean", "Bevat de businesslogica voor manipuleren van de Uber Eats API.")
     Component(cache, "EatsRepository", "Spring Data Redis", "Cache voor het tijdelijk opslaan van restaurantdata voor fallback.")
+    Component(adapter, "EatsAdapter", "Springboot Component Bean", "Adapter om connectie te maken met Uber Eats API.")
 
     Rel(tt_app, controller, "1. Stuurt verzoek naar", "JSON / HTTPS")
     Rel(controller, service, "2. Vraagt restaurant data op via", "REST")
     Rel(service, cache, "3. Controleert beschikbaarheid in cache", "JSON / Redis")
     Rel(cache, redis, "4. Leest en schrijft data naar", "NoSQL")
-    Rel(service, eats_api, "5. Haalt restaurant data op via", "JSON / HTTPS")
-
-    Rel(service, controller, "6. Stuurt resultaat op naar", "REST")
-    Rel(controller, tt_app, "7. Stuurt resultaat op naar", "JSON / HTTPS")
+    Rel(service, adapter, "5. Doet vraag om data te krijgen aan", "REST")
+    Rel(adapter, eats_api, "6. Haalt restaurant data op via", "JSON / HTTPS")
+    Rel(adapter, service, "7. Stuurt restaurant data naar", "REST")
+    Rel(service, controller, "8. Stuurt resultaat op naar", "REST")
+    Rel(controller, tt_app, "9. Stuurt resultaat op naar", "JSON / HTTPS")
 }
 
 
