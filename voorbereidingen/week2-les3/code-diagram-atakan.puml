@@ -1,59 +1,49 @@
 @startuml
 
-title Triptop Component Class Diagram
+title Triptop Component Class Diagram (met Redis Cache)
 
 class EatsController {
-  - EatsService eatsService
+  - EatsFacade eatsFacade
   + processRestaurantRequest(details)
   + sendResultToApiGateway()
 }
 
 class EatsFacade {
   - EatsService eatsService
-  - EatsRepository eatsRepository
   + handleRequest(data)
   + manageFallbackLogic()
 }
 
 class EatsService {
-  - UberEatsApiClient apiClient
-  - EatsCache cache
+  - EatsRepository eatsRepository
+  - EatsAdapter eatsAdapter
   + fetchRestaurantData()
   + processRestaurantInformation()
-  + checkCacheAvailability()
+  + checkCacheBeforeFetching()
+  + handleFallbackScenario()
 }
 
 class EatsRepository {
-  - JDBCTemplate JdbcTemplate
-  + saveRestaurantData(data)
-  + retrieveRestaurantData()
-}
-
-class EatsCache {
   - RedisClient redisClient
   + storeInCache(data)
   + retrieveFromCache()
   + checkCacheAvailability()
 }
 
-class UberEatsApiClient {
+class EatsAdapter {
   + fetchRestaurantData()
   + sendRequest()
   + receiveResponse()
 }
 
 class EatsFallbackException {
-
 }
 
-EatsController --> EatsService : gebruikt
 EatsController --> EatsFacade : gebruikt
 EatsFacade --> EatsService : gebruikt
-EatsFacade --> EatsRepository : gebruikt
 EatsFacade --> EatsFallbackException : gebruikt
-EatsService --> EatsCache : beheert
-EatsService --> UberEatsApiClient : werkt met
 EatsService --> EatsRepository : gebruikt
+EatsService --> EatsAdapter : werkt met
 
 note right of EatsFacade
  Regelt request logica en
@@ -64,4 +54,9 @@ note right of EatsService
   Businesslogica om
   systeem werkend te houden
 end note
+
+note right of EatsRepository
+ Beheert caching met Redis
+end note
+
 @enduml
