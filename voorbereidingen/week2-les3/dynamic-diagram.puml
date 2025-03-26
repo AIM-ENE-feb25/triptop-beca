@@ -1,0 +1,22 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Dynamic Component Diagram - API Data Flow
+
+Container_Boundary(c1, "Triptop backend") {
+    Component(api_client, "API Gateway", "Javascript", "Verzorgt communicatie met externe APIs.")
+    Component(validation_service, "Validation Service", "Java", "Valideert de ontvangen en verzonden data op integriteit.")
+    Component(logging_service, "Logging", "Java", "Logt API-verzoeken en responses voor traceerbaarheid.")
+    Component(api_interface, "ApiClient Interface", "Interface", "Definieert communicatie met externe APIs.")
+}
+
+System_Ext(external_api, "Externe API", "Verschillende providers", "")
+
+Rel(api_client, api_interface, "1. Stuurt verzoek naar", "")
+Rel(api_interface, external_api, "2. Haalt en verzendt data via", "HTTPS / JSON")
+Rel(api_client, validation_service, "3. Controleert data-integriteit via", "")
+Rel(validation_service, api_client, "4. Geeft validatieresultaat terug aan", "Boolean")
+Rel(api_client, logging_service, "5. Logt API-verzoeken via", "Logging")
+Rel(logging_service, api_client, "6. Bevestigt logging-status aan", "")
+
+@enduml

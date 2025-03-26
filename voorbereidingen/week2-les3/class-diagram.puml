@@ -1,0 +1,33 @@
+@startuml
+title Class Diagram - Triptop Backend API Flow
+
+interface ApiClient {
+    + sendRequest(endpoint: String): Response
+}
+
+class ApiGateway implements ApiClient {
+    + sendRequest(endpoint: String): Response
+}
+
+class ValidationService {
+    + validateData(data: Object): boolean
+}
+
+class LoggingService {
+    + logRequest(request: Request): void
+    + logResponse(response: Response): void
+}
+
+class TriptopBackend {
+    - apiClient: ApiClient
+    - validationService: ValidationService
+    - loggingService: LoggingService
+    + processRequest(request: Request): Response
+}
+
+ApiClient <|.. ApiGateway
+TriptopBackend *-- ApiClient
+TriptopBackend *-- ValidationService
+TriptopBackend *-- LoggingService
+
+@enduml
