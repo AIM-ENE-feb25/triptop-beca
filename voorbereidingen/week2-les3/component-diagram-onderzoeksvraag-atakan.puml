@@ -9,14 +9,12 @@ ContainerDb(redis, "Redis Cache", "NoSQL Redis", "Tijdelijke opslag voor restaur
 
 Container_Boundary(api, "Triptop Backend") {
     Component(controller, "EatsController", "SpringBoot MVC RestController", "Verwerkt API-aanvragen en roept service methodes aan.")
-    Component(facade, "EatsFacade", "Facade", "Bevat de logica voor het afhandelen van requests en interactie met de EatsService.")
     Component(service, "EatsService", "SpringBoot Service Bean", "Bevat de businesslogica voor manipuleren van de Uber Eats API.")
     Component(eats_client, "EatsAdapter", "SpringBoot Component", "Maakt connectie met Uber Eats API en geeft data door het systeem.")
     Component(eats_cache, "EatsRepository", "Spring Data Redis", "Beheert caching van restaurantdata.")
 
     Rel(tt_app, controller, "Stuurt verzoek naar", "JSON / HTTPS")
-    Rel(controller, facade, "Maakt gebruik van")
-    Rel(facade, service, "Maakt gebruik van")
+    Rel(controller, service, "Maakt gebruik van")
     Rel(service, eats_client, "Maakt gebruik van")
     Rel(eats_client, eats_api, "Krijgt data van", "JSON / HTTPS")
 

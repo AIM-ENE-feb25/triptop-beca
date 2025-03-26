@@ -1,21 +1,22 @@
 @startuml
 
-title Triptop Component Class Diagram (met Redis Cache)
+title Triptop Component Class Diagram
 
-class EatsController {
-  - EatsFacade eatsFacade
-  + processRestaurantRequest(details)
-  + sendResultToApiGateway()
+interface EatsServicePort {
+  + fetchRestaurantData()
+  + processRestaurantInformation()
+  + checkCacheBeforeFetching()
+  + handleFallbackScenario()
 }
 
-class EatsFacade {
-  - EatsService eatsService
-  + handleRequest(data)
-  + manageFallbackLogic()
+interface EatsAdapterPort {
+  + fetchRestaurantData()
+  + sendRequest()
+  + receiveResponse()
 }
 
-class EatsService {
-  - EatsRepository eatsRepository
+class EatsService implements EatsServicePort {
+  - EatsRepositoryPort eatsRepository
   - EatsAdapter eatsAdapter
   + fetchRestaurantData()
   + processRestaurantInformation()
@@ -23,40 +24,49 @@ class EatsService {
   + handleFallbackScenario()
 }
 
-class EatsRepository {
+interface EatsRepositoryPort {
+  + storeInCache(data)
+  + retrieveFromCache()
+  + checkCacheAvailability()
+}
+
+class EatsRepository implements EatsRepositoryPort {
   - RedisClient redisClient
   + storeInCache(data)
   + retrieveFromCache()
   + checkCacheAvailability()
 }
 
-class EatsAdapter {
+class EatsAdapter implements EatsAdapterPort {
   + fetchRestaurantData()
   + sendRequest()
   + receiveResponse()
 }
 
-class EatsFallbackException {
+class EatsController {
+  - EatsServicePort eatsService
+  + processRestaurantRequest(details)
+  + sendResultToApiGateway()
 }
 
-EatsController --> EatsFacade : gebruikt
-EatsFacade --> EatsService : gebruikt
-EatsFacade --> EatsFallbackException : gebruikt
-EatsService --> EatsRepository : gebruikt
-EatsService --> EatsAdapter : werkt met
+Exception EatsFallbackException {
+}
 
-note right of EatsFacade
- Regelt request logica en
- mogelijke fallbacks
+EatsController --> EatsServicePort
+EatsService --> EatsRepositoryPort
+EatsService --> EatsAdapterPort
+EatsService --> EatsFallbackException
+
+note right of EatsServicePort
+  Interface voor businesslogica
 end note
 
-note right of EatsService
-  Businesslogica om
-  systeem werkend te houden
+note right of EatsRepositoryPort
+  Interface voor caching-implementatie
 end note
 
 note right of EatsRepository
- Beheert caching met Redis
+  Implementatie met Redis
 end note
 
 @enduml
