@@ -1,0 +1,30 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Triptop - Dynamic Diagram (Boekingsverzoeken)
+
+Container(trip_trop, "TripTop", "React, Spring Boot", "Hoofdapplicatie")
+Container(db, "Database", "SSMS", "Opslag van gegevens")
+System_Ext(booking_com_api, "Booking.com API", "Geeft informatie over accommodaties, vluchten, en autohuur, en maakt boekingen.")
+
+Container_Boundary(backend, "API Calls System") {
+    Component(reservatie_controller, "Reservatie Controller", "Spring Boot", "Verstuurt boeking aanvragen")
+    Component(booking_service, "Booking Service", "Spring Boot", "Verwerkt aanvragen en schakelt states")
+    Component(booking_volgorde, "Booking Volgorde", "Spring Boot", "Handelt meerdere aanroepen correct af via states")
+    Component(booking_adapter, "Booking Adapter", "Spring Boot", "Connecteert met Booking.com en zorgt voor correcte informatie afhandeling")
+    Component(trip_repository, "Trip Repository", "Spring Boot", "Slaat alle data op in de database")
+}
+
+Rel(trip_trop, reservatie_controller, "1. Maakt boeking aan via", "JSON / HTTPS")
+Rel(reservatie_controller, booking_service, "2. Verstuurt boekingsverzoek naar", "REST")
+Rel(booking_service, booking_adapter, "3. Haalt boekingsinformatie op via", "REST")
+Rel(booking_adapter, booking_com_api, "4. Vraagt beschikbaarheid en prijzen op bij", "JSON / HTTPS")
+Rel(booking_adapter, booking_service, "5. Stuurt verzamelde gegevens door naar", "REST")
+Rel(booking_service, booking_volgorde, "6. Start state-based verwerking in", "REST")
+Rel(booking_volgorde, trip_repository, "7. Stuurt definitieve boekings gegevens naar", "REST")
+Rel(trip_repository, db, "8. Slaat gegevens op in", "JDBC")
+Rel(trip_repository, booking_service, "9. Stuurt bevestiging dat gegevens is opgeslagen naar", "REST")
+Rel(booking_service, reservatie_controller, "10. Stuurt bevestigde boekingsgegevens naar", "REST")
+Rel(reservatie_controller, trip_trop, "11. Stuurt bevestiging naar gebruiker", "JSON / HTTPS")
+
+@enduml
