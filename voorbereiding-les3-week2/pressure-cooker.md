@@ -26,8 +26,17 @@ public interface HotelPort {
 }
 
 ## Dynamic diagram
-> ? Moeten RestaurantPort en APICaller hier weggelaten worden?
-
+> Gemaakt op basis van restaurant bouwsteen/feature als voorbeeld.
 
 ## Class diagram
 > Gemaakt op basis van restaurant bouwsteen/feature als voorbeeld.
+
+### Onduidelijkheden in diagram
+- Wat voor een returntype zijn de APICaller methoden?
+- Welke methoden komen er specifiek in de controller/service/port?
+
+## Pattern en Principle
+- Template Method Pattern
+- Open/Closed Principle
+
+
