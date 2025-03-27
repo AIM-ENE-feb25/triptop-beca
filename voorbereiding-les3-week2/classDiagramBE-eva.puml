@@ -14,10 +14,9 @@ class RestaurantService {
 }
 
 abstract class APICaller {
-+ executeAPICall(): ?
-# login(): ?
-# APICall(): ?
-# tokenCheck(): ?
++ executeAPICall(): String
+# login(): void
+# APICall(): String
 }
 
 interface RestaurantPort {

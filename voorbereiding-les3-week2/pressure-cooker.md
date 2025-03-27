@@ -32,7 +32,6 @@ public interface HotelPort {
 > Gemaakt op basis van restaurant bouwsteen/feature als voorbeeld.
 
 ### Onduidelijkheden in diagram
-- Wat voor een returntype zijn de APICaller methoden?
 - Welke methoden komen er specifiek in de controller/service/port?
 
 ## Pattern en Principle
