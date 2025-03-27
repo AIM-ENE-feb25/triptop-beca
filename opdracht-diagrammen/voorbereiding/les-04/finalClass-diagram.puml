@@ -9,6 +9,10 @@ class BookingVolgorde {
   + processBooking(request: BookingRequest) : BookingResponse
 }
 
+class BookingService {
+  + processBooking(request: BookingRequest) : BookingResponse
+}
+
 interface BookingState {
   + handleRequest(context: BookingVolgorde, request: BookingRequest) : void
 }
@@ -47,11 +51,10 @@ class BookingAdapter {
   + bookCar(request: BookingRequest) : CarRentalResponse
 }
 
-class TripRepository {
-  + saveBooking(booking: BookingEntity) : void
-}
 
-ReservationController --> BookingVolgorde
+ReservationController --> BookingService
+BookingService --> BookingAdapter
+BookingService --> BookingVolgorde
 BookingVolgorde --> BookingState
 BookingState <|.. AvailabilityState
 BookingState <|.. HotelBookingState
@@ -62,6 +65,5 @@ AvailabilityState --> BookingAdapter
 HotelBookingState --> BookingAdapter
 FlightBookingState --> BookingAdapter
 CarBookingState --> BookingAdapter
-CompletedState --> TripRepository
 BookingAdapter <|.. IAdapter
 @enduml
