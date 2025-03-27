@@ -3,10 +3,7 @@
 title Triptop Component Class Diagram
 
 interface EatsServicePort {
-  + fetchRestaurantData()
-  + processRestaurantInformation()
-  + checkCacheBeforeFetching()
-  + handleFallbackScenario()
+  + getRestaurantData()
 }
 
 interface EatsAdapterPort {
@@ -15,13 +12,24 @@ interface EatsAdapterPort {
   + receiveResponse()
 }
 
+interface RetrieveDataStrategy {
+   + retrieveData()
+}
+
+class RetrieveFromCacheStrategy implements RetrieveDataStrategy {
+    - EatsRepositoryPort eatsRepository
+    - EatsAdapterPort eatsAdapter
+    + retrieveData()
+}
+
+class RetrieveFromAPIStrategy implements RetrieveDataStrategy {
+    - EatsAdapterPort eatsAdapter
+    + retrieveData()
+}
+
 class EatsService implements EatsServicePort {
-  - EatsRepositoryPort eatsRepository
-  - EatsAdapter eatsAdapter
-  + fetchRestaurantData()
-  + processRestaurantInformation()
-  + checkCacheBeforeFetching()
-  + handleFallbackScenario()
+  + getRestaurantData()
+  - handleFallbackScenario()
 }
 
 interface EatsRepositoryPort {
@@ -53,20 +61,10 @@ Exception EatsFallbackException {
 }
 
 EatsController --> EatsServicePort
-EatsService --> EatsRepositoryPort
-EatsService --> EatsAdapterPort
+EatsService --> RetrieveDataStrategy
 EatsService --> EatsFallbackException
-
-note right of EatsServicePort
-  Interface voor businesslogica
-end note
-
-note right of EatsRepositoryPort
-  Interface voor caching-implementatie
-end note
-
-note right of EatsRepository
-  Implementatie met Redis
-end note
+RetrieveFromCacheStrategy --> EatsRepositoryPort
+RetrieveFromCacheStrategy --> EatsAdapterPort
+RetrieveFromAPIStrategy --> EatsAdapterPort
 
 @enduml

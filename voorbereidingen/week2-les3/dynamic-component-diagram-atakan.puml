@@ -1,7 +1,7 @@
 @startuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
 
-title Dynamic Component Diagram voor Triptop (met API Gateway)
+title Dynamic Component Diagram voor Triptop
 
 Container(tt_app, "Triptop Applicatie", "React, Vite", "De website waar de reiziger zijn reis kan samenstellen en hulp kan vragen aan de reisagenten.")
 System_Ext(eats_api, "UberEats API", "Externe bron voor restaurantgegevens.")
