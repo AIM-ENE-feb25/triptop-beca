@@ -6,7 +6,6 @@
 title C4 Context diagram voor Triptop
 
 Person(reiziger, "Reiziger", "Een reiziger die een reis wil samenstellen.")
-Person(reisagent, "Reisagent", "Medewerker van een reisbureau die de reiziger helpt met vragen en problemen.")
 
 System(triptop_systeem, "Triptop", "Applicatie die reiziger in staat stelt om een reis samen te stellen door verschillende opties te gebruiken.")
 
@@ -19,7 +18,6 @@ System_Ext(identeits_systeem, "Identiteitsprovider", "Authenticatieservice die r
 System_Ext(maps_systeem, "Maps Data API", "Geeft kaart weer en plant routes.")
 
 Rel(reiziger, triptop_systeem, "Kan reis samensetellen, boeken, aanpassen, annuleren en betalen via")
-Rel(reisagent, triptop_systeem, "Is bereikbaar voor vragen en problemen via")
 Rel(triptop_systeem, overnacht_system, "Controleert beschikbaarheid en boekt overnachting via")
 Rel(triptop_systeem, vervoer_systeem, "Controleert beschikbaarheid en boekt tickets via")
 Rel(triptop_systeem, autohuur_systeem, "Controleert beschikbaarheid en boekt autoreserveringen via")
