@@ -1,0 +1,112 @@
+1:
+
+import java.util.Random;
+
+public class Dobbelsteen {
+    private int aantalOgen;
+    private DobbelsteenState huidigeState;
+    private Random random = new Random();
+
+    public Dobbelsteen() {
+        this.huidigeState = new Enkel();
+    }
+
+    public int werp() {
+        aantalOgen = random.nextInt(6) + 1;
+        return huidigeState.getScore(aantalOgen);
+    }
+
+    public void volgende() {
+        if (aantalOgen % 2 == 0) {
+            huidigeState = huidigeState.volgendeBijEven();
+        } else {
+            huidigeState = huidigeState.volgendeBijOneven();
+        }
+    }
+}
+
+2:
+
+public interface DobbelsteenState {
+    int getScore(int aantalOgen);
+    DobbelsteenState volgendeBijEven();
+    DobbelsteenState volgendeBijOneven();
+}
+
+public class Enkel implements DobbelsteenState {
+    @Override
+    public int getScore(int aantalOgen) {
+        return aantalOgen;
+    }
+
+    @Override
+    public DobbelsteenState volgendeBijEven() {
+        return new Dubbel();
+    }
+
+    @Override
+    public DobbelsteenState volgendeBijOneven() {
+        return this;
+    }
+}
+
+public class Dubbel implements DobbelsteenState {
+    @Override
+    public int getScore(int aantalOgen) {
+        return 2 * aantalOgen;
+    }
+
+    @Override
+    public DobbelsteenState volgendeBijEven() {
+        return new Kwadraat();
+    }
+
+    @Override
+    public DobbelsteenState volgendeBijOneven() {
+        return new Enkel();
+    }
+}
+
+public class Kwadraat implements DobbelsteenState {
+    @Override
+    public int getScore(int aantalOgen) {
+        return aantalOgen * aantalOgen;
+    }
+
+    @Override
+    public DobbelsteenState volgendeBijEven() {
+        return this;
+    }
+
+    @Override
+    public DobbelsteenState volgendeBijOneven() {
+        return new Dubbel();
+    }
+}
+
+3:
+
+public class DobbelsteenTest {
+    public static void main(String[] args) {
+        Dobbelsteen dobbelsteen = new Dobbelsteen();
+        int totaleScore = 0;
+
+        for (int i = 0; i < 10; i++) {
+            int score = dobbelsteen.werp();
+            System.out.println("Worp " + (i + 1) + ": " + score);
+            totaleScore += score;
+            dobbelsteen.volgende();
+        }
+
+        System.out.println("Totale score na 10 worpen: " + totaleScore);
+    }
+}
+
+4:
+
+Het state pattern leunt heel sterk op de open-closed principle. De reden is omdat de klasse zo zijn opgesteld dat ze niet hoven te veranderen,
+maar makkelijk uit te breiden zijn door de interface.
+
+Een voordeel van deze pattern is dat alle logica in aparte klasse staan, wat ervoor zorgt dat de code overzichtelijker is en
+uitbreidbaar zonder teveel moeite. Dit houdt zich ook in verband met de single responsibilty principle.
+
