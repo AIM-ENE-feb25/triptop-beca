@@ -12,8 +12,8 @@ System_Ext(uberEatsAPI, "Uber Eats Scraper API", "Toont restaurants.")
 Container_Boundary(ttBackend, "Back-end TripTop") {
     Component(restaurantController, "RestaurantController", "Spring MVC Rest Controller", "Handelt HTTP-verzoeken af over restaurants.")
     Component(restaurantService, "RestaurantService", "Spring Service", "Bevat restaurant businesslogica en vraagt restaurantdata op.")
-    Component("APICaller", "APICaller (abstract)", "Java Abstract Class", "Bepaalt de vaste volgorde van stappen van een externe API-aanroep.")
-    Component("restaurantPort", "RestaurantPort", "Java interface", "Definieert de methoden die de restaurantservice kan aanroepen om data op te vragen.")
+    Component(APICaller, "APICaller (abstract)", "Java Abstract Class", "Bepaalt de vaste volgorde van stappen van een externe API-aanroep.")
+    Component(restaurantPort, "RestaurantPort", "Java interface", "Definieert de methoden die de restaurantservice kan aanroepen om data op te vragen.")
     Component(uberEatsAdapter, "UberEatsScraperAdapter", "Java class", "Regelt communicatie met de Uber Eats API en zet ontvangen data om naar het domeinmodel.")
 }
 
@@ -22,6 +22,6 @@ Rel("restaurantController", "restaurantService", "Vraagt restaurantdata op via")
 Rel("restaurantService", "restaurantPort", "Vraagt restaurantdata op via")
 Rel_U("uberEatsAdapter", "APICaller", "Extends")
 Rel_U("uberEatsAdapter", "restaurantPort", "Implements")
-Rel("uberEatsAdapter", "uberEatsAPI", "Haalt restaurantdata op via")
+Rel("uberEatsAdapter", "uberEatsAPI", "Haalt restaurantdata op via", "JSON / HTTPs")
 
 @enduml
