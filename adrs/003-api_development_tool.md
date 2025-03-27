@@ -26,7 +26,7 @@ gaan gebruiken onderling, zodat er meer consistentie en efficiëntie is in de sa
 Er is besloten om **Postman** als standaard API development tool te gebruiken,  
 vanwege de brede ondersteuning, gebruiksvriendelijkheid en samenwerkingstools.
 
-## Consequencies
+## Consequenties
 ✅ **Voordelen:**
 - één tool binnen het team.
 - Mogelijkheid om API-requests te delen en testen te automatiseren.
