@@ -6,13 +6,12 @@
 title Container diagram voor Triptop Applicatie
 
 Person(reiziger, Reiziger, "Een reiziger die een reis wil samenstellen.")
-Person(reis_agent, Reisagent, "Medewerker van een reisbureau die de reiziger helpt met vragen en problemen.")
 
 System_Boundary(c1, "Triptop omgeving") {
     Container(frontend, "Frontend Applicatie", "React.js, Vite", "De website waar de reiziger zijn reis kan samenstellen en hulp kan vragen aan de reisagenten wanneer nodig.")
-    Container(backend, "Backend", "Java, Spring Boot", "De achterkant van de applicatie, waar alle logica wordt beheerd en verstuurd door de voorkant en opslag van het systeem.")
-    ContainerDb(database, "Database", "DBMS", "De opslagplaats voor alle informatie over de gebruikers en reisinformatie.")
-    Container(api_gateway, "API Gateway", "Javascript", "De poort tussen de triptop omgeving en informatie die wordt verkregen van buitenaf.")
+    Container(backend, "Backend", "Java Spring Boot", "De achterkant van de applicatie, waar alle logica wordt beheerd en verstuurd door de voorkant en opslag van het systeem.")
+    ContainerDb(database, "Database", "NoSQL Redis", "De opslagplaats voor alle informatie over de gebruikers en reisinformatie.")
+    Container(api_gateway, "API Gateway", "SpringBoot", "De poort tussen de triptop omgeving en informatie die wordt verkregen van buitenaf.")
 }
 
 System_Ext(overnachting_vervoer, "Booking COM API", "Geeft informatie over accommodaties, autohuur, vluchten en attracties, de beschikbaarheid hiervan en boekt tickets.")
@@ -21,10 +20,9 @@ System_Ext(identiteit, "WireMock API", "Authenticatieservice die reizigers hun i
 System_Ext(maps, "Maps Data API", "Geeft kaart weer en plant routes.")
 
 Rel(reiziger, frontend, "Kan reis samenstellen, boeken, aanpassen, annuleren en betalen via", "HTTPS")
-Rel(reis_agent, frontend, "Is bereikbaar voor vragen en problemen via", "HTTPS")
 
 Rel(frontend, backend, "Krijgt reisinformatie via", "JSON / HTTPS")
-Rel(backend, database, "Stuurt en ontvang relevante data via", "SQL")
+Rel(backend, database, "Stuurt en ontvang relevante data via", "JSON")
 Rel(backend, api_gateway, "Roept externe providers aan via", "JSON / HTTPS")
 
 Rel(api_gateway, overnachting_vervoer, "Controleert beschikbaarheid en boekt via", "HTTPS / JSON")
