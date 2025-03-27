@@ -1,0 +1,67 @@
+@startuml
+class ReservationController {
+  + bookTrip(request: BookingRequest) : BookingResponse
+}
+
+class BookingVolgorde {
+  - state: BookingState
+  + setState(state: BookingState) : void
+  + processBooking(request: BookingRequest) : BookingResponse
+}
+
+interface BookingState {
+  + handleRequest(context: BookingVolgorde, request: BookingRequest) : void
+}
+
+class AvailabilityState {
+  + handleRequest(context: BookingVolgorde, request: BookingRequest) : void
+}
+
+class HotelBookingState {
+  + handleRequest(context: BookingVolgorde, request: BookingRequest) : void
+}
+
+class FlightBookingState {
+  + handleRequest(context: BookingVolgorde, request: BookingRequest) : void
+}
+
+class CarBookingState {
+  + handleRequest(context: BookingVolgorde, request: BookingRequest) : void
+}
+
+class CompletedState {
+  + handleRequest(context: BookingVolgorde, request: BookingRequest) : void
+}
+
+interface IAdapter {
+  + checkAvailability(request: BookingRequest) : boolean
+  + bookHotel(request: BookingRequest) : HotelBookingResponse
+  + bookFlight(request: BookingRequest) : FlightBookingResponse
+  + bookCar(request: BookingRequest) : CarRentalResponse
+}
+
+class BookingAdapter {
+  + checkAvailability(request: BookingRequest) : boolean
+  + bookHotel(request: BookingRequest) : HotelBookingResponse
+  + bookFlight(request: BookingRequest) : FlightBookingResponse
+  + bookCar(request: BookingRequest) : CarRentalResponse
+}
+
+class TripRepository {
+  + saveBooking(booking: BookingEntity) : void
+}
+
+ReservationController --> BookingVolgorde
+BookingVolgorde --> BookingState
+BookingState <|.. AvailabilityState
+BookingState <|.. HotelBookingState
+BookingState <|.. FlightBookingState
+BookingState <|.. CarBookingState
+BookingState <|.. CompletedState
+AvailabilityState --> BookingAdapter
+HotelBookingState --> BookingAdapter
+FlightBookingState --> BookingAdapter
+CarBookingState --> BookingAdapter
+CompletedState --> TripRepository
+BookingAdapter <|.. IAdapter
+@enduml
