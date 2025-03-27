@@ -3,7 +3,7 @@
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
 
 
-title Dynamic Component Diagram - Hoe zorg je ervoor dat je makkelijk een nieuwe externe service kan toevoegen?
+title Dynamisch Component Diagram - Hoe zorg je ervoor dat je makkelijk een nieuwe externe service kan toevoegen?
 
 
 Container(frontend, "Front-End", "React.js, Vite", "De website waar de reiziger zijn reis kan samenstellen.")
