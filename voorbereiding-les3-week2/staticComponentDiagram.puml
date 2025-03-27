@@ -1,0 +1,27 @@
+@startuml
+
+!include <C4/C4_Container>
+!include <C4/C4_Component>
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Statisch Component Diagram - Hoe zorg je ervoor dat je makkelijk een nieuwe externe service kan toevoegen?
+
+Container(frontend, "Front-End", "React.js, Vite", "De website waar de reiziger zijn reis kan samenstellen.")
+System_Ext(uberEatsAPI, "Uber Eats Scraper API", "Toont restaurants.")
+
+Container_Boundary(ttBackend, "Back-end TripTop") {
+    Component(restaurantController, "RestaurantController", "Spring MVC Rest Controller", "Handelt HTTP-verzoeken af over restaurants.")
+    Component(restaurantService, "RestaurantService", "Spring Service", "Bevat restaurant businesslogica en vraagt restaurantdata op.")
+    Component("APICaller", "APICaller (abstract)", "Java Abstract Class", "Bepaalt de vaste volgorde van stappen van een externe API-aanroep.")
+    Component("restaurantPort", "RestaurantPort", "Java interface", "Definieert de methoden die de restaurantservice kan aanroepen om data op te vragen.")
+    Component(uberEatsAdapter, "UberEatsScraperAdapter", "Java class", "Regelt communicatie met de Uber Eats API en zet ontvangen data om naar het domeinmodel.")
+}
+
+Rel("frontend", "restaurantController", "Roept endpoints aan om restaurantdata op te halen via", "JSON/HTTPs")
+Rel("restaurantController", "restaurantService", "Vraagt restaurantdata op via")
+Rel("restaurantService", "restaurantPort", "Vraagt restaurantdata op via")
+Rel_U("uberEatsAdapter", "APICaller", "Extends")
+Rel_U("uberEatsAdapter", "restaurantPort", "Implements")
+Rel("uberEatsAdapter", "uberEatsAPI", "Haalt restaurantdata op via")
+
+@enduml
