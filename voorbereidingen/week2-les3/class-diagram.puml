@@ -16,6 +16,7 @@ class ValidationService {
 class LoggingService {
     + logRequest(request: Request): void
     + logResponse(response: Response): void
+    + logApiVersion(version: String): void
 }
 
 class TriptopBackend {

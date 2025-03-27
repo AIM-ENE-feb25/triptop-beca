@@ -1,0 +1,21 @@
+@startuml
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Component Diagram les 3 huiswerk
+
+Container_Boundary(c1, "Triptop backend") {
+    Component(api_interface, "IApiClient", "Interface", "Definieert API-communicatie")
+    Component(api_client, "API Gateway", "Javascript", "Verzorgt communicatie met externe APIs.")
+    Component(validation_service, "Validation Service", "Java", "Valideert de ontvangen en verzonden data op integriteit.")
+    Component(logging_service, "Logging", "Java", "Logt API-verzoeken, responses en API-versies voor traceerbaarheid.")
+}
+
+System_Ext(external_api, "Externe API", "Verschillende providers", "")
+
+Rel(api_client, api_interface, "Implementeert")
+Rel(api_client, external_api, "Haalt en verzendt data via", "HTTPS / JSON")
+Rel(api_client, validation_service, "Controleert data-integriteit via", "")
+Rel(api_client, logging_service, "Logt API-verzoeken en versies via", "")
+
+@enduml
