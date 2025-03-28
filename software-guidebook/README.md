@@ -159,9 +159,8 @@ Dit diagram toont alleen de happy path. Edge cases zijn momenteel nog niet in de
 
 Dit diagram laat de componenten uit de back-end zien die betrokken zijn bij het ophalen van restaurantdata via de externe service. De structuur is ingericht volgens een hexagonale architectuur. De RestaurantService communiceert niet direct met de API-implementatieklasse, maar maakt gebruik van een port-interface (RestaurantPort) die wordt geïmplementeerd door een adapterklasse (UberEatsScraperAdapter).
 
-De adapter is verantwoordelijk voor de communicatie met de externe Uber Eats API en zet de ontvangen data om naar de structuur van het domeinmodel. Binnen de adapter wordt het Template Method Pattern toegepast om de aanroep van de externe API te structureren. Dit houdt in dat de abstracte klasse, APICaller, de vaste stappen van de API-aanroep definieert. 
+De adapter is verantwoordelijk voor de communicatie met de externe Uber Eats API en zet de ontvangen data om naar de structuur van het domeinmodel. Binnen de adapter wordt het Template Method Pattern toegepast om de aanroep van de externe API te structureren. Dit houdt in dat de abstracte klasse, APICaller, de vaste stappen van de API-aanroep definieert.
 Deze structuur wordt verder toegelicht in de paragraaf [Class diagram Toevoegen van een nieuwe externe service](#724-dynamic-diagram-toevoegen-van-een-nieuwe-externe-service).
-> zie klassediagram 
 
 Bovenstaand diagram is beperkt tot de aanroep van restaurantdata. Andere bouwstenen (zoals hotels of autoverhuur) volgen dezelfde structuur, maar zijn niet in dit diagram meegenomen. Om dit te verduidelijken hebben we een diagram gemaakt waar, als voorbeeld, een tweede externe restaurantservice (Tripadvisor) is toegevoegd en een externe hotelservice (Booking COM).
 
@@ -176,6 +175,37 @@ Om een hotelservice toe te voegen (nieuwe feature), moet er een `HotelController
 
 Dit diagram laat zien hoe de componenten samenwerken tijdens een runtime-scenario waarin de gebruiker restaurants opvraagt via de frontend. De service roept via de port de adapter aan, die vervolgens met de externe API communiceert. De interactie tussen de componenten is gebaseerd op de Ports en Adapters structuur en maakt gebruik van het Template Method Pattern om de stappen binnen de API-aanroep (zoals authenticatie en dataverwerking) te structureren. Dit diagram is beperkt tot de aanroep van restaurantdata. Andere bouwstenen (zoals hotels of autoverhuur) volgen dezelfde structuur, maar zijn niet in dit diagram meegenomen.
 
+#### 7.2.5 Component diagram Atakan
+
+![Afbeelding van component diagram](./ontwerpvraag-atakan/component-diagram-atakan.svg)
+
+Dit component diagram toont de architectuur van het **Triptop** systeem, met name over de backend. De **Triptop Applicatie** stuurt verzoeken naar de backend, die bestaat uit meerdere componenten zoals de **EatsController**, **EatsService**, **EatsAdapter** en **EatsRepository**. Deze backend verwerkt API-aanvragen, beheert data en communiceert met externe systemen zoals de **UberEats API** en een **Redis Cache** voor tijdelijke opslag van restaurantgegevens.
+
+Voor mijn ontwerp heb ik gekozen voor het **Strategy Pattern**. Dit patroon maakt het mogelijk om flexibel te schakelen tussen verschillende strategieën als de UberEats API tijdelijk niet beschikbaar is. Bijvoorbeeld, in plaats van een foutmelding te geven, kan de applicatie overschakelen op een caching-strategie met Redis.
+
+Voor de meest passende principe koos ik voor de **Open/Closed Principle (OCP)**. Dit principe stelt dat softwarecomponenten open moeten zijn voor uitbreiding, maar gesloten voor modificatie. Dit sluit goed aan bij het Strategy Pattern, omdat nieuwe strategieën kunnen worden toegevoegd zonder bestaande code te wijzigen. Hierdoor blijft de architectuur flexibel en onderhoudbaar.
+
+#### 7.2.6 Dynamic diagram Atakan
+
+![Afbeelding van dynamic diagram](./ontwerpvraag-atakan/dynamic-component-diagram-atakan.svg)
+
+Dit diagram laat stap voor stap zien hoe de Triptap Applicatie omgaat met een aanvraag voor restaurantgegevens. Het geeft een dynamisch beeld van hoe de verschillende onderdelen samenwerken om de juiste data op te halen.
+Hoe werkt het?
+
+1. De gebruiker vraagt gegevens op via de Triptap Applicatie (bijvoorbeeld een lijst met restaurants).
+
+2. EatsController ontvangt de aanvraag en stuurt deze door naar EatsService.
+
+3. EatsService controleert eerst of de gegevens al in de cache (EatsRepository / Redis Cache) staan.
+
+4. Als de gegevens in de cache staan, worden ze direct teruggestuurd.
+
+5. Als de gegevens niet in de cache staan, haalt EatsAdapter ze op bij de UberEats API.
+
+6. De opgehaalde gegevens worden opgeslagen in de cache, zodat ze later sneller beschikbaar zijn.
+
+7. De restaurantgegevens worden teruggestuurd naar de gebruiker.
+
 ### 7.3. Design & Code
 
 #### 7.3.1. Class diagram Cas
@@ -188,9 +218,24 @@ Dit diagram laat zien hoe de componenten samenwerken tijdens een runtime-scenari
 
 Om binnen de adapters consistentie te behouden in de manier waarop API’s worden aangeroepen, passen we het Template Method Pattern toe. De abstracte klasse `APICaller` bepaalt de vaste structuur van een API-aanroep. In tokenCheck() wordt gecontroleerd of er een geldige token beschikbaar is. Zo niet, dan wordt login() uitgevoerd. In het prototype haalt login() de API key uit application.properties, maar in de constructiefase wordt deze methode gebruikt om de access token op te halen bij officiële API’s. APICall() voert de daadwerkelijke API aanroep uit. De adapterklassen zelf verzorgen de concrete invulling van deze methoden per aanbieder. Dit zorgt voor een herbruikbare en consistente aanroepstructuur.
 
+#### 7.3.3. Class diagram Atakan
+
+![Afbeelding van class diagram](./ontwerpvraag-atakan/code-diagram-atakan.svg)
+
+Dit diagram laat zien hoe de verschillende onderdelen van het **Triptop backend-systeem** met elkaar samenwerken. Het belangrijkste doel van dit systeem is om restaurantgegevens op te halen, zelfs als de externe UberEats API niet beschikbaar is.
+
+##### Wat gebeurt er in het systeem?
+
+- **EatsController**: Ontvangt aanvragen en stuurt ze door naar **EatsService**.
+- **EatsService**: Kiest de beste manier om restaurantgegevens op te halen. Als de API niet werkt, gebruikt het een andere methode.
+- **RetrieveDataStrategy**: Dit is een soort "plan" dat bepaalt hoe gegevens worden opgehaald. Er zijn twee strategieën:
+  - **RetrieveFromAPIStrategy**: Probeert gegevens op te halen via de UberEats API.
+  - **RetrieveFromCacheStrategy**: Haalt gegevens op uit de **cache** (tijdelijke opslag), zodat het systeem blijft werken als de API offline is.
+- **EatsFallbackException**: Wordt gebruikt als er helemaal geen gegevens beschikbaar zijn.
+
 ## 8. Architectural Decision Records
 
-## 8.1 ADR 001 - Betaling API
+## 8.1. 001. Betaling API
 
 **Datum:** 21-03-2025
 
@@ -233,7 +278,7 @@ Wij hebben besloten om geen aparte Betaling API te integreren, omdat de voordele
 
 Door deze keuze kunnen wij onze focus leggen op onze kernfunctionaliteiten en een snellere time-to-market realiseren, terwijl wij tegelijkertijd profiteren van de bestaande infrastructuren van onze partners.
 
-## 8.2 002. Booking COM API als primaire externe dataprovider
+## 8.2. 002. Booking COM API als primaire externe dataprovider
 
 Datum: 21-03-2025
 
@@ -282,7 +327,7 @@ Negatieve consequenties/risico's:
 
 Deze problemen zouden later opgelost kunnen worden door de applicatie uit te breiden met andere externe providers.
 
-## 8.3 ADR 003 - API Development Tool
+## 8.3. 003. API Development Tool
 
 **Datum:** 21-03-2025
 
@@ -299,11 +344,11 @@ gaan gebruiken onderling, zodat er meer consistentie en efficiëntie is in de sa
 ## Alternatieven
 
 | Criteria     | Postman                                                               | Insomnia                                                               | Unirest            | HttpClient         |
-|--------------|-----------------------------------------------------------------------|------------------------------------------------------------------------|--------------------|--------------------|
+| ------------ | --------------------------------------------------------------------- | ---------------------------------------------------------------------- | ------------------ | ------------------ |
 | UI/UX        | + (Gebruiksvriendelijk)                                               | + (Minimalistisch)                                                     | + (Code-gebaseerd) | + (Code-gebaseerd) |
 | Samenwerking | + (Teamworkspaces, cloud sync)                                        | - (Alleen lokaal)                                                      | - (Alleen lokaal)  | - (Alleen lokaal)  |
 | Platform     | + (Windows, Mac, Linux)                                               | + (Windows, Mac, Linux)                                                | + (Java, Python)   | - (Java)           |
-| Kosten       | - (Postman heeft betaalde features wat niet toegankelijk zijn gratis) | - (Insomnia heeft betaalde features wat niet toegankelijk zijn gratis) | + (Open-Source)    | + (Open-Source) |
+| Kosten       | - (Postman heeft betaalde features wat niet toegankelijk zijn gratis) | - (Insomnia heeft betaalde features wat niet toegankelijk zijn gratis) | + (Open-Source)    | + (Open-Source)    |
 
 ## Beslissing
 
@@ -311,16 +356,19 @@ Er is besloten om **Postman** als standaard API development tool te gebruiken,
 vanwege de brede ondersteuning, gebruiksvriendelijkheid en samenwerkingstools.
 
 ## Consequenties
+
 ✅ **Voordelen:**
+
 - één tool binnen het team.
 - Mogelijkheid om API-requests te delen en testen te automatiseren.
 - Ondersteuning voor REST, GraphQL en andere API-types.
 
 ❌ **Nadelen:**
+
 - De gekozen software is niet bij elk teamlid bekend,  
   waardoor er een leercurve is.
 
-## 8.4 ADR 004 - API Gateway
+## 8.4. 004. API Gateway
 
 **Datum:** 21-03-2025
 
@@ -336,12 +384,12 @@ Onze applicatie maakt gebruik van meerdere externe API’s, die verschillende se
 
 We hebben de volgende opties onderzocht:
 
-| Criteria         | API Gateway                                                                 | Geen API Gateway                                                                                                         |
-|-----------------|-----------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
-| **Beheer**      | (+) Centraal beheer van alle API-aanvragen.                                | (-) Beheer moet individueel per API worden geregeld.                                                                    |
-| **Beveiliging** | (+) Centrale implementatie van authenticatie en autorisatie.              | (-) Beveiliging moet per API worden geïmplementeerd, wat kan leiden tot inconsistenties.                                |
-| **Foutgevoeligheid** | (-) Een enkele fout in de API Gateway kan impact hebben op alle API’s. | (+) Een fout in een specifieke API heeft alleen gevolgen voor die API en niet voor de rest van het systeem.             |
-| **Implementatietijd** | (-) Vereist tijd voor configuratie en integratie van alle API’s.     | (+) Geen centrale implementatie nodig, alleen losse configuratie per API.                                              |
+| Criteria              | API Gateway                                                            | Geen API Gateway                                                                                            |
+| --------------------- | ---------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| **Beheer**            | (+) Centraal beheer van alle API-aanvragen.                            | (-) Beheer moet individueel per API worden geregeld.                                                        |
+| **Beveiliging**       | (+) Centrale implementatie van authenticatie en autorisatie.           | (-) Beveiliging moet per API worden geïmplementeerd, wat kan leiden tot inconsistenties.                    |
+| **Foutgevoeligheid**  | (-) Een enkele fout in de API Gateway kan impact hebben op alle API’s. | (+) Een fout in een specifieke API heeft alleen gevolgen voor die API en niet voor de rest van het systeem. |
+| **Implementatietijd** | (-) Vereist tijd voor configuratie en integratie van alle API’s.       | (+) Geen centrale implementatie nodig, alleen losse configuratie per API.                                   |
 
 ### Beslissing
 
@@ -363,8 +411,7 @@ Deze keuze helpt ons om de complexiteit van API-beheer te verminderen en zorgt v
 - **Single Point of Failure:** Als de API Gateway faalt, heeft dit impact op alle externe API’s.
 - **Implementatie-inspanning:** Het opzetten en configureren van de API Gateway kost tijd en vereist onderhoud.
 
-
-## 8.5. ADR-005 - Waarborging van Data-integriteit bij Externe APIs
+## 8.5. 005. Waarborging van Data-integriteit bij Externe APIs
 
 **Datum:** 27-03-2025  
 **Status:** Geaccepteerd
@@ -375,13 +422,13 @@ Onze applicatie maakt gebruik van meerdere externe API’s voor het ontvangen va
 
 ### **Alternatieven**
 
-| Criteria                       | Validatie Service                                    | Logging Service                                                                                 | Beveiligde Verbindingen (HTTPS)                                                                 |
-| ------------------------------ | --------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| **Data-integriteit**           | ++ (Controleert de juistheid van de data)           | + (Biedt traceerbaarheid en helpt bij het opsporen van fouten)                                  | ++ (Versleutelt data tijdens transmissie, voorkomt onderschepping en manipulatie)                 |
-| **Complexiteit implementatie** | + (Eenvoudig te integreren met bestaande services)  | + (Eenvoudig te implementeren, vereist alleen logging configuratie)                             | + (Standaard in moderne API-ontwikkeling, vereist certificaatbeheer)                              |
-| **Prestaties**                 | - (Kan de responstijd beïnvloeden door extra checks)| - (Kan de prestaties beïnvloeden door extra logging overhead)                                   | + (Minimale impact op prestaties, afhankelijk van de implementatie)                               |
-| **Onderhoud en beheer**        | + (Beperkt onderhoud nodig)                         | + (Beperkt onderhoud nodig, afhankelijk van de logging configuratie)                            | + (Certificaatbeheer vereist periodieke updates en monitoring)                                    |
-| **Kosten**                     | + (Weinig extra kosten)                             | + (Weinig extra kosten, afhankelijk van de hoeveelheid gelogde data)                            | + (Kosten voor certificaten en mogelijk hogere kosten voor beveiligde verbindingen)               |
+| Criteria                       | Validatie Service                                    | Logging Service                                                      | Beveiligde Verbindingen (HTTPS)                                                     |
+| ------------------------------ | ---------------------------------------------------- | -------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| **Data-integriteit**           | ++ (Controleert de juistheid van de data)            | + (Biedt traceerbaarheid en helpt bij het opsporen van fouten)       | ++ (Versleutelt data tijdens transmissie, voorkomt onderschepping en manipulatie)   |
+| **Complexiteit implementatie** | + (Eenvoudig te integreren met bestaande services)   | + (Eenvoudig te implementeren, vereist alleen logging configuratie)  | + (Standaard in moderne API-ontwikkeling, vereist certificaatbeheer)                |
+| **Prestaties**                 | - (Kan de responstijd beïnvloeden door extra checks) | - (Kan de prestaties beïnvloeden door extra logging overhead)        | + (Minimale impact op prestaties, afhankelijk van de implementatie)                 |
+| **Onderhoud en beheer**        | + (Beperkt onderhoud nodig)                          | + (Beperkt onderhoud nodig, afhankelijk van de logging configuratie) | + (Certificaatbeheer vereist periodieke updates en monitoring)                      |
+| **Kosten**                     | + (Weinig extra kosten)                              | + (Weinig extra kosten, afhankelijk van de hoeveelheid gelogde data) | + (Kosten voor certificaten en mogelijk hogere kosten voor beveiligde verbindingen) |
 
 ### **Beslissing**
 
@@ -401,13 +448,16 @@ We hebben besloten om een combinatie van **Validatie Service**, **Logging Servic
 - **Onderhoud**: Certificaatbeheer voor HTTPS vereist periodieke updates en monitoring.
 - **Complexiteit**: Het combineren van meerdere methoden kan de implementatiecomplexiteit verhogen.
 
-## 8.6 006. Hoe zorgen we ervoor dat we makkelijk een nieuwe externe service kunnen toevoegen?
+## 8.6. 006. Hoe zorgen we ervoor dat we makkelijk een nieuwe externe service kunnen toevoegen?
+
 Datum: 27-03-2025
 
 ### Status
+
 Voorgesteld
 
 ### Context
+
 In dit project halen we data op via externe API’s van verschillende aanbieders, zoals Uber Eats en Booking.com. Deze externe services verschillen onderling in structuur, vereisten en aanroepwijze.
 
 We willen flexibel blijven in het gebruik van deze services, zodat we eenvoudig kunnen wisselen van aanbieder als een externe service onvoldoende aanbod heeft of als we een nieuwe feature willen toevoegen.
@@ -415,30 +465,78 @@ We willen flexibel blijven in het gebruik van deze services, zodat we eenvoudig 
 Daarom zoeken we een structuur waarmee we eenvoudig een nieuwe externe service kunnen toevoegen of vervangen, zonder bestaande code te wijzigen. We willen een oplossing die onderhoudbaar en uitbreidbaar is, en waarbij de koppeling met specifieke aanbieders laag is.
 
 ### Alternatieven
-| Forces | Directe koppeling met API-implementatieklasse (zonder interface) | Centrale API-gatewayklasse | Ports en Adapters |
-|------------------------------|----------------|-----|--|
-| Uitbreidbaarheid (OCP) | - (Nieuwe aanbieder vereist wijziging service) | - (Nieuwe aanbieder vereist wijziging gatewayklasse) | + (Nieuwe adapter toevoegen) |
-| Herbruikbare structuur | - (Geen gedeelde interface of abstractie) | - (Alles in één klasse, dus beperkt per aanbieder) | + (Via adapters en ports) |
-| Afhankelijkheid | - (Service hangt direct af van concrete implementatieklasse)| - (Service hangt af van gatewayklasse) | + (Service hangt alleen af van port-interface) |
-| Complexiteit | + (Gemakkelijk en snel te implementeren) | + (Gemakkelijk te begrijpen en beheren) | - (Meer structuur nodig) |
-| Consistente manier van aanroepen | - (Geen vaste structuur) | + (Centrale plek om consistentie af te dwingen) | + (Afgedwongen via adapter-structuur) |
+
+| Forces                           | Directe koppeling met API-implementatieklasse (zonder interface) | Centrale API-gatewayklasse                           | Ports en Adapters                              |
+| -------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------- |
+| Uitbreidbaarheid (OCP)           | - (Nieuwe aanbieder vereist wijziging service)                   | - (Nieuwe aanbieder vereist wijziging gatewayklasse) | + (Nieuwe adapter toevoegen)                   |
+| Herbruikbare structuur           | - (Geen gedeelde interface of abstractie)                        | - (Alles in één klasse, dus beperkt per aanbieder)   | + (Via adapters en ports)                      |
+| Afhankelijkheid                  | - (Service hangt direct af van concrete implementatieklasse)     | - (Service hangt af van gatewayklasse)               | + (Service hangt alleen af van port-interface) |
+| Complexiteit                     | + (Gemakkelijk en snel te implementeren)                         | + (Gemakkelijk te begrijpen en beheren)              | - (Meer structuur nodig)                       |
+| Consistente manier van aanroepen | - (Geen vaste structuur)                                         | + (Centrale plek om consistentie af te dwingen)      | + (Afgedwongen via adapter-structuur)          |
 
 ### Keuze
+
 We kiezen voor de Ports & Adapters-architectuur (hexagonale architectuur). Hierdoor spreken services niet direct met concrete klassen, maar gebruiken ze een port-interface die door externe adapters wordt geïmplementeerd. Elke externe service (zoals Uber Eats of Booking.com) heeft zijn eigen adapter, die de interface van de bijbehorende bouwsteen implementeert.
 
 Deze structuur maakt het mogelijk om een nieuwe externe service toe te voegen zonder de bestaande code te wijzigen. De service hoeft alleen de interface te gebruiken. Dit sluit aan op het Open/Closed Principle (OCP) en het Dependency Inversion Principle (DIP), waarbij je afhankelijk bent van abstracties in plaats van concrete implementaties.
 
 ### Consequenties
+
 #### Positieve consequenties:
-+ Voldoet aan OCP -> Externe services kunnen worden toegevoegd door een nieuwe adapter te implementeren, zonder dat bestaande code aangepast hoeft te worden.
-+ Voldoet aan DIP -> Service is losgekoppeld van specifieke implementaties, wat zorgt voor betere testbaarheid.
-+ Consistentie -> Consistentie in hoe externe API’s worden aangeroepen, omdat iedere adapter dezelfde interface gebruikt (per bouwsteen).
-+ Overzichtelijk -> Door voor iedere bouwsteen (zoals restaurants of hotels) een eigen interface te gebruiken, blijft de architectuur overzichtelijk.
+
+- Voldoet aan OCP -> Externe services kunnen worden toegevoegd door een nieuwe adapter te implementeren, zonder dat bestaande code aangepast hoeft te worden.
+- Voldoet aan DIP -> Service is losgekoppeld van specifieke implementaties, wat zorgt voor betere testbaarheid.
+- Consistentie -> Consistentie in hoe externe API’s worden aangeroepen, omdat iedere adapter dezelfde interface gebruikt (per bouwsteen).
+- Overzichtelijk -> Door voor iedere bouwsteen (zoals restaurants of hotels) een eigen interface te gebruiken, blijft de architectuur overzichtelijk.
+
 #### Negatieve consequenties:
+
 - Complexer -> Vereist meer werk en abstractie dan de andere alternatieven.
 - Meer componenten nodig -> Er zijn extra componenten nodig door gebruik van ports en adapters.
 
+## 8.7. 007. Externe API vs. Redis Cache
 
+**Datum:** 27-03-2025  
+**Status:** Geaccepteerd
+
+### **Context**
+
+Tijdens het werken aan mijn ontwerpvraag over hoe je om moet gaan met externe services die niet beschikbaar zijn, terwijl je toch een waardevolle output wilt ben ik tegen een dilemma aangelopen. Ik had de keuze om een andere API te gebruiken en de output daarvan te tonen, of de outputs die al geweest waren op te slaan en te tonen aan de gebruiker.
+
+Een mogelijke oplossing is het gebruik van een **cache-oplossing**, zoals Redis, waarin eerder opgehaalde data wordt opgeslagen en opnieuw gebruikt als de externe service tijdelijk niet bereikbaar is. Dit kan ervoor zorgen dat er nog steeds een relevante output is, ook als de live data niet direct beschikbaar is.
+
+Een andere mogelijke aanpak is het **overschakelen naar een alternatieve externe API** wanneer de primaire API niet beschikbaar is. Dit vereist dat er een of meerdere fallback-API’s bestaan die dezelfde of vergelijkbare gegevens kunnen leveren.
+
+### **Alternatieven**
+
+| Criteria                       | Redis Cache                                           | Alternatieve API                                                                                    |
+| ------------------------------ | ----------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| **Beschikbaarheid**            | ++ (Direct beschikbaar als de data al in cache staat) | -- (Afhankelijk van de beschikbaarheid van alternatieve API’s)                                      |
+| **Consistentie van gegevens**  | - (Kan verouderde gegevens bevatten)                  | ++ (Live data indien beschikbaar)                                                                   |
+| **Complexiteit implementatie** | + (Relatief eenvoudig toe te voegen)                  | -- (Hoge complexiteit, vereist meerdere API-integraties en failover-logica)                         |
+| **Latency / prestaties**       | ++ (Snelle responstijd vanuit cache)                  | - (Mogelijk hogere latentie bij overschakelen)                                                      |
+| **Onderhoud en beheer**        | + (Beperkt onderhoud nodig)                           | -- (Meerdere API’s moeten beheerd worden, inclusief veranderingen in hun endpoints en dataformaten) |
+| **Kosten**                     | + (Kleine extra infrastructuurkosten)                 | - (Extra kosten per API-aanroep bij alternatieve diensten)                                          |
+
+### **Beslissing**
+
+Ik heb er voor gekozen om de **redis-cache oplossing** te gebruiken. Ik heb dit gekozen omdat de criteria **Beschikbaarheid** en **Complexiteit implementatie** het belangrijkst voor mij zijn tijdens dit project. We hebben geen alternatieve API die lijkt op de Uber Eats API (in data opzicht) en het implementeren van een cache oplossing is niet zo lastig, na het onderzoeken hoe je met redis en redis cache in Spring Boot moet werken (Bealdung, 2024). Naast de belangrijkste criteria, heeft redis cache meer pluspunten dan alternatieve API's, wat mijn beslissing sterker maakt.
+
+### **Consequenties**
+
+#### **Voordelen:**
+
+- **Hogere beschikbaarheid**: Als de externe API niet beschikbaar is, kan ik nog steeds een relevante response geven op basis van eerder opgehaalde gegevens.
+- **Snelheid**: De responstijden verbeteren, omdat er geen nieuwe API-aanroep nodig is als de data in de cache staat.
+
+#### **Nadelen:**
+
+- **Mogelijk verouderde gegevens**: Als de API langer niet beschikbaar is, kan de cache niet worden ververst, wat leidt tot minder accurate data.
+- **Niet geschikt voor alle use-cases**: Als real-time data essentieel is, is een cache-oplossing niet voldoende en moet alsnog een alternatieve API worden overwogen.
+
+### Bronnen
+
+- Bealdung (2024), Introduction to Spring Data Redis, Geraadpleegd op 27 maart 2025, [Link naar de website](https://www.baeldung.com/spring-data-redis-tutorial)
 
 ## 9. Deployment, Operation and Support
 
