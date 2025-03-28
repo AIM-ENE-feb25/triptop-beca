@@ -145,13 +145,26 @@ Dit diagram toont alleen de happy path. Edge cases zijn momenteel nog niet in de
 
 ### 7.2. Components
 
-#### 7.2.1 Component diagram Cas
+#### 7.2.1 Component diagram integreit exteren API's
 
-![Afbeelding van component diagram](./component-diagram-cas.svg)
+![Afbeelding van component diagram](ontwerpvraag-cas/component-diagram-cas.svg)
 
-#### 7.2.2 Dynamic diagram Cas
+Dit componentendiagram toont de structuur van de Triptop backend en hoe de verschillende onderdelen samenwerken om API-communicatie betrouwbaar te verwerken.
+De API Gateway is de kern van de backend en verwerkt API-verzoeken. Het implementeert de IApiClient-interface, die de standaard voor API-communicatie bepaalt. De API Gateway haalt data op en stuurt deze door naar externe APIs via HTTPS en JSON.
+Om de kwaliteit van de gegevens te waarborgen, controleert de Validation Service alle inkomende en uitgaande data. Daarnaast registreert de Logging Service alle API-verzoeken, responses en versies, zodat deze later kunnen worden geanalyseerd.
+De backend communiceert met verschillende externe APIs, bijvoorbeeld voor reis- of betalingsgegevens. Voordat data wordt verzonden, wordt deze eerst gevalideerd. De ontvangen response wordt gelogd en eventueel verder verwerkt.
 
-![Afbeelding van dynamic diagram](./dynamic-diagram-cas.svg)
+#### 7.2.2 Dynamic diagram integreit exteren API's
+
+![Afbeelding van dynamic diagram](ontwerpvraag-cas/dynamic-diagram-cas.svg)
+
+Dit dynamische componentendiagram laat zien hoe API-verzoeken door de Triptop backend worden verwerkt en welke stappen daarbij worden doorlopen.
+De API Gateway stuurt een verzoek naar de ApiClient Interface. Dit verzoek bevat de benodigde gegevens en instructies om met een externe API te communiceren.
+De ApiClient Interface stuurt het verzoek door naar de externe API en ontvangt een response via HTTPS in JSON-formaat.
+Voordat de ontvangen data wordt verwerkt, controleert de Validation Service de data-integriteit. Dit voorkomt dat ongeldige of schadelijke gegevens het systeem binnenkomen.
+De Validation Service stuurt een validatieresultaat terug naar de API Gateway. Dit is meestal een boolean (true of false) die aangeeft of de data correct is.
+De API Gateway stuurt loggegevens naar de Logging Service. Hierin worden API-verzoeken, responses en versies vastgelegd voor traceerbaarheid.
+De Logging Service bevestigt de logging-status aan de API Gateway. Dit helpt bij het monitoren van systeemactiviteit en bij het debuggen van mogelijke problemen.
 
 #### 7.2.3 Component diagram Toevoegen van een nieuwe externe service
 
@@ -175,7 +188,7 @@ Om een hotelservice toe te voegen (nieuwe feature), moet er een `HotelController
 
 Dit diagram laat zien hoe de componenten samenwerken tijdens een runtime-scenario waarin de gebruiker restaurants opvraagt via de frontend. De service roept via de port de adapter aan, die vervolgens met de externe API communiceert. De interactie tussen de componenten is gebaseerd op de Ports en Adapters structuur en maakt gebruik van het Template Method Pattern om de stappen binnen de API-aanroep (zoals authenticatie en dataverwerking) te structureren. Dit diagram is beperkt tot de aanroep van restaurantdata. Andere bouwstenen (zoals hotels of autoverhuur) volgen dezelfde structuur, maar zijn niet in dit diagram meegenomen.
 
-#### 7.2.5 Component diagram Atakan
+#### 7.2.5 Component diagram aanroepen van externe services die niet beschikbaar zijn
 
 ![Afbeelding van component diagram](./ontwerpvraag-atakan/component-diagram-atakan.svg)
 
@@ -185,7 +198,7 @@ Voor mijn ontwerp heb ik gekozen voor het **Strategy Pattern**. Dit patroon maak
 
 Voor de meest passende principe koos ik voor de **Open/Closed Principle (OCP)**. Dit principe stelt dat softwarecomponenten open moeten zijn voor uitbreiding, maar gesloten voor modificatie. Dit sluit goed aan bij het Strategy Pattern, omdat nieuwe strategieën kunnen worden toegevoegd zonder bestaande code te wijzigen. Hierdoor blijft de architectuur flexibel en onderhoudbaar.
 
-#### 7.2.6 Dynamic diagram Atakan
+#### 7.2.6 Dynamic diagram aanroepen van externe services die niet beschikbaar zijn
 
 ![Afbeelding van dynamic diagram](./ontwerpvraag-atakan/dynamic-component-diagram-atakan.svg)
 
@@ -206,7 +219,7 @@ Hoe werkt het?
 
 7. De restaurantgegevens worden teruggestuurd naar de gebruiker.
 
-#### 7.2.7 Component diagram Burak
+#### 7.2.7 Component diagram meerdere endpoints in zelfde API
 
 ![Afbeelding van component diagram](./ontwerpvraag-burak/component-diagram-burak.svg)
 
@@ -220,7 +233,7 @@ In de afbeelding wordt laten zien hoe het component diagram bij het ontwerpvraag
 
 4. Duidelijke scheiding tussen verwerking (BookingVolgorde) en opslag (TripRepository).
 
-#### 7.2.8 Dynamic diagram Burak
+#### 7.2.8 Dynamic diagram meerdere endpoints in zelfde API
 
 Dit diagram laat de stappen bij de componenten zien wanneer er meerdere keer dezelfde API wordt aaangeroepen.
 
@@ -228,9 +241,14 @@ Dit diagram laat de stappen bij de componenten zien wanneer er meerdere keer dez
 
 ### 7.3. Design & Code
 
-#### 7.3.1. Class diagram Cas
+#### 7.3.1. Class diagram integreit exteren API's
 
-![Afbeelding van class diagram](./class-diagram-cas.svg)
+![Afbeelding van class diagram](ontwerpvraag-cas/class-diagram-cas.svg)
+
+Dit klassendiagram laat zien hoe de Triptop backend API-verzoeken verwerkt.
+De ApiClient-interface bepaalt hoe API-verzoeken moeten worden verstuurd. De ApiGateway implementeert deze interface en handelt de communicatie met externe systemen af.
+De ValidationService controleert of de ontvangen en verzonden data correct is. De LoggingService registreert API-verzoeken, responses en versies voor traceerbaarheid.
+De TriptopBackend gebruikt deze services om API-verzoeken te verwerken. Eerst wordt het verzoek via de ApiGateway verstuurd. Vervolgens wordt de data gevalideerd en wordt alles gelogd. Dit zorgt voor een veilige en betrouwbare API-communicatie.
 
 #### 7.3.2. Class diagram Toevoegen van een nieuwe externe service
 
@@ -238,7 +256,7 @@ Dit diagram laat de stappen bij de componenten zien wanneer er meerdere keer dez
 
 Om binnen de adapters consistentie te behouden in de manier waarop API’s worden aangeroepen, passen we het Template Method Pattern toe. De abstracte klasse `APICaller` bepaalt de vaste structuur van een API-aanroep. In tokenCheck() wordt gecontroleerd of er een geldige token beschikbaar is. Zo niet, dan wordt login() uitgevoerd. In het prototype haalt login() de API key uit application.properties, maar in de constructiefase wordt deze methode gebruikt om de access token op te halen bij officiële API’s. APICall() voert de daadwerkelijke API aanroep uit. De adapterklassen zelf verzorgen de concrete invulling van deze methoden per aanbieder. Dit zorgt voor een herbruikbare en consistente aanroepstructuur.
 
-#### 7.3.3. Class diagram Atakan
+#### 7.3.3. Class diagram aanroepen van externe services die niet beschikbaar zijn
 
 ![Afbeelding van class diagram](./ontwerpvraag-atakan/code-diagram-atakan.svg)
 
@@ -253,7 +271,7 @@ Dit diagram laat zien hoe de verschillende onderdelen van het **Triptop backend-
   - **RetrieveFromCacheStrategy**: Haalt gegevens op uit de **cache** (tijdelijke opslag), zodat het systeem blijft werken als de API offline is.
 - **EatsFallbackException**: Wordt gebruikt als er helemaal geen gegevens beschikbaar zijn.
 
-#### 7.3.4 Class diagram Burak
+#### 7.3.4 Class diagram meerdere endpoints in zelfde API
 
 ![Afbeelding van class diagram](./ontwerpvraag-burak/class-diagram-burak.svg)
 
