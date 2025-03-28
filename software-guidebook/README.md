@@ -206,6 +206,26 @@ Hoe werkt het?
 
 7. De restaurantgegevens worden teruggestuurd naar de gebruiker.
 
+#### 7.2.7 Component diagram Burak
+
+![Afbeelding van component diagram](./ontwerpvraag-burak/component-diagram-burak.svg)
+
+In de afbeelding wordt laten zien hoe het component diagram bij het ontwerpvraag "Hoe maak je meerdere API calls bij hetzelfde service" eruit ziet
+
+1. BookingService als centrale aansturing van de boeking, waardoor de controller ontlast wordt.
+
+2. State Pattern in BookingVolgorde om de juiste volgorde van boekingen te garanderen.
+
+3. BookingAdapter als tussenlaag, zodat het systeem flexibel blijft bij API-wijzigingen.
+
+4. Duidelijke scheiding tussen verwerking (BookingVolgorde) en opslag (TripRepository).
+
+#### 7.2.8 Dynamic diagram Burak
+
+Dit diagram laat de stappen bij de componenten zien wanneer er meerdere keer dezelfde API wordt aaangeroepen.
+
+![Afbeelding van dynamic diagram](./ontwerpvraag-burak/dynamic-component-diagram-burak.svg)
+
 ### 7.3. Design & Code
 
 #### 7.3.1. Class diagram Cas
@@ -232,6 +252,12 @@ Dit diagram laat zien hoe de verschillende onderdelen van het **Triptop backend-
   - **RetrieveFromAPIStrategy**: Probeert gegevens op te halen via de UberEats API.
   - **RetrieveFromCacheStrategy**: Haalt gegevens op uit de **cache** (tijdelijke opslag), zodat het systeem blijft werken als de API offline is.
 - **EatsFallbackException**: Wordt gebruikt als er helemaal geen gegevens beschikbaar zijn.
+
+#### 7.3.4 Class diagram Burak
+
+![Afbeelding van class diagram](./ontwerpvraag-burak/class-diagram-burak.svg)
+
+In het klasse diagram is te zien hoe de verschillende states in samenhang houden met de rest van de code
 
 ## 8. Architectural Decision Records
 
@@ -537,6 +563,50 @@ Ik heb er voor gekozen om de **redis-cache oplossing** te gebruiken. Ik heb dit 
 ### Bronnen
 
 - Bealdung (2024), Introduction to Spring Data Redis, Geraadpleegd op 27 maart 2025, [Link naar de website](https://www.baeldung.com/spring-data-redis-tutorial)
+
+## 8.8. 008. Gebruik van het State Pattern voor Booking Volgorde
+Datum: 27-03-2025
+
+### Status
+Geaccepteerd
+
+### Context
+In de applicatie TripTop moeten meerdere externe services worden aangeroepen in een vaste volgorde. Dit betekent dat de volgende stappen van een boeking één voor één moeten plaats vinden:
+
+1. **Beschikbaarheid controleren**
+2. **Hotel boeken**
+3. **Vlucht boeken**
+4. **Auto huren**
+5. **Boeking bevestigen**
+
+Het team zoekt naar een pattern die deze stappen flexibel en goed onderhoudbaar maakt, waarbij de afhandeling van elke stap duidelijk gescheiden blijft.
+
+### Alternatieven
+We hebben verschillende ontwerppatronen overwogen:
+
+| Oplossing     | Flexibiliteit               | Modulariteit                | Complexiteit                  | Uitbreidbaarheid            |
+|---------------|-----------------------------|-----------------------------|-------------------------------|-----------------------------|
+| State Pattern | +++<br/>Makkelijk nieuwe staten toevoegen* | +++<br/>Elke state in een aparte klasse| ––<br/>Verhoogt het aantal klassen en samenhang  | +++<br/>Nieuwe gedragingen implementeren zonder de context te wijzigen |
+| Strategy Pattern | +++<br/>Vervanging van algoritmes is eenvoudig | +++<br/>Losse strategieklassen bevorderen hergebruik | +<br/>Beperkte complexiteit, vooral bij weinig strategieën | +++<br/>Nieuwe strategieën kunnen onafhankelijk worden toegevoegd  |
+| Facade Pattern | +<br/>Beperkt in flexibiliteit doordat de focus ligt op eenvoud | ++<br/>Verbergt complexiteit maar kan leiden tot monolithische façade | +++<br/>Vereenvoudigt de interface voor de cliënt | +<br/>Minder geschikt voor het dynamisch toevoegen van nieuwe functionaliteiten |
+| Adapter Pattern | ++<br/>Maakt het mogelijk om incompatibele interfaces te integreren | ++<br/>Helpt bij het isoleren van de aanpassingslogica | +<br/>Voegt een extra laag toe, maar beperkt de impact | ++<br/>Nieuwe adapters kunnen relatief eenvoudig geïmplementeerd worden |
+| Factory Pattern | ++<br/>Eenvoudig aanpasbaar voor objectcreatie| ++<br/>Centraliseert instantiatie en bevordert consistentie | +<br/>Voegt extra abstractie toe, maar is meestal beperkt tot creatie | ++<br/>Gemakkelijk uit te breiden met nieuwe subklassen of producten |
+
+
+### Keuze
+Het team heeft gekozen voor het State Pattern, waarbij elke stap van boeken een eigen State klasse heeft. De BookingVolgorde klasse beheert deze states en bepaalt de juiste volgorde van verwerking. Dit zorgt ervoor dat:
+
+- Elke stap duidelijk gescheiden blijft.
+- er eenvoudig nieuwe stappen kunnen toevoegen zonder de originele klasse te herschrijven.
+
+### Consequenties
+#### Voordelen
+✅ **Modulair** – Elke stap zit in een aparte klasse en kan los worden beheerd.  
+✅ **Flexibel** – Makkelijk uitbreidbaar als er een nieuwe boekingsstap nodig is.
+
+#### Nadelen
+⚠ **Complexiteit** – Meer klassen nodig voor elke stap.
+
 
 ## 9. Deployment, Operation and Support
 
