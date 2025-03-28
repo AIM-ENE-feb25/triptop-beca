@@ -16,6 +16,7 @@ class RestaurantService {
 abstract class APICaller {
 + executeAPICall(): String
 # login(): void
+# tokenCheck(): void
 # APICall(): String
 }
 
