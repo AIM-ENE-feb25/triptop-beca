@@ -153,11 +153,40 @@ Dit diagram toont alleen de happy path. Edge cases zijn momenteel nog niet in de
 
 ![Afbeelding van dynamic diagram](./dynamic-diagram-cas.svg)
 
+#### 7.2.3 Component diagram Eva
+
+![Afbeelding van component diagram](./ontwerpvraag-eva/component-diagram-eva-1.svg)
+
+Dit diagram laat de componenten uit de back-end zien die betrokken zijn bij het ophalen van restaurantdata via de externe service. De structuur is ingericht volgens een hexagonale architectuur. De RestaurantService communiceert niet direct met de API-implementatieklasse, maar maakt gebruik van een port-interface (RestaurantPort) die wordt geïmplementeerd door een adapterklasse (UberEatsScraperAdapter).
+
+De adapter is verantwoordelijk voor de communicatie met de externe Uber Eats API en zet de ontvangen data om naar de structuur van het domeinmodel. Binnen de adapter wordt het Template Method Pattern toegepast om de aanroep van de externe API te structureren. Dit houdt in dat de abstracte klasse, APICaller, de vaste stappen van de API-aanroep definieert. 
+Deze structuur wordt verder toegelicht in de paragraaf [class diagram Eva](#732-class-diagram-eva).
+> zie klassediagram 
+
+Bovenstaand diagram is beperkt tot de aanroep van restaurantdata. Andere bouwstenen (zoals hotels of autoverhuur) volgen dezelfde structuur, maar zijn niet in dit diagram meegenomen. Om dit te verduidelijken hebben we een diagram gemaakt waar, als voorbeeld, een tweede externe restaurantservice (Tripadvisor) is toegevoegd en een externe hotelservice (Booking COM).
+
+![Afbeelding van component diagram](./ontwerpvraag-eva/component-diagram-eva-2-metvoorbeelden.svg)
+
+Om een tweede restaurantservice toe te voegen (feature bestaat al), hoeft er alleen een adapter voor de externe service aangemaakt te worden die de bestaande `RestaurantPort` implementeert en de APICaller extend. In `RestaurantService` hoeft geen code aangepast te worden en deze blijft gebruik maken van dezelfde `RestaurantPort`.
+Om een hotelservice toe te voegen (nieuwe feature), moet er een `HotelController` en `HotelService` aangemaakt worden, met een eigen interface (HotelPort). Ook moet er een nieuwe adapterklasse (BookingCOMAdapter) gemaakt worden die deze interface implementeert en APICaller extend.
+
+#### 7.2.4 Dynamic diagram Eva
+
+![Afbeelding van component diagram](./ontwerpvraag-eva/dynamic-diagram-eva.svg)
+
+Dit diagram laat zien hoe de componenten samenwerken tijdens een runtime-scenario waarin de gebruiker restaurants opvraagt via de frontend. De service roept via de port de adapter aan, die vervolgens met de externe API communiceert. De interactie tussen de componenten is gebaseerd op de Ports en Adapters structuur en maakt gebruik van het Template Method Pattern om de stappen binnen de API-aanroep (zoals authenticatie en dataverwerking) te structureren. Dit diagram is beperkt tot de aanroep van restaurantdata. Andere bouwstenen (zoals hotels of autoverhuur) volgen dezelfde structuur, maar zijn niet in dit diagram meegenomen.
+
 ### 7.3. Design & Code
 
 #### 7.3.1. Class diagram Cas
 
 ![Afbeelding van class diagram](./class-diagram-cas.svg)
+
+#### 7.3.2. Class diagram Eva
+
+![Afbeelding van class diagram](./ontwerpvraag-eva/class-diagram-eva.svg)
+
+Om binnen de adapters consistentie te behouden in de manier waarop API’s worden aangeroepen, passen we het Template Method Pattern toe. De abstracte klasse `APICaller` bepaalt de vaste structuur van een API-aanroep. In tokenCheck() wordt gecontroleerd of er een geldige token beschikbaar is. Zo niet, dan wordt login() uitgevoerd. In het prototype haalt login() de API key uit application.properties, maar in de constructiefase wordt deze methode gebruikt om de access token op te halen bij officiële API’s. APICall() voert de daadwerkelijke API aanroep uit. De adapterklassen zelf verzorgen de concrete invulling van deze methoden per aanbieder. Dit zorgt voor een herbruikbare en consistente aanroepstructuur.
 
 ## 8. Architectural Decision Records
 
@@ -372,30 +401,44 @@ We hebben besloten om een combinatie van **Validatie Service**, **Logging Servic
 - **Onderhoud**: Certificaatbeheer voor HTTPS vereist periodieke updates en monitoring.
 - **Complexiteit**: Het combineren van meerdere methoden kan de implementatiecomplexiteit verhogen.
 
-#### Context
+## 006. Hoe zorgen we ervoor dat we makkelijk een nieuwe externe service kunnen toevoegen?
+Datum: 27-03-2025
 
-> [!TIP]
-> This section describes the forces at play, including technological, political, social, and project local. These forces are probably in tension, and should be called out as such. The language in this section is value-neutral. It is simply describing facts about the problem we're facing and points out factors to take into account or to weigh when making the final decision.
+### Status
+Voorgesteld
 
-#### Considered Options
+### Context
+In dit project halen we data op via externe API’s van verschillende aanbieders, zoals Uber Eats en Booking.com. Deze externe services verschillen onderling in structuur, vereisten en aanroepwijze.
 
-> [!TIP]
-> This section describes the options that were considered, and gives some indication as to why the chosen option was selected.
+We willen flexibel blijven in het gebruik van deze services, zodat we eenvoudig kunnen wisselen van aanbieder als een externe service onvoldoende aanbod heeft of als we een nieuwe feature willen toevoegen.
 
-#### Decision
+Daarom zoeken we een structuur waarmee we eenvoudig een nieuwe externe service kunnen toevoegen of vervangen, zonder bestaande code te wijzigen. We willen een oplossing die onderhoudbaar en uitbreidbaar is, en waarbij de koppeling met specifieke aanbieders laag is.
 
-> [!TIP]
-> This section describes our response to the forces/problem. It is stated in full sentences, with active voice. "We will …"
+### Alternatieven
+| Forces | Directe koppeling met API-implementatieklasse (zonder interface) | Centrale API-gatewayklasse | Ports en Adapters |
+|------------------------------|----------------|-----|--|
+| Uitbreidbaarheid (OCP) | - (Nieuwe aanbieder vereist wijziging service) | - (Nieuwe aanbieder vereist wijziging gatewayklasse) | + (Nieuwe adapter toevoegen) |
+| Herbruikbare structuur | - (Geen gedeelde interface of abstractie) | - (Alles in één klasse, dus beperkt per aanbieder) | + (Via adapters en ports) |
+| Afhankelijkheid | - (Service hangt direct af van concrete implementatieklasse)| - (Service hangt af van gatewayklasse) | + (Service hangt alleen af van port-interface) |
+| Complexiteit | + (Gemakkelijk en snel te implementeren) | + (Gemakkelijk te begrijpen en beheren) | - (Meer structuur nodig) |
+| Consistente manier van aanroepen | - (Geen vaste structuur) | + (Centrale plek om consistentie af te dwingen) | + (Afgedwongen via adapter-structuur) |
 
-#### Status
+### Keuze
+We kiezen voor de Ports & Adapters-architectuur (hexagonale architectuur). Hierdoor spreken services niet direct met concrete klassen, maar gebruiken ze een port-interface die door externe adapters wordt geïmplementeerd. Elke externe service (zoals Uber Eats of Booking.com) heeft zijn eigen adapter, die de interface van de bijbehorende bouwsteen implementeert.
 
-> [!TIP]
-> A decision may be "proposed" if the project stakeholders haven't agreed with it yet, or "accepted" once it is agreed. If a later ADR changes or reverses a decision, it may be marked as "deprecated" or "superseded" with a reference to its replacement.
+Deze structuur maakt het mogelijk om een nieuwe externe service toe te voegen zonder de bestaande code te wijzigen. De service hoeft alleen de interface te gebruiken. Dit sluit aan op het Open/Closed Principle (OCP) en het Dependency Inversion Principle (DIP), waarbij je afhankelijk bent van abstracties in plaats van concrete implementaties.
 
-#### Consequences
+### Consequenties
+#### Positieve consequenties:
++ Voldoet aan OCP -> Externe services kunnen worden toegevoegd door een nieuwe adapter te implementeren, zonder dat bestaande code aangepast hoeft te worden.
++ Voldoet aan DIP -> Service is losgekoppeld van specifieke implementaties, wat zorgt voor betere testbaarheid.
++ Consistentie -> Consistentie in hoe externe API’s worden aangeroepen, omdat iedere adapter dezelfde interface gebruikt (per bouwsteen).
++ Overzichtelijk -> Door voor iedere bouwsteen (zoals restaurants of hotels) een eigen interface te gebruiken, blijft de architectuur overzichtelijk.
+#### Negatieve consequenties:
+- Complexer -> Vereist meer werk en abstractie dan de andere alternatieven.
+- Meer componenten nodig -> Er zijn extra componenten nodig door gebruik van ports en adapters.
 
-> [!TIP]
-> This section describes the resulting context, after applying the decision. All consequences should be listed here, not just the "positive" ones. A particular decision may have positive, negative, and neutral consequences, but all of them affect the team and project in the future.
+
 
 ## 9. Deployment, Operation and Support
 
