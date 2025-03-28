@@ -4,7 +4,7 @@
 title Triptop - Component Diagram (State Pattern)
 
 Container(trip_trop, "TripTop", "React, Spring Boot", "Hoofdapplicatie")
-Container(db, "Database", "SSMS", "Opslag van gegevens")
+Container(db, "Database", "NoSQL Redis", "Opslag van gegevens")
 System_Ext(overnachting_vervoer, "Booking COM API", "Geeft informatie over accommodaties, autohuur, vluchten en attracties, de beschikbaarheid hiervan en boekt tickets.")
 
 Container_Boundary(backend, "API Calls System") {
@@ -19,7 +19,7 @@ Container_Boundary(backend, "API Calls System") {
   Rel(booking_service, booking_adapter, "Vraagt informatie op", "REST")
   Rel(booking_service, booking_volgorde, "Stuurt ontvangen data door", "REST")
   Rel(booking_volgorde, trip_repository, "Correcte data wordt verzameld in repository", "REST")
-  Rel(trip_repository, db, "Slaat gekregen data op", "JDBC")
+  Rel(trip_repository, db, "Slaat gekregen data op", "JSON")
   Rel(booking_adapter, overnachting_vervoer, "Haalt boeking data op", "JSON / HTTPS")
 }
 
