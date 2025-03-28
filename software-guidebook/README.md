@@ -153,14 +153,14 @@ Dit diagram toont alleen de happy path. Edge cases zijn momenteel nog niet in de
 
 ![Afbeelding van dynamic diagram](./dynamic-diagram-cas.svg)
 
-#### 7.2.3 Component diagram Eva
+#### 7.2.3 Component diagram Toevoegen van een nieuwe externe service
 
 ![Afbeelding van component diagram](./ontwerpvraag-eva/component-diagram-eva-1.svg)
 
 Dit diagram laat de componenten uit de back-end zien die betrokken zijn bij het ophalen van restaurantdata via de externe service. De structuur is ingericht volgens een hexagonale architectuur. De RestaurantService communiceert niet direct met de API-implementatieklasse, maar maakt gebruik van een port-interface (RestaurantPort) die wordt geïmplementeerd door een adapterklasse (UberEatsScraperAdapter).
 
 De adapter is verantwoordelijk voor de communicatie met de externe Uber Eats API en zet de ontvangen data om naar de structuur van het domeinmodel. Binnen de adapter wordt het Template Method Pattern toegepast om de aanroep van de externe API te structureren. Dit houdt in dat de abstracte klasse, APICaller, de vaste stappen van de API-aanroep definieert. 
-Deze structuur wordt verder toegelicht in de paragraaf [class diagram Eva](#732-class-diagram-eva).
+Deze structuur wordt verder toegelicht in de paragraaf [Class diagram Toevoegen van een nieuwe externe service](#724-dynamic-diagram-toevoegen-van-een-nieuwe-externe-service).
 > zie klassediagram 
 
 Bovenstaand diagram is beperkt tot de aanroep van restaurantdata. Andere bouwstenen (zoals hotels of autoverhuur) volgen dezelfde structuur, maar zijn niet in dit diagram meegenomen. Om dit te verduidelijken hebben we een diagram gemaakt waar, als voorbeeld, een tweede externe restaurantservice (Tripadvisor) is toegevoegd en een externe hotelservice (Booking COM).
@@ -170,7 +170,7 @@ Bovenstaand diagram is beperkt tot de aanroep van restaurantdata. Andere bouwste
 Om een tweede restaurantservice toe te voegen (feature bestaat al), hoeft er alleen een adapter voor de externe service aangemaakt te worden die de bestaande `RestaurantPort` implementeert en de APICaller extend. In `RestaurantService` hoeft geen code aangepast te worden en deze blijft gebruik maken van dezelfde `RestaurantPort`.
 Om een hotelservice toe te voegen (nieuwe feature), moet er een `HotelController` en `HotelService` aangemaakt worden, met een eigen interface (HotelPort). Ook moet er een nieuwe adapterklasse (BookingCOMAdapter) gemaakt worden die deze interface implementeert en APICaller extend.
 
-#### 7.2.4 Dynamic diagram Eva
+#### 7.2.4 Dynamic diagram Toevoegen van een nieuwe externe service
 
 ![Afbeelding van component diagram](./ontwerpvraag-eva/dynamic-diagram-eva.svg)
 
@@ -182,7 +182,7 @@ Dit diagram laat zien hoe de componenten samenwerken tijdens een runtime-scenari
 
 ![Afbeelding van class diagram](./class-diagram-cas.svg)
 
-#### 7.3.2. Class diagram Eva
+#### 7.3.2. Class diagram Toevoegen van een nieuwe externe service
 
 ![Afbeelding van class diagram](./ontwerpvraag-eva/class-diagram-eva.svg)
 
@@ -282,7 +282,7 @@ Negatieve consequenties/risico's:
 
 Deze problemen zouden later opgelost kunnen worden door de applicatie uit te breiden met andere externe providers.
 
-# ADR 003 - API Development Tool
+## 8.3 ADR 003 - API Development Tool
 
 **Datum:** 21-03-2025
 
@@ -401,7 +401,7 @@ We hebben besloten om een combinatie van **Validatie Service**, **Logging Servic
 - **Onderhoud**: Certificaatbeheer voor HTTPS vereist periodieke updates en monitoring.
 - **Complexiteit**: Het combineren van meerdere methoden kan de implementatiecomplexiteit verhogen.
 
-## 006. Hoe zorgen we ervoor dat we makkelijk een nieuwe externe service kunnen toevoegen?
+## 8.6 006. Hoe zorgen we ervoor dat we makkelijk een nieuwe externe service kunnen toevoegen?
 Datum: 27-03-2025
 
 ### Status
