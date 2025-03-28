@@ -4,7 +4,7 @@
 title Triptop - Dynamic Diagram (Boekingsverzoeken)
 
 Container(trip_trop, "TripTop", "React, Spring Boot", "Hoofdapplicatie")
-Container(db, "Database", "SSMS", "Opslag van gegevens")
+Container(db, "Database", "NoSQL", "Opslag van gegevens")
 System_Ext(booking_com_api, "Booking.com API", "Geeft informatie over accommodaties, vluchten, en autohuur, en maakt boekingen.")
 
 Container_Boundary(backend, "API Calls System") {
@@ -22,7 +22,7 @@ Rel(booking_adapter, booking_com_api, "4. Vraagt beschikbaarheid en prijzen op b
 Rel(booking_adapter, booking_service, "5. Stuurt verzamelde gegevens door naar", "REST")
 Rel(booking_service, booking_volgorde, "6. Start state-based verwerking in", "REST")
 Rel(booking_volgorde, trip_repository, "7. Stuurt definitieve boekings gegevens naar", "REST")
-Rel(trip_repository, db, "8. Slaat gegevens op in", "JDBC")
+Rel(trip_repository, db, "8. Slaat gegevens op in", "JSON")
 Rel(trip_repository, booking_service, "9. Stuurt bevestiging dat gegevens is opgeslagen naar", "REST")
 Rel(booking_service, reservatie_controller, "10. Stuurt bevestigde boekingsgegevens naar", "REST")
 Rel(reservatie_controller, trip_trop, "11. Stuurt bevestiging naar gebruiker", "JSON / HTTPS")
