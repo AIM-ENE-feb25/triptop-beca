@@ -16,7 +16,7 @@ Context diagram van de Triptop applicatie:
 
 Dit diagram toont de omgeving waarin Triptop zich bevindt. Triptop is een online systeem, wat communiceert met verschillende externe systemen.
 
-- Functionaliteit
+### Functionaliteit
 
 De Triptop applicatie biedt reizigers de volgende mogelijkheden:
 
@@ -26,21 +26,25 @@ De Triptop applicatie biedt reizigers de volgende mogelijkheden:
 
 3. Reizigers kunnen hun reisstatus bewaren.
 
-- Gebruikers
+### Gebruikers
 
 Het systeem heeft twee soorten gebruikers, namelijk:
 
-> Reiziger
+#### Reiziger
 
 De reiziger is de primaire gebruiker van het systeem en heeft toegang tot bovenstaande functionaliteiten. De reiziger kan contact opnemen met de reisagent voor hulp bij vragen of problemen.
 
-> Reisagent
+#### Reisagent
 
 De reisagent is een medewerker van Triptop die de reiziger ondersteunt bij het plannen en aanpassen van de reis. De reisagent biedt tweedelijns ondersteuning, door bijvoorbeeld vragen te beantwoorden of risico-inschattingen te maken.
 
-- Externe systemen
+We hebben ervoor gekozen om de reisagent niet op te nemen in het context diagram, omdat de reisagent momenteel niet met het systeem communiceert. De reiziger communiceert voor nu telefonisch met de reisagent.
 
-De Triptop applicatie maakt gebruik van verschillende externe systemen. Er is gekozen om nog geen betalingsprovider toe te voegen, omdat er gebruik gemaakt zal worden van affiliate marketing. Dit wordt toegelicht in ADR-001.
+### Externe systemen
+
+De Triptop applicatie maakt gebruik van verschillende externe systemen. We hebben nog geen keuze gemaakt voor de specifieke API's die we gaan gebruiken voor de verschillende bouwstenen. Hierom hebben we deze onderdelen opgenomen in het diagram als **Provider** van de bijpassende bouwstenen, zoals "Overnachtingprovider" en "Autoverhuurprovider".
+
+Er is gekozen om nog geen betalingsprovider toe te voegen, omdat er gebruik gemaakt zal worden van affiliate marketing. Dit wordt toegelicht in ADR-001.
 
 ## 3. Functional Overview
 
@@ -127,7 +131,7 @@ Dit diagram beschrijft de dynamische architectuur van de Triptop applicatie tijd
 
 Met deze token stuurt de frontend een validatieverzoek naar de backend, die ontwikkeld is met Java en Spring Boot. De backend controleert de token en haalt de bijbehorende gegevens op uit de database. Na het ophalen van de gegevens stuurt de backend het resultaat van de inlogpoging terug naar de frontend. Als alles correct is verlopen, wordt de reiziger ingelogd en krijgt hij/zij toegang tot de applicatie.
 
-Dit diagram toont alleen de happy path. Edge cases zijn momenteel nog niet in de scope en worden later behandeld. 
+Dit diagram toont alleen de happy path. Edge cases zijn momenteel nog niet in de scope en worden later behandeld.
 
 #### 7.1.3 Dynamisch container diagram voor Reis boeken scenario
 
@@ -137,7 +141,7 @@ Dit diagram beschrijft de dynamische architectuur van de Triptop applicatie wann
 
 De backend verwerkt deze gegevens en slaat de boeking op in de database. Zodra het opslaan van de data voltooid is, stuurt de backend een bevestiging terug naar de frontend. De frontend toont vervolgens de bevestiging aan de reiziger, die hiermee geïnformeerd wordt dat zijn/haar reis succesvol is geboekt.
 
-Dit diagram toont alleen de happy path. Edge cases zijn momenteel nog niet in de scope en worden later behandeld. 
+Dit diagram toont alleen de happy path. Edge cases zijn momenteel nog niet in de scope en worden later behandeld.
 
 ### 7.2. Components
 
@@ -151,9 +155,6 @@ Dit diagram toont alleen de happy path. Edge cases zijn momenteel nog niet in de
 
 ## 8. Architectural Decision Records
 
-> [!IMPORTANT]
-> Voeg toe: 3 tot 5 ADR's die beslissingen beschrijven die zijn genomen tijdens het ontwerpen en bouwen van de software.
-
 ## 8.1 ADR 001 - Betaling API
 
 **Datum:** 21-03-2025
@@ -164,33 +165,38 @@ Geaccepteerd
 
 ### Context
 
-Tijdens het maken van de context diagram werd er gedacht door het team of er een aparte Betaling API (Bijvoorbeeld Stripe) nodig is om de betalingen bij te houden, omdat er andere API's zijn zoals de Booking COM API en Uber Eats API, waarmee samengewerkt kan worden om betalingen te maken.
+Tijdens het maken van het contextdiagram hebben wij als team overwogen of het nodig is om een aparte Betaling API (bijvoorbeeld Stripe) te integreren om betalingen bij te houden. Er zijn echter al bestaande API's, zoals de Booking.com API en de Uber Eats API, waarmee samengewerkt kan worden om betalingen af te handelen. Dit bracht ons tot de vraag of een aparte Betaling API toegevoegde waarde heeft binnen ons domein.
 
 ### Alternatieven
 
-| Criteria                                | Betaling API (Bijv. Stripe) | Externe API's (Booking COM en Uber Eats) |
-| --------------------------------------- | --------------------------- | ---------------------------------------- |
-| Implementatiecomplexiteit               | - (Hoog)                    | + (Laag)                                 |
-| Afhankelijkheid van andere partijen     | + (Beperkt)                 | - (Hoog)                                 |
-| Kosten                                  | - (Kan hoog zijn)           | + (Inbegrepen)                           |
-| Ondersteuning voor affiliate betalingen | - (Niet standaard)          | + (Ja)                                   |
+| Criteria                                    | Betaling API (Bijv. Stripe, PayPal, Mollie, Adyen)         | Externe API's (Booking.com en Uber Eats)                       |
+| ------------------------------------------- | ---------------------------------------------------------- | -------------------------------------------------------------- |
+| **Implementatiecomplexiteit**               | -- (Hoge complexiteit, extra ontwikkeling nodig)           | ++ (Lage complexiteit, direct gebruiksklaar)                   |
+| **Afhankelijkheid van andere partijen**     | + (Beperkte afhankelijkheid, controle over betalingen)     | -- (Hoge afhankelijkheid van externe API's en hun voorwaarden) |
+| **Kosten**                                  | -- (Kan hoog zijn, afhankelijk van transactievolume)       | ++ (Inbegrepen in de bestaande platforms)                      |
+| **Ondersteuning voor affiliate betalingen** | - (Niet standaard, vereist maatwerk)                       | ++ (Volledige ondersteuning via affiliate-programma's)         |
+| **Schaalbaarheid**                          | ++ (Schaalbaar en flexibel voor toekomstige uitbreidingen) | - (Beperkt door de mogelijkheden van externe API's)            |
+| **Beheer van betalingsgegevens**            | ++ (Centrale opslag en controle)                           | - (Verspreide betalingsinformatie, lastiger beheer)            |
 
 ### Beslissing
 
-Er is besloten om geen aparte Betaling API te integreren, omdat de voordelen van een aparte Betaling API voor dit domein niet nodig zijn. In plaats daarvan wordt er gewerkt met affiliate programma's van de bestaande API's zoals Uber Eats en Booking COM, om de betaling door te voeren en er een deel naar de makers gaat.
+Wij hebben besloten om geen aparte Betaling API te integreren, omdat de voordelen van een eigen betaaloplossing binnen ons domein niet opwegen tegen de nadelen. In plaats daarvan maken wij gebruik van de affiliate-programma’s van bestaande API’s zoals Uber Eats en Booking.com. Hierdoor kunnen wij betalingen afhandelen via deze externe systemen en profiteren van hun bestaande infrastructuur.
 
-### Consequencies
+### Consequenties
 
 #### Voordelen:
 
-- **Minder ontwikkelcomplexiteit:** Er is geen extra API die moet worden geïntegreerd en beheerd.
-- **Snellere implementatie:** Er kan direct gebruikt gemaakt worden van de betalingsfunctionaliteiten van externe API's.
+- **Minder ontwikkelcomplexiteit:** Er is geen extra API die moet worden geïntegreerd en beheerd, wat tijd en middelen bespaart.
+- **Snellere implementatie:** Wij kunnen direct gebruikmaken van de betalingsfunctionaliteiten van externe API's zonder extra ontwikkeling.
+- **Lagere kosten:** Omdat wij de betaalinfrastructuur van partners gebruiken, vermijden wij extra kosten voor transactieverwerking en onderhoud.
 
 #### Nadelen:
 
-- **Verspreide betalingsinformatie:** Betalingsgegevens zijn niet gecentraliseerd, wat het lastiger maakt om de betaling services te beheren.
-- **Afhankelijkheid van externe API's:** Er is vertrouwen op de betrouwbaarheid en consistentie van verschillende externe systemen.
-- **Mogelijke beperkingen:** Niet alle externe API's bieden dezelfde betalingsopties of flexibiliteit als een dedicated Betaling API.
+- **Verspreide betalingsinformatie:** Omdat betalingen via verschillende platforms verlopen, is er geen centrale plek voor betalingsgegevens, wat beheer en rapportage kan bemoeilijken.
+- **Afhankelijkheid van externe API’s:** Wij zijn afhankelijk van de betrouwbaarheid, beschikbaarheid en beleidswijzigingen van derden, wat risico's met zich meebrengt.
+- **Mogelijke beperkingen in functionaliteit:** Niet alle externe API’s bieden dezelfde flexibiliteit en betalingsopties als een dedicated Betaling API, wat onze mogelijkheden kan beperken.
+
+Door deze keuze kunnen wij onze focus leggen op onze kernfunctionaliteiten en een snellere time-to-market realiseren, terwijl wij tegelijkertijd profiteren van de bestaande infrastructuren van onze partners.
 
 ## 8.2 002. Booking COM API als primaire externe dataprovider
 
@@ -241,46 +247,43 @@ Negatieve consequenties/risico's:
 
 Deze problemen zouden later opgelost kunnen worden door de applicatie uit te breiden met andere externe providers.
 
-## 8.3 ADR 003 - API Development Tool
+# ADR 003 - API Development Tool
 
 **Datum:** 21-03-2025
 
-### Status
+## Status
 
 **Voorstel**
 
-### Context
+## Context
 
 Voor het testen van de API calls worden er tussen de teamleden
 verschillende software gebruikt. Er is besloten om één tool te
 gaan gebruiken onderling, zodat er meer consistentie en efficiëntie is in de samenwerking.
 
-### Alternatieven
+## Alternatieven
 
-| Criteria     | Postman                        | Insomnia                | Unirest            | HttpClient         |
-| ------------ | ------------------------------ | ----------------------- | ------------------ | ------------------ |
-| UI/UX        | + (Gebruiksvriendelijk)        | + (Minimalistisch)      | + (Code-gebaseerd) | + (Code-gebaseerd) |
-| Samenwerking | + (Teamworkspaces, cloud sync) | - (Alleen lokaal)       | - (Alleen lokaal)  | - (Alleen lokaal)  |
-| Platform     | + (Windows, Mac, Linux)        | + (Windows, Mac, Linux) | + (Java, Python)   | - (Java)           |
+| Criteria     | Postman                                                               | Insomnia                                                               | Unirest            | HttpClient         |
+|--------------|-----------------------------------------------------------------------|------------------------------------------------------------------------|--------------------|--------------------|
+| UI/UX        | + (Gebruiksvriendelijk)                                               | + (Minimalistisch)                                                     | + (Code-gebaseerd) | + (Code-gebaseerd) |
+| Samenwerking | + (Teamworkspaces, cloud sync)                                        | - (Alleen lokaal)                                                      | - (Alleen lokaal)  | - (Alleen lokaal)  |
+| Platform     | + (Windows, Mac, Linux)                                               | + (Windows, Mac, Linux)                                                | + (Java, Python)   | - (Java)           |
+| Kosten       | - (Postman heeft betaalde features wat niet toegankelijk zijn gratis) | - (Insomnia heeft betaalde features wat niet toegankelijk zijn gratis) | + (Open-Source)    | + (Open-Source) |
 
-### Beslissing
+## Beslissing
 
 Er is besloten om **Postman** als standaard API development tool te gebruiken,  
 vanwege de brede ondersteuning, gebruiksvriendelijkheid en samenwerkingstools.
 
-### Consequencies
-
+## Consequenties
 ✅ **Voordelen:**
-
 - één tool binnen het team.
 - Mogelijkheid om API-requests te delen en testen te automatiseren.
 - Ondersteuning voor REST, GraphQL en andere API-types.
 
 ❌ **Nadelen:**
-
 - De gekozen software is niet bij elk teamlid bekend,  
   waardoor er een leercurve is.
-- Sommige geavanceerde features vereisen een betaald account.
 
 ## 8.4 ADR 004 - API Gateway
 
@@ -288,40 +291,43 @@ vanwege de brede ondersteuning, gebruiksvriendelijkheid en samenwerkingstools.
 
 ### Status
 
-Geaccepteerd
+Voorstel
 
 ### Context
 
-Onze applicatie maakt gebruik van meerdere externe API’s. Deze API’s kunnen verschillende services. Het is belangrijk om deze API’s te beheren en beveiligen op een centrale plek, omdat dit het makkelijker maakt om authenticatie toe te voegen. Een API Gateway biedt een oplossing hiervoor door één punt te bieden voor alle inkomende API-aanvragen. Dit vermindert de complexiteit omdat er maar één plek is waar authenticatie en onderhoud uitgevoerd hoeft te worden.
+Onze applicatie maakt gebruik van meerdere externe API’s, die verschillende services aanbieden. Om deze API’s efficiënt te beheren en beveiligen, willen we een centrale oplossing inzetten. Een API Gateway biedt één ingang voor alle inkomende API-aanvragen en vereenvoudigt het toevoegen van authenticatie en andere beveiligingsmaatregelen. Hierdoor verminderen we de complexiteit, omdat we beveiliging, monitoring en onderhoud op één plek kunnen regelen.
 
 ### Alternatieven
 
-| Forces           | API Gateway                                                                                           | Geen gebruik van API Gateway                                                                                                       |
-| ---------------- | ----------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| Beheer           | (+) Biedt een centrale plek voor het beheren van alle API-aanvragen.                                  | (-) Beheer moet per API                                                                                                            |
-| Beveiliging      | (+) Biedt een centrale plek om authenticatie en authorisatie te implementeren                         | (-) Beveiliging moet per API geïmplementeerd worden, wat voor inconsistentie kan zorgen                                            |
-| Foutgevoeligheid | (-) Er is één plek voor fouten wat een risico kan veroorzaken voor de toegang tot alle externe API’s. | (+) Fouten kunnen voorkomen bij elke externe API, maar dit heeft alleen impact voor de desbetreffende API en niet voor de anderen. |
-| Tijd             | (-) Implementatie kan tijdrovend zijn door de setup van de Gateway en configuraties voor alle API’s.  | (+) Geen grote implementatie, maar per API.                                                                                        |
+We hebben de volgende opties onderzocht:
+
+| Criteria         | API Gateway                                                                 | Geen API Gateway                                                                                                         |
+|-----------------|-----------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
+| **Beheer**      | (+) Centraal beheer van alle API-aanvragen.                                | (-) Beheer moet individueel per API worden geregeld.                                                                    |
+| **Beveiliging** | (+) Centrale implementatie van authenticatie en autorisatie.              | (-) Beveiliging moet per API worden geïmplementeerd, wat kan leiden tot inconsistenties.                                |
+| **Foutgevoeligheid** | (-) Een enkele fout in de API Gateway kan impact hebben op alle API’s. | (+) Een fout in een specifieke API heeft alleen gevolgen voor die API en niet voor de rest van het systeem.             |
+| **Implementatietijd** | (-) Vereist tijd voor configuratie en integratie van alle API’s.     | (+) Geen centrale implementatie nodig, alleen losse configuratie per API.                                              |
 
 ### Beslissing
 
-We hebben besloten om een API Gateway in onze infrastructuur te implementeren. Dit zal dienen als centraal punt voor het beheren, beveiligen en monitoren van de externe API’s die we gebruiken. De API Gateway biedt ons controle voor authenticatie en autorisatie.
+We kiezen voor de implementatie van een API Gateway als centraal punt voor het beheren, beveiligen en monitoren van externe API’s.
 
-Deze keuze is gemaakt omdat wij het een goede manier vonden om de complexiteit van het beheren van meerdere externe API’s te verminderen en de beveiliging en monitoring te verbeteren, omdat het kan leiden tot verspreide configuraties en inconsistenties.
+Deze keuze helpt ons om de complexiteit van API-beheer te verminderen en zorgt voor een consistente beveiligingsaanpak. Daarnaast biedt de API Gateway betere monitoringmogelijkheden en vereenvoudigt het onderhoud, wat leidt tot een robuustere infrastructuur.
 
-### Consequencies
+### Consequenties
 
 #### Voordelen:
 
-- Centraal punt: Alle aanvragen voor de externe API’s gaan via één plek, waardoor het gemakkelijker wordt om deze API’s te beheren.
-- Beveiliging: Het biedt een centraal punt voor het implementeren van beveiliging zoals authenticatie en autorisatie.
-- Monitoring: Het maakt het makkelijk om statistieken en logs voor alle API-aanroepen te verzamelen, wat kan helpen bij foutopsporing.
-- Beheer van externe API’s: Maakt het mogelijk om wijzigingen in de externe API’s door te voeren zonder dat dit invloed heeft op de interne systemen.
+- **Centraal beheer:** Alle API-aanvragen verlopen via één plek, wat het beheer eenvoudiger maakt.
+- **Verbeterde beveiliging:** We implementeren authenticatie en autorisatie op één centrale locatie.
+- **Monitoring en logging:** De API Gateway verzamelt statistieken en logs van alle API-aanroepen, wat helpt bij foutopsporing en prestatieanalyse.
+- **Afgeschermde interne systemen:** Wijzigingen in externe API’s kunnen worden opgevangen zonder impact op de interne architectuur.
 
 #### Nadelen:
 
-- Eén punt voor fouten: De API Gateway wordt een belangrijk onderdeel van de infrastructuur en als deze problemen/bugs heeft, kan de toegang tot alle externe API’s onbruikbaar worden.
-- Tijd: Het maken van de API Gateway kost tijd om te implementeren.
+- **Single Point of Failure:** Als de API Gateway faalt, heeft dit impact op alle externe API’s.
+- **Implementatie-inspanning:** Het opzetten en configureren van de API Gateway kost tijd en vereist onderhoud.
+
 
 ### 8.5. ADR-005 TITLE
 
