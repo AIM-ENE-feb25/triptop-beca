@@ -26,6 +26,9 @@ interface RestaurantPort {
 
 class UberEatsScraperAdapter {
 + getRestaurants(): List<Restaurant>
+# login(): void
+# tokenCheck(): void
+# APICall(): String
 }
 
 class Restaurant {
