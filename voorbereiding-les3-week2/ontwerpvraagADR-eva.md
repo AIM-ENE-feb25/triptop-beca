@@ -36,6 +36,3 @@ Deze structuur maakt het mogelijk om een nieuwe externe service toe te voegen zo
 - Meer componenten nodig -> Er zijn extra componenten nodig door gebruik van ports en adapters.
 
 
-
-
-# Voorbeelden diagram opnemen!
