@@ -254,7 +254,7 @@ De TriptopBackend gebruikt deze services om API-verzoeken te verwerken. Eerst wo
 
 ![Afbeelding van class diagram](./ontwerpvraag-eva/class-diagram-eva.svg)
 
-Om binnen de adapters consistentie te behouden in de manier waarop API’s worden aangeroepen, passen we het Template Method Pattern toe. De abstracte klasse `APICaller` bepaalt de vaste structuur van een API-aanroep. In tokenCheck() wordt gecontroleerd of er een geldige token beschikbaar is. Zo niet, dan wordt login() uitgevoerd. In het prototype haalt login() de API key uit application.properties, maar in de constructiefase wordt deze methode gebruikt om de access token op te halen bij officiële API’s. APICall() voert de daadwerkelijke API aanroep uit. De adapterklassen zelf verzorgen de concrete invulling van deze methoden per aanbieder. Dit zorgt voor een herbruikbare en consistente aanroepstructuur.
+Om binnen de adapters consistentie te behouden in de manier waarop API’s worden aangeroepen, passen we het Template Method Pattern toe. De methode `executeAPICall()` in de abstracte klasse `APICaller` bepaalt de vaste structuur van een API-aanroep. In `tokenCheck()` wordt gecontroleerd of er een geldige token beschikbaar is. Zo niet, dan wordt `login()` uitgevoerd. In het prototype haalt `login()` de API key uit application.properties, maar in de constructiefase wordt deze methode gebruikt om de access token op te halen bij de officiële API’s. `APICall()` voert de daadwerkelijke API aanroep uit. De adapterklassen zelf verzorgen de concrete invulling van deze methoden per aanbieder. Dit zorgt voor een herbruikbare en consistente aanroepstructuur.
 
 #### 7.3.3. Class diagram aanroepen van externe services die niet beschikbaar zijn
 
