@@ -42,6 +42,7 @@ RestaurantController --> RestaurantService
 RestaurantService --> RestaurantPort
 UberEatsScraperAdapter ..|> RestaurantPort
 UberEatsScraperAdapter --|> APICaller
+RestaurantController --> Restaurant : "restaurants"
 
 
 @enduml
