@@ -145,7 +145,7 @@ Dit diagram toont alleen de happy path. Edge cases zijn momenteel nog niet in de
 
 ### 7.2. Components
 
-#### 7.2.1 Component diagram integreit exteren API's
+#### 7.2.1 Component diagram integriteit exteren API's
 
 ![Afbeelding van component diagram](ontwerpvraag-cas/component-diagram-cas.svg)
 
@@ -154,7 +154,7 @@ De API Gateway is de kern van de backend en verwerkt API-verzoeken. Het implemen
 Om de kwaliteit van de gegevens te waarborgen, controleert de Validation Service alle inkomende en uitgaande data. Daarnaast registreert de Logging Service alle API-verzoeken, responses en versies, zodat deze later kunnen worden geanalyseerd.
 De backend communiceert met verschillende externe APIs, bijvoorbeeld voor reis- of betalingsgegevens. Voordat data wordt verzonden, wordt deze eerst gevalideerd. De ontvangen response wordt gelogd en eventueel verder verwerkt.
 
-#### 7.2.2 Dynamic diagram integreit exteren API's
+#### 7.2.2 Dynamic diagram integriteit exteren API's
 
 ![Afbeelding van dynamic diagram](ontwerpvraag-cas/dynamic-diagram-cas.svg)
 
@@ -241,7 +241,7 @@ Dit diagram laat de stappen bij de componenten zien wanneer er meerdere keer dez
 
 ### 7.3. Design & Code
 
-#### 7.3.1. Class diagram integreit exteren API's
+#### 7.3.1. Class diagram integriteit exteren API's
 
 ![Afbeelding van class diagram](ontwerpvraag-cas/class-diagram-cas.svg)
 
