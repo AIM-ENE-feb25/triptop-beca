@@ -170,7 +170,7 @@ De Logging Service bevestigt de logging-status aan de API Gateway. Dit helpt bij
 
 ![Afbeelding van component diagram](./ontwerpvraag-eva/component-diagram-eva-1.svg)
 
-Dit diagram laat de componenten uit de back-end zien die betrokken zijn bij het ophalen van restaurantdata via de externe service. De structuur is ingericht volgens een hexagonale architectuur. De RestaurantService communiceert niet direct met de API-implementatieklasse, maar maakt gebruik van een port-interface (RestaurantPort) die wordt geïmplementeerd door een adapterklasse (UberEatsScraperAdapter).
+Dit diagram laat de componenten uit de back-end zien die betrokken zijn bij het ophalen van restaurantdata via de externe service. De structuur is ingericht volgens een [hexagonale architectuur](#keuze-1). De RestaurantService communiceert niet direct met de API-implementatieklasse, maar maakt gebruik van een port-interface (RestaurantPort) die wordt geïmplementeerd door een adapterklasse (UberEatsScraperAdapter).
 
 De adapter is verantwoordelijk voor de communicatie met de externe Uber Eats API en zet de ontvangen data om naar de structuur van het domeinmodel. Binnen de adapter wordt het Template Method Pattern toegepast om de aanroep van de externe API te structureren. Dit houdt in dat de abstracte klasse, APICaller, de vaste stappen van de API-aanroep definieert.
 Deze structuur wordt verder toegelicht in de paragraaf [Class diagram Toevoegen van een nieuwe externe service](#724-dynamic-diagram-toevoegen-van-een-nieuwe-externe-service).
@@ -523,6 +523,13 @@ Daarom zoeken we een structuur waarmee we eenvoudig een nieuwe externe service k
 We kiezen voor de Ports & Adapters-architectuur (hexagonale architectuur). Hierdoor spreken services niet direct met concrete klassen, maar gebruiken ze een port-interface die door externe adapters wordt geïmplementeerd. Elke externe service (zoals Uber Eats of Booking.com) heeft zijn eigen adapter, die de interface van de bijbehorende bouwsteen implementeert.
 
 Deze structuur maakt het mogelijk om een nieuwe externe service toe te voegen zonder de bestaande code te wijzigen. De service hoeft alleen de interface te gebruiken. Dit sluit aan op het Open/Closed Principle (OCP) en het Dependency Inversion Principle (DIP), waarbij je afhankelijk bent van abstracties in plaats van concrete implementaties.
+
+Voor meer informatie over de hexagonale architectuur, zie de volgende bronnen:
+
+- Het artikel [Hexagonal architecture](https://alistair.cockburn.us/hexagonal-architecture/) van Alistair Cockburn beschrijft het orginele concept van de hexagonale architectuur.
+
+- Het artikel [Organizing Layers Using Hexagonal Architecture, DDD, and Spring](https://www.baeldung.com/hexagonal-architecture-ddd-spring) van Baeldung geeft een praktische uitleg met voorbeelden in Java en Spring Boot.
+
 
 ### Consequenties
 
