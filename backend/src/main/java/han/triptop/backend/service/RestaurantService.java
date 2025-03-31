@@ -10,7 +10,7 @@ import java.util.List;
 public class RestaurantService {
 
     private final RestaurantPort restaurantPort;
-// hoe ziet spring deze port zonder annotatie?
+//    hoe zorg ik dat hij restaurantPort bean kan vinden?
     public RestaurantService(RestaurantPort restaurantPort) {
         this.restaurantPort = restaurantPort;
     }
