@@ -1,34 +1,29 @@
 @startuml
-title Class Diagram - Triptop Backend API Flow
 
-interface ApiClient {
-    + sendRequest(endpoint: String): Response
+title Klasse Diagram voor API-integriteit met State Pattern
+
+interface IApi {
+    + fetchData() : String
 }
 
-class ApiGateway implements ApiClient {
-    + sendRequest(endpoint: String): Response
+class ApiV1 {
+    + fetchData() : String
+    + upgradeToV2() : void
 }
 
-class ValidationService {
-    + validateData(data: Object): boolean
+class ApiV2 {
+    + fetchData() : String
 }
 
-class LoggingService {
-    + logRequest(request: Request): void
-    + logResponse(response: Response): void
-    + logApiVersion(version: String): void
+class BookingApi {
+    + getData() : String
 }
 
-class TriptopBackend {
-    - apiClient: ApiClient
-    - validationService: ValidationService
-    - loggingService: LoggingService
-    + processRequest(request: Request): Response
-}
+IApi <|.. ApiV1
+IApi <|.. ApiV2
 
-ApiClient <|.. ApiGateway
-TriptopBackend *-- ApiClient
-TriptopBackend *-- ValidationService
-TriptopBackend *-- LoggingService
+ApiV1 -> ApiV2 : "Schakelt door naar indien nodig"
+ApiV1 -> BookingApi : "Vraagt data op bij versie 1"
+ApiV2 -> BookingApi : "Vraagt data op bij versie 2"
 
 @enduml
