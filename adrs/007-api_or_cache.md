@@ -40,4 +40,4 @@ Ik heb er voor gekozen om de **redis-cache oplossing** te gebruiken. Ik heb dit 
 
 ## Bronnen
 
-- Bealdung (2024), Introduction to Spring Data Redis, Geraadpleegd op 27 maart 2025, [Link naar de website](https://www.baeldung.com/spring-data-redis-tutorial)
+- Bealdung (2024), *Introduction to Spring Data Redis*, Geraadpleegd op 27 maart 2025, [Link naar de website](https://www.baeldung.com/spring-data-redis-tutorial)
