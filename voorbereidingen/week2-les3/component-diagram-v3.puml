@@ -1,0 +1,26 @@
+// ONDERSTAAND COMPONENT DIAGRAM IS EEN COMBINATIE VAN COMPONENT DIAGRAM EN KLASSE DIAGRAM. ALLEEN BIJ BOOKING API WORDT DE STATE STRUCTUUR GEBRUIKT.
+
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Component Diagram voor API-integriteit met State Pattern
+
+Container_Boundary(c1, "Triptop applicatie") {
+    Container(backend, "Backend", "Java Spring Boot", "Beheert de API-communicatie en data-integriteit.")
+
+    Component(apiGateway, "API Gateway", "Spring Boot", "Stuurt verzoeken door naar de juiste API-versie op basis van State Pattern")
+    Component(apiV1, "API v1", "Class", "Eerste versie van de API")
+    Component(apiV2, "API v2", "Class", "Nieuwe versie van de API met andere structuur")
+    Component(interface, "API Interface", "Interface", "Definieert de standaard functionaliteit voor API's")
+}
+System_Ext(bookingApi, "Booking API", "Externe API voor accommodaties en transport")
+
+Rel(backend, apiGateway, "Stuurt API-verzoeken naar")
+Rel(apiGateway, apiV1, "Vraag data op van (indien actief)")
+Rel(apiV1, apiV2, "Schakelt door naar (indien nodig)")
+Rel(apiV1, interface, "Implementeert")
+Rel(apiV2, interface, "Implementeert")
+Rel(apiV1, bookingApi, "Vraagt data op bij versie 1 van", "HTTPS/JSON")
+Rel(apiV2, bookingApi, "Vraagt data op bij versie 2 van", "HTTPS/JSON")
+
+@enduml
