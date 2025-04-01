@@ -2,6 +2,7 @@ package han.triptop.backend.service;
 
 import han.triptop.backend.domain.Restaurant;
 import han.triptop.backend.domain.port.RestaurantPort;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,12 +11,13 @@ import java.util.List;
 public class RestaurantService {
 
     private final RestaurantPort restaurantPort;
-//    hoe zorg ik dat hij restaurantPort bean kan vinden?
+
+    @Autowired
     public RestaurantService(RestaurantPort restaurantPort) {
         this.restaurantPort = restaurantPort;
     }
 
-    public List<Restaurant> getRestaurants() {
-        return restaurantPort.getRestaurants();
+    public List<Restaurant> getRestaurants(String query, String address) {
+        return restaurantPort.getRestaurants(query, address);
     }
 }
