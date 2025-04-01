@@ -1,15 +1,16 @@
 package han.triptop.backend.domain;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
-public class
-RestaurantDTO {
-    private String query;
-    private String address;
+@Data
+public class RestaurantResponse {
+
+    private List<Restaurant> restaurants;
+    private boolean cached;
 }

@@ -5,32 +5,32 @@ title Triptop Class Diagram
 class EatsController {
   - EatsService eatsService
   + getAllRestaurants(): List<Restaurant>
-  + getAndSaveAPIResults(RestaurantDTO): List<Restaurant>
+  + getAndSaveAPIResults(RestaurantDTO): RestaurantResponse
 }
 
 interface EatsService {
   + findAllRestaurants(): List<Restaurant>
-  + retrieveData(String, String): List<Restaurant>
+  + retrieveData(String, String): RestaurantResponse
 }
 
 class EatsServiceImpl {
   - List<RetrieveDataStrategy> strategies
   - EatsRepository repository
   + findAllRestaurants(): List<Restaurant>
-  + retrieveData(String, String): List<Restaurant>
+  + retrieveData(String, String): RestaurantResponse
 }
 
 interface RetrieveDataStrategy {
-  + retrieveData(String, String): List<Restaurant>
+  + retrieveData(String, String): RestaurantResponse
 }
 class RetrieveFromAPIStrategy {
   - EatsAdapter eatsAdapter
   - EatsRepository eatsRepository
-  + retrieveData(String, String): List<Restaurant>
+  + retrieveData(String, String): RestaurantResponse
 }
 class RetrieveFromCacheStrategy {
   - EatsRepository eatsRepository
-  + retrieveData(String, String): List<Restaurant>
+  + retrieveData(String, String): RestaurantResponse
 }
 
 interface EatsAdapter {
@@ -47,6 +47,8 @@ interface EatsRepository <<Repository>> {
 
 class RestaurantNotFoundException
 
+class APIStrategyFailureException
+
 EatsController --> EatsService
 EatsServiceImpl ..up|> EatsService
 EatsServiceImpl --> RetrieveDataStrategy
@@ -59,6 +61,7 @@ EatsAdapterImpl ..up|> EatsAdapter
 EatsServiceImpl --> EatsRepository
 
 RetrieveFromAPIStrategy ..> RestaurantNotFoundException
+RetrieveFromAPIStrategy ..> APIStrategyFailureException
 RetrieveFromCacheStrategy ..> RestaurantNotFoundException
 
 @enduml

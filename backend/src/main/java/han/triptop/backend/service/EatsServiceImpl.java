@@ -1,6 +1,7 @@
 package han.triptop.backend.service;
 
 import han.triptop.backend.domain.Restaurant;
+import han.triptop.backend.domain.RestaurantResponse;
 import han.triptop.backend.exception.APIStrategyFailureException;
 import han.triptop.backend.exception.RestaurantNotFoundException;
 import han.triptop.backend.repository.EatsRepository;
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import javax.sound.midi.SysexMessage;
 import java.util.List;
 
 @Service
@@ -36,7 +36,7 @@ public class EatsServiceImpl implements EatsService {
     }
 
     @Cacheable(value = "restaurants", key = "#query + #address")
-    public List<Restaurant> retrieveData(String query, String address) {
+    public RestaurantResponse retrieveData(String query, String address) {
         for (RetrieveDataStrategy strategy : retrieveDataStrategies) {
             try {
                 return strategy.retrieveData(query, address);
@@ -44,6 +44,6 @@ public class EatsServiceImpl implements EatsService {
                 System.out.println(e.getMessage());
             }
         }
-        throw new APIStrategyFailureException("Geen restauranten gevonden vanuit zowel API als Cache.");
+        throw new RestaurantNotFoundException("Geen restauranten gevonden vanuit zowel API als Cache.");
     }
 }

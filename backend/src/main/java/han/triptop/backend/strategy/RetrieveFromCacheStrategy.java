@@ -1,6 +1,7 @@
 package han.triptop.backend.strategy;
 
 import han.triptop.backend.domain.Restaurant;
+import han.triptop.backend.domain.RestaurantResponse;
 import han.triptop.backend.exception.RestaurantNotFoundException;
 import han.triptop.backend.repository.EatsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class RetrieveFromCacheStrategy implements RetrieveDataStrategy {
     }
 
     @Override
-    public List<Restaurant> retrieveData(String query, String address) {
+    public RestaurantResponse retrieveData(String query, String address) {
         List<Restaurant> filteredRestaurants = eatsRepository.findAll()
                 .stream()
                 .filter(restaurant ->
@@ -32,6 +33,6 @@ public class RetrieveFromCacheStrategy implements RetrieveDataStrategy {
         if (filteredRestaurants.isEmpty()) {
             throw new RestaurantNotFoundException("Geen restauranten gevonden.");
         }
-        return filteredRestaurants;
+        return new RestaurantResponse(filteredRestaurants, true);
     }
 }

@@ -15,6 +15,6 @@ public class ExceptionMapper {
 
     @ExceptionHandler(APIStrategyFailureException.class)
     public ResponseEntity<?> handleAPIStrategyFailureException(APIStrategyFailureException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.SERVICE_UNAVAILABLE);
     }
 }
