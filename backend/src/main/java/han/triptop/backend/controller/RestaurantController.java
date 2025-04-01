@@ -1,10 +1,9 @@
 package han.triptop.backend.controller;
 
 import han.triptop.backend.domain.Restaurant;
+import han.triptop.backend.domain.RestaurantDTO;
 import han.triptop.backend.service.RestaurantService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,8 +17,8 @@ public class RestaurantController {
         this.restaurantService = restaurantService;
     }
 
-    @GetMapping
-    public List<Restaurant> getRestaurants() {
-        return restaurantService.getRestaurants();
+    @PostMapping
+    public List<Restaurant> getRestaurants(@RequestBody RestaurantDTO restaurantDTO) {
+        return restaurantService.getRestaurants(restaurantDTO.getQuery(), restaurantDTO.getAddress());
     }
 }
