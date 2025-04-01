@@ -7,6 +7,5 @@ import java.util.List;
 
 public interface RestaurantPort {
 
-    public List<Restaurant> getRestaurants();
-    // lat en long meegeven? of hardcoded stad toevoegen aan url params in callAPI()?
+    public List<Restaurant> getRestaurants(String query, String address);
 }
