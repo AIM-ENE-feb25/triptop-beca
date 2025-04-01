@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RestaurantDTO {
-    private int maxRows;
-    private int pages;
     private String query;
     private String address;
 }

@@ -1,6 +1,11 @@
 package han.triptop.backend.service;
 
+import han.triptop.backend.domain.Restaurant;
+
+import java.util.List;
+
 public interface RetrieveDataStrategy {
 
-    void retrieveData(int maxRows, String query, String address, int pages);
+    List<Restaurant> retrieveData(String query, String address);
+
 }

@@ -1,0 +1,64 @@
+@startuml
+
+title Triptop Class Diagram
+
+class EatsController {
+  - EatsService eatsService
+  + getAllRestaurants(): List<Restaurant>
+  + getAndSaveAPIResults(RestaurantDTO): List<Restaurant>
+}
+
+interface EatsService {
+  + findAllRestaurants(): List<Restaurant>
+  + retrieveData(String, String): List<Restaurant>
+}
+
+class EatsServiceImpl {
+  - List<RetrieveDataStrategy> strategies
+  - EatsRepository repository
+  + findAllRestaurants(): List<Restaurant>
+  + retrieveData(String, String): List<Restaurant>
+}
+
+interface RetrieveDataStrategy {
+  + retrieveData(String, String): List<Restaurant>
+}
+class RetrieveFromAPIStrategy {
+  - EatsAdapter eatsAdapter
+  - EatsRepository eatsRepository
+  + retrieveData(String, String): List<Restaurant>
+}
+class RetrieveFromCacheStrategy {
+  - EatsRepository eatsRepository
+  + retrieveData(String, String): List<Restaurant>
+}
+
+interface EatsAdapter {
+  + getRestaurantsNearUser(String, String): JsonNode
+}
+class EatsAdapterImpl {
+  - String apiKey
+  + getRestaurantsNearUser(String, String): JsonNode
+}
+
+interface EatsRepository <<Repository>> {
+  + findAll(): List<Restaurant>
+}
+
+class RestaurantNotFoundException
+
+EatsController --> EatsService
+EatsServiceImpl ..up|> EatsService
+EatsServiceImpl --> RetrieveDataStrategy
+RetrieveFromAPIStrategy ..up|> RetrieveDataStrategy
+RetrieveFromCacheStrategy ..up|> RetrieveDataStrategy
+RetrieveFromAPIStrategy --> EatsAdapter
+RetrieveFromAPIStrategy --> EatsRepository
+RetrieveFromCacheStrategy --> EatsRepository
+EatsAdapterImpl ..up|> EatsAdapter
+EatsServiceImpl --> EatsRepository
+
+RetrieveFromAPIStrategy ..> RestaurantNotFoundException
+RetrieveFromCacheStrategy ..> RestaurantNotFoundException
+
+@enduml

@@ -1,11 +1,13 @@
 package han.triptop.backend.service;
 
 import han.triptop.backend.domain.Restaurant;
+import han.triptop.backend.exception.RestaurantNotFoundException;
 import han.triptop.backend.repository.EatsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class RetrieveFromCacheStrategy implements RetrieveDataStrategy {
@@ -17,16 +19,17 @@ public class RetrieveFromCacheStrategy implements RetrieveDataStrategy {
         this.eatsRepository = eatsRepository;
     }
 
-    // Kleine test of strategy pattern werkt, werkt maar moet wel specifiekere data oppakken, nu pak ik alles.
-
     @Override
-    public void retrieveData(int maxRows, String query, String address, int pages) {
+    public List<Restaurant> retrieveData(String query, String address) {
         try {
-            List<Restaurant> restaurants = eatsRepository.findAll();
-            System.out.println(restaurants);
-        } catch(Exception e) {
+            return eatsRepository.findAll().
+                    stream().
+                    filter(restaurant -> (restaurant.getName().trim().equalsIgnoreCase(query.trim()) ||
+                            (restaurant.getAddress()).trim().equalsIgnoreCase(address.trim()))).
+                    collect(Collectors.toList());
+        } catch (RestaurantNotFoundException e) {
             System.out.println("Geen cached results gevonden! - " + e.getMessage());
         }
+        return null;
     }
-
 }

@@ -10,4 +10,5 @@ import java.util.List;
 public interface EatsRepository extends CrudRepository<Restaurant, String> {
 
     List<Restaurant> findAll();
+
 }

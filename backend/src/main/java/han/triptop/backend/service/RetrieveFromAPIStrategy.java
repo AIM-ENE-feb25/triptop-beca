@@ -2,6 +2,7 @@ package han.triptop.backend.service;
 
 import com.mashape.unirest.http.JsonNode;
 import han.triptop.backend.adapter.EatsAdapter;
+import han.triptop.backend.adapter.EatsAdapterImpl;
 import han.triptop.backend.domain.Restaurant;
 import han.triptop.backend.exception.RestaurantNotFoundException;
 import han.triptop.backend.repository.EatsRepository;
@@ -10,6 +11,9 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class RetrieveFromAPIStrategy implements RetrieveDataStrategy {
@@ -23,25 +27,47 @@ public class RetrieveFromAPIStrategy implements RetrieveDataStrategy {
         this.eatsRepository = eatsRepository;
     }
 
-
     @Override
-    public void retrieveData(int maxRows, String query, String address, int pages) {
+    public List<Restaurant> retrieveData(String query, String address) {
         try {
             // DOEN ALSOF DE API NIET WERKT OM NAAR DE VOLGENDE STRATEGIE TE GAAN
+            // JsonNode apiResponse = new JsonNode("");
 
-            JsonNode apiResponse = new JsonNode("");
+            JsonNode apiResponse = eatsAdapter.getRestaurantsNearUser(query, address);
             JSONObject responseJson = apiResponse.getObject();
             JSONObject returnValue = responseJson.optJSONObject("returnvalue");
             JSONArray restaurants = returnValue.optJSONArray("data");
+
+            // GEBRUIKEN VAN MOCK VOOR MINDER API GEBRUIK
+            //ClassPathResource jsonFile = new ClassPathResource("static/mockrestaurants.json");
+            //String json = Files.readString(jsonFile.getFile().toPath(), StandardCharsets.UTF_8).trim();
+            //JSONObject restaurants = new JSONObject(json);
+            //JSONArray restaurantsArray = restaurants.getJSONArray("data");
 
             if (restaurants == null || restaurants.length() == 0) {
                 throw new RestaurantNotFoundException("Restaurant not found.");
             }
 
             saveRestaurants(restaurants);
+
+
+            return prettyRestaurantsList(restaurants);
         } catch (Exception e) {
             throw new RuntimeException("Failed to retrieve data from API.", e);
         }
+    }
+
+    private List<Restaurant> prettyRestaurantsList(JSONArray restaurants) {
+        List<Restaurant> restaurantList = new ArrayList<>();
+        for (int i = 0; i < restaurants.length(); i++) {
+            JSONObject restaurant = restaurants.getJSONObject(i);
+
+            JSONObject location = restaurant.getJSONObject("location");
+            Restaurant restaurantObject = new Restaurant(restaurant.getString("uuid"),
+                    restaurant.getString("title"), location.getString("address"));
+            restaurantList.add(restaurantObject);
+        }
+        return restaurantList;
     }
 
     private void saveRestaurants(JSONArray restaurants) {

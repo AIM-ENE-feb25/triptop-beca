@@ -11,8 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/eats")
+@RequestMapping("/restaurants")
 public class EatsController {
+
 
     private final EatsService eatsService;
 
@@ -27,10 +28,10 @@ public class EatsController {
         return eatsService.findAllRestaurants();
     }
 
-    @PostMapping("/api")
+    @PostMapping("")
     @CachePut(value = "restaurants", key = "#restaurant.uuid")
-    public void getAndSaveAPIResults(@RequestBody RestaurantDTO restaurantDTO) {
-        eatsService.retrieveData(restaurantDTO.getMaxRows(), restaurantDTO.getQuery(), restaurantDTO.getAddress(), restaurantDTO.getPages());
+    public List<Restaurant> getAndSaveAPIResults(@RequestBody RestaurantDTO restaurantDTO) {
+        return eatsService.retrieveData(restaurantDTO.getQuery(), restaurantDTO.getAddress());
     }
 
 }
