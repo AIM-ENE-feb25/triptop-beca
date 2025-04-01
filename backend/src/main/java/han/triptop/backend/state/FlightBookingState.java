@@ -1,4 +1,17 @@
 package han.triptop.backend.state;
 
-public class FlightBookingState {
+import han.triptop.backend.adapter.BookingAdapterWrapper;
+import han.triptop.backend.domain.BookingRequest;
+import han.triptop.backend.domain.FlightBookingResponse;
+import han.triptop.backend.exception.BookingException;
+
+public class FlightBookingState implements BookingState {
+    @Override
+    public void handleRequest(BookingRequest request, BookingAdapterWrapper adapterWrapper) throws BookingException {
+        FlightBookingResponse response = adapterWrapper.bookFlight(request);
+        if (!response.isSuccess()) {
+            throw new BookingException("Flight booking failed: " + response.getMessage());
+        }
+        System.out.println("Flight booking successful.");
+    }
 }
