@@ -1,4 +1,4 @@
-package han.triptop.backend.service;
+package han.triptop.backend.strategy;
 
 import han.triptop.backend.domain.Restaurant;
 

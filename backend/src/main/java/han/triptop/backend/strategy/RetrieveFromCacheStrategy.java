@@ -1,4 +1,4 @@
-package han.triptop.backend.service;
+package han.triptop.backend.strategy;
 
 import han.triptop.backend.domain.Restaurant;
 import han.triptop.backend.exception.RestaurantNotFoundException;
@@ -21,15 +21,17 @@ public class RetrieveFromCacheStrategy implements RetrieveDataStrategy {
 
     @Override
     public List<Restaurant> retrieveData(String query, String address) {
-        try {
-            return eatsRepository.findAll().
-                    stream().
-                    filter(restaurant -> (restaurant.getName().trim().equalsIgnoreCase(query.trim()) ||
-                            (restaurant.getAddress()).trim().equalsIgnoreCase(address.trim()))).
-                    collect(Collectors.toList());
-        } catch (RestaurantNotFoundException e) {
-            System.out.println("Geen cached results gevonden! - " + e.getMessage());
+        List<Restaurant> filteredRestaurants = eatsRepository.findAll()
+                .stream()
+                .filter(restaurant ->
+                        restaurant.getName().trim().equalsIgnoreCase(query.trim()) ||
+                                restaurant.getAddress().trim().equalsIgnoreCase(address.trim())
+                )
+                .collect(Collectors.toList());
+
+        if (filteredRestaurants.isEmpty()) {
+            throw new RestaurantNotFoundException("Geen restauranten gevonden.");
         }
-        return null;
+        return filteredRestaurants;
     }
 }

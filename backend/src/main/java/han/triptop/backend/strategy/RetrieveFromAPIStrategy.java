@@ -1,9 +1,9 @@
-package han.triptop.backend.service;
+package han.triptop.backend.strategy;
 
 import com.mashape.unirest.http.JsonNode;
 import han.triptop.backend.adapter.EatsAdapter;
-import han.triptop.backend.adapter.EatsAdapterImpl;
 import han.triptop.backend.domain.Restaurant;
+import han.triptop.backend.exception.APIStrategyFailureException;
 import han.triptop.backend.exception.RestaurantNotFoundException;
 import han.triptop.backend.repository.EatsRepository;
 import org.json.JSONArray;
@@ -31,29 +31,29 @@ public class RetrieveFromAPIStrategy implements RetrieveDataStrategy {
     public List<Restaurant> retrieveData(String query, String address) {
         try {
             // DOEN ALSOF DE API NIET WERKT OM NAAR DE VOLGENDE STRATEGIE TE GAAN
-            // JsonNode apiResponse = new JsonNode("");
+             JsonNode apiResponse = new JsonNode("");
 
-            JsonNode apiResponse = eatsAdapter.getRestaurantsNearUser(query, address);
+            // JsonNode apiResponse = eatsAdapter.getRestaurantsNearUser(query, address);
             JSONObject responseJson = apiResponse.getObject();
             JSONObject returnValue = responseJson.optJSONObject("returnvalue");
             JSONArray restaurants = returnValue.optJSONArray("data");
 
-            // GEBRUIKEN VAN MOCK VOOR MINDER API GEBRUIK
-            //ClassPathResource jsonFile = new ClassPathResource("static/mockrestaurants.json");
-            //String json = Files.readString(jsonFile.getFile().toPath(), StandardCharsets.UTF_8).trim();
-            //JSONObject restaurants = new JSONObject(json);
-            //JSONArray restaurantsArray = restaurants.getJSONArray("data");
-
-            if (restaurants == null || restaurants.length() == 0) {
-                throw new RestaurantNotFoundException("Restaurant not found.");
+            if(restaurants == null || restaurants.length() == 0) {
+                throw new RestaurantNotFoundException("Restaurant niet gevonden.");
             }
+
+            // GEBRUIKEN VAN MOCK VOOR MINDER API GEBRUIK
+            // ClassPathResource jsonFile = new ClassPathResource("static/mockrestaurants.json");
+            // String json = Files.readString(jsonFile.getFile().toPath(), StandardCharsets.UTF_8).trim();
+            // JSONObject restaurants = new JSONObject(json);
+            // JSONArray restaurantsArray = restaurants.getJSONArray("data");
 
             saveRestaurants(restaurants);
 
 
             return prettyRestaurantsList(restaurants);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to retrieve data from API.", e);
+            throw new APIStrategyFailureException("Failed to retrieve data from API, going to Cache Strategy.");
         }
     }
 
