@@ -9,7 +9,7 @@ public class BookingRequest {
     private String destId;
     private int adults;
 
-    // Voor vluct
+    // Voor vlucht
     private String fromId;
     private String toId;
 

@@ -23,8 +23,6 @@ public class BookingVolgorde {
 
         new CarBookingState().handleRequest(request, adapterWrapper);
 
-        new CompletedState().handleRequest(request, tripRepository);
-
         return new BookingResponse("Booking completed successfully.", true);
     }
 }
