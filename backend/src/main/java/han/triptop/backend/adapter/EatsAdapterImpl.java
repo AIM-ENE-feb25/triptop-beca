@@ -10,13 +10,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EatsAdapterPortImpl implements EatsAdapterPort {
+public class EatsAdapterImpl implements EatsAdapterPort {
 
     private static final String URL = "https://uber-eats-scraper-api.p.rapidapi.com/api/job";
     private final String apiKey;
 
     @Autowired
-    public EatsAdapterPortImpl(@Value("${API_KEY}") String apiKey) {
+    public EatsAdapterImpl(@Value("${API_KEY}") String apiKey) {
         this.apiKey = apiKey;
     }
 

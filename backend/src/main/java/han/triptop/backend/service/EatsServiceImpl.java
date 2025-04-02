@@ -12,13 +12,13 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class EatsServicePortImpl implements EatsServicePort {
+public class EatsServiceImpl implements EatsServicePort {
 
     private final List<RetrieveDataStrategy> retrieveDataStrategies;
     private final EatsRepository eatsRepository;
 
     @Autowired
-    public EatsServicePortImpl(List<RetrieveDataStrategy> retrieveDataStrategies, EatsRepository eatsRepository) {
+    public EatsServiceImpl(List<RetrieveDataStrategy> retrieveDataStrategies, EatsRepository eatsRepository) {
         this.retrieveDataStrategies = retrieveDataStrategies;
         this.eatsRepository = eatsRepository;
     }
