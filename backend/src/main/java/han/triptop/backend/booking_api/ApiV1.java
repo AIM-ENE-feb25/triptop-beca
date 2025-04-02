@@ -39,6 +39,11 @@ public class ApiV1 implements ApiInterface {
             JSONObject departureAirport = flightData.getJSONObject("departureAirport");
             JSONObject arrivalAirport = flightData.getJSONObject("arrivalAirport");
 
+            String departureTime = flightData.getString("departureTime");
+            String arrivalTime = flightData.getString("arrivalTime");
+            String currency = priceBreakdown.getJSONObject("total").getString("currencyCode");
+            int price = priceBreakdown.getJSONObject("total").getInt("units");
+
             Flight flight = new Flight(departureAirport.getString("code"),
                     departureAirport.getString("name"),
                     departureAirport.getString("cityName"),
@@ -46,7 +51,8 @@ public class ApiV1 implements ApiInterface {
                     arrivalAirport.getString("code"),
                     arrivalAirport.getString("name"),
                     arrivalAirport.getString("cityName"),
-                    arrivalAirport.getString("countryName"));
+                    arrivalAirport.getString("countryName"),
+                    departureTime, arrivalTime, currency, price);
 
             return flight;
         } catch (Exception e) {
