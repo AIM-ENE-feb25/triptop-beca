@@ -4,7 +4,7 @@
 title Triptop - Dynamic Diagram (Boekingsverzoeken)
 
 Container(trip_trop, "TripTop", "React, Spring Boot", "Hoofdapplicatie")
-Container(db, "Database", "NoSQL", "Opslag van gegevens")
+Container(db, "Database", "NoSQL Redis", "Opslag van gegevens")
 System_Ext(booking_api, "Booking.com API", "Geeft informatie over accommodaties, vluchten, en autohuur, en maakt boekingen.")
 
 Container_Boundary(backend, "API Calls System") {
@@ -18,13 +18,14 @@ Container_Boundary(backend, "API Calls System") {
 Rel(trip_trop, reservatie_controller, "1. Maakt boeking aan via", "JSON / HTTPS")
 Rel(reservatie_controller, booking_service, "2. Verstuurt boekingsverzoek naar", "REST")
 Rel(booking_service, booking_states, "3. Stuurt boekingsverzoek naar", "REST")
-Rel(booking_states, booking_adapter, "4. Vraagt gegevens op via", "JSON / HTTPS")
-Rel(booking_adapter, booking_api, "5. Vraagt beschikbaarheid en prijzen op bij", "REST")
+Rel(booking_states, booking_adapter, "4. Vraagt gegevens op via", "REST")
+Rel(booking_adapter, booking_api, "5. Vraagt beschikbaarheid en prijzen op bij", "JSON / HTTPS")
 Rel(booking_adapter, booking_states, "6. Stuurt gekregen gegevens terug naar", "REST")
 Rel(booking_states, booking_service, "7. Stuurt definitieve boekings gegevens naar", "REST")
-Rel(booking_service, trip_repository, "8. Geeft gegevens door naar", "JSON")
-Rel(trip_repository, db, "9. Slaat gegevens op in", "REST")
-Rel(booking_service, reservatie_controller, "10. Stuurt bevestigde boekingsgegevens naar", "REST")
-Rel(reservatie_controller, trip_trop, "11. Stuurt bevestiging naar gebruiker", "JSON / HTTPS")
+Rel(booking_service, trip_repository, "8. Geeft gegevens door naar", "REST")
+Rel(trip_repository, db, "9. Slaat gegevens op in", "JSON")
+Rel(trip_repository, booking_service, "10. Bevestigt opgeslagen data IN", "REST")
+Rel(booking_service, reservatie_controller, "11. Stuurt bevestigde boekingsgegevens naar", "REST")
+Rel(reservatie_controller, trip_trop, "12. Stuurt bevestiging naar gebruiker", "JSON / HTTPS")
 
 @enduml
