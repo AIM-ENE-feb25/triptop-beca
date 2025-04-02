@@ -5,5 +5,5 @@ import han.triptop.backend.domain.BookingRequest;
 import han.triptop.backend.exception.BookingException;
 
 public interface BookingState {
-    void handleRequest(BookingRequest request, BookingAdapterWrapper adapterWrapper) throws BookingException;
+    BookingState handleRequest(BookingRequest request, BookingAdapterWrapper adapterWrapper) throws BookingException;
 }

@@ -8,11 +8,11 @@ import han.triptop.backend.exception.BookingException;
 
 public class HotelBookingState implements BookingState {
     @Override
-    public void handleRequest(BookingRequest request, BookingAdapterWrapper adapterWrapper) throws BookingException {
+    public BookingState handleRequest(BookingRequest request, BookingAdapterWrapper adapterWrapper) throws BookingException {
         HotelBookingResponse response = adapterWrapper.bookHotel(request);
         if (!response.isSuccess()) {
             throw new BookingException("Hotel booking failed: " + response.getMessage());
         }
-        System.out.println("Hotel booking successful.");
+        return new FlightBookingState();
     }
 }

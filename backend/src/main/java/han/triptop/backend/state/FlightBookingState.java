@@ -7,11 +7,11 @@ import han.triptop.backend.exception.BookingException;
 
 public class FlightBookingState implements BookingState {
     @Override
-    public void handleRequest(BookingRequest request, BookingAdapterWrapper adapterWrapper) throws BookingException {
+    public BookingState handleRequest(BookingRequest request, BookingAdapterWrapper adapterWrapper) throws BookingException {
         FlightBookingResponse response = adapterWrapper.bookFlight(request);
         if (!response.isSuccess()) {
             throw new BookingException("Flight booking failed: " + response.getMessage());
         }
-        System.out.println("Flight booking successful.");
+        return new CarBookingState();
     }
 }
