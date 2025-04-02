@@ -5,6 +5,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import han.triptop.backend.domain.Flight;
+import han.triptop.backend.state.ApiState;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
@@ -59,5 +60,10 @@ public class ApiV2 implements ApiInterface {
             System.out.println("Error fetching flight data: " + e.getMessage());
         }
         return null;
+    }
+
+    @Override
+    public void setNextState(ApiState nextState) {
+        // No-op: ApiV2 is the final state
     }
 }
