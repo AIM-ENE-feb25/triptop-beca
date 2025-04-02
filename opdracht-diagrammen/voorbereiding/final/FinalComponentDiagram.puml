@@ -1,0 +1,25 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Triptop - Component Diagram (State Pattern)
+
+Container(trip_trop, "TripTop", "React, Spring Boot", "Hoofdapplicatie")
+Container(db, "Database", "NoSQL Redis", "Opslag van gegevens")
+System_Ext(booking_api, "Booking COM API", "Geeft informatie over accommodaties, autohuur, vluchten en attracties, de beschikbaarheid hiervan en boekt tickets.")
+
+Container_Boundary(backend, "API Calls System") {
+  Component(reservatie_controller, "Reservatie Controller", "Spring Boot", "Verstuurt boeking aanvragen")
+  Component(booking_service, "Booking Service", "Spring Boot", "Verwerkt aanvragen en schakelt states")
+  Component(booking_states, "Booking States", "Spring Boot", "Verschillende states die op volgorde worden afgehandeld")
+  Component(booking_adapter, "Booking Adapter", "Spring Boot", "Connecteert met Booking.com en haalt data op")
+  Component(trip_repository, "Trip Repository", "Spring Boot", "Slaat alle data op in de database")
+
+  Rel(trip_trop, reservatie_controller, "Maakt API calls naar", "REST")
+  Rel(reservatie_controller, booking_service, "Stuurt boeking aanvragen naar", "REST")
+  Rel(booking_service, booking_states, "Stuurt aanvraag door naar", "REST")
+  Rel(booking_states, booking_adapter, "Vraagt benodigde data op via", "REST")
+  Rel(booking_states, trip_repository, "Data wordt verzameld in", "REST")
+  Rel(trip_repository, db, "Slaat gekregen data op in", "JSON")
+  Rel(booking_adapter, booking_api, "Haalt boeking data op van", "JSON / HTTPS")
+}
+@enduml
