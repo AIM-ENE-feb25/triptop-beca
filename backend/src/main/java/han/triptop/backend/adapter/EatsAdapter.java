@@ -1,8 +1,8 @@
 package han.triptop.backend.adapter;
 
-import com.mashape.unirest.http.JsonNode;
+import org.json.JSONObject;
 
 public interface EatsAdapter {
 
-    JsonNode getRestaurantsNearUser(String query, String address);
+    JSONObject getRestaurantsNearUser(String query, String address);
 }

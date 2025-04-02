@@ -20,7 +20,7 @@ public class EatsAdapterImpl implements EatsAdapter {
         this.apiKey = apiKey;
     }
 
-    public JsonNode getRestaurantsNearUser(String query, String address) {
+    public JSONObject getRestaurantsNearUser(String query, String address) {
 
         int maxRows = 15;
         int pages = 1;
@@ -44,7 +44,7 @@ public class EatsAdapterImpl implements EatsAdapter {
                     .body(body)
                     .asJson();
 
-            return response.getBody();
+            return response.getBody().getObject();
         } catch (UnirestException e) {
             throw new RuntimeException("Error while making API request", e);
         }

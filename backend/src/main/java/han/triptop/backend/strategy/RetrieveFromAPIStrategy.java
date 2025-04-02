@@ -32,12 +32,10 @@ public class RetrieveFromAPIStrategy implements RetrieveDataStrategy {
     public RestaurantResponse retrieveData(String query, String address) {
         try {
             // DOEN ALSOF DE API NIET WERKT OM NAAR DE VOLGENDE STRATEGIE TE GAAN
-            JsonNode apiResponse = new JsonNode("");
+            JSONObject responseJson = new JSONObject();
 
-            //JsonNode apiResponse = eatsAdapter.getRestaurantsNearUser(query, address);
-            JSONObject responseJson = apiResponse.getObject();
-            JSONObject returnValue = responseJson.optJSONObject("returnvalue");
-            JSONArray restaurants = returnValue.optJSONArray("data");
+            //JSONObject responseJson = eatsAdapter.getRestaurantsNearUser(query, address);
+            JSONArray restaurants = responseJson.optJSONObject("returnvalue").optJSONArray("data");
 
             if (restaurants == null || restaurants.length() == 0) {
                 throw new RestaurantNotFoundException("Restaurant niet gevonden.");
