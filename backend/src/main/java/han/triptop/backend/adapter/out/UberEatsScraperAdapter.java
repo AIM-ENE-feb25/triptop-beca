@@ -62,10 +62,6 @@ public class UberEatsScraperAdapter extends APICaller implements RestaurantPort 
 
 
             return response.getBody().toString();
-            // json direct teruggeven of als string?
-            // beetje omslachtig om json -> string -> json te doen maar hierdoor wel uniforme methode voor APICaller.
-            // to do: check of nieuwe feature ook json teruggeeft (neem aan dat dat ook met JsonNode wordt)
-            // dan aanpassen naar Json methode ipv String!
         } catch (UnirestException ue) {
             throw new RuntimeException("Er ging iets mis bij het ophalen van de data van Uber Eats.", ue);
         }
