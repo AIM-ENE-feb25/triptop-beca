@@ -8,7 +8,6 @@ public class InitialState implements BookingState {
 
     @Override
     public BookingState handleRequest(BookingRequest request, BookingAdapterWrapper adapterWrapper) throws BookingException {
-        System.out.println("Starting new booking process...");
         return new HotelBookingState();
     }
 }
