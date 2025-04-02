@@ -166,7 +166,7 @@ De Validation Service stuurt een validatieresultaat terug naar de API Gateway. D
 De API Gateway stuurt loggegevens naar de Logging Service. Hierin worden API-verzoeken, responses en versies vastgelegd voor traceerbaarheid.
 De Logging Service bevestigt de logging-status aan de API Gateway. Dit helpt bij het monitoren van systeemactiviteit en bij het debuggen van mogelijke problemen.
 
-#### 7.2.3 Component diagram Toevoegen van een nieuwe externe service
+#### 7.2.3 Component diagram toevoegen van een nieuwe externe service
 
 ![Afbeelding van component diagram](./ontwerpvraag-eva/component-diagram-eva-1.svg)
 
@@ -182,7 +182,7 @@ Bovenstaand diagram is beperkt tot de aanroep van restaurantdata. Andere bouwste
 Om een tweede restaurantservice toe te voegen (feature bestaat al), hoeft er alleen een adapter voor de externe service aangemaakt te worden die de bestaande `RestaurantPort` implementeert en de APICaller extend. In `RestaurantService` hoeft geen code aangepast te worden en deze blijft gebruik maken van dezelfde `RestaurantPort`.
 Om een hotelservice toe te voegen (nieuwe feature), moet er een `HotelController` en `HotelService` aangemaakt worden, met een eigen interface (HotelPort). Ook moet er een nieuwe adapterklasse (BookingCOMAdapter) gemaakt worden die deze interface implementeert en APICaller extend.
 
-#### 7.2.4 Dynamic diagram Toevoegen van een nieuwe externe service
+#### 7.2.4 Dynamic diagram toevoegen van een nieuwe externe service
 
 ![Afbeelding van component diagram](./ontwerpvraag-eva/dynamic-diagram-eva.svg)
 
@@ -239,7 +239,7 @@ Hetzelfde gelt voor stap negen uiteraard.
 
 ### 7.3. Design & Code
 
-#### 7.3.1. Class diagram integriteit exteren API's
+#### 7.3.1. Class diagram integriteit externe API's
 
 ![Afbeelding van class diagram](ontwerpvraag-cas/class-diagram-cas.svg)
 
@@ -248,7 +248,7 @@ De ApiClient-interface bepaalt hoe API-verzoeken moeten worden verstuurd. De Api
 De ValidationService controleert of de ontvangen en verzonden data correct is. De LoggingService registreert API-verzoeken, responses en versies voor traceerbaarheid.
 De TriptopBackend gebruikt deze services om API-verzoeken te verwerken. Eerst wordt het verzoek via de ApiGateway verstuurd. Vervolgens wordt de data gevalideerd en wordt alles gelogd. Dit zorgt voor een veilige en betrouwbare API-communicatie.
 
-#### 7.3.2. Class diagram Toevoegen van een nieuwe externe service
+#### 7.3.2. Class diagram toevoegen van een nieuwe externe service
 
 ![Afbeelding van class diagram](./ontwerpvraag-eva/class-diagram-eva.svg)
 
