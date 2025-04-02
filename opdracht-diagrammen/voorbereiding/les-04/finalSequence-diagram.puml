@@ -5,42 +5,28 @@ participant BookingService
 participant BookingAdapter
 participant ExternalAPI
 participant BookingVolgorde
-participant BookingState
-participant AvailabilityState
 participant HotelBookingState
 participant FlightBookingState
 participant CarBookingState
-participant CompletedState
 
-Boeker -> ReservationController: 1. bookTrip(request: BookingRequest)
+Reiziger -> ReservationController: 1. bookTrip(request: BookingRequest)
 ReservationController -> BookingService: 2. bookTrip(request: BookingRequest)
 
-BookingService -> BookingAdapter: 3. checkAvailability(request: BookingRequest)
-BookingAdapter -> ExternalAPI: 4. requestAvailability()
-ExternalAPI --> BookingAdapter: 5. returnAvailability()
+BookingService -> BookingAdapter: 3. fetchAllBookingData(request: BookingRequest)
+BookingAdapter -> ExternalAPI: 4. requestAllData (availability, hotel, flight, car)
+ExternalAPI --> BookingAdapter: 5. returnAllData(responseData)
 
-BookingService -> BookingVolgorde: 6. processBooking(request: BookingRequest)
-BookingVolgorde -> AvailabilityState: 7. handleRequest(context: BookingVolgorde, request: BookingRequest)
+BookingAdapter -> HotelBookingState: 6. setHotelData(responseData)
+BookingAdapter -> FlightBookingState: 7. setFlightData(responseData)
+BookingAdapter -> CarBookingState: 8. setCarData(responseData)
 
-BookingService -> BookingAdapter: 8. bookHotel(request: BookingRequest)
-BookingAdapter -> ExternalAPI: 9. requestHotelBooking()
-ExternalAPI --> BookingAdapter: 10. returnHotelBooking()
-BookingVolgorde -> HotelBookingState: 11. handleRequest(context: BookingVolgorde, request: BookingRequest)
+BookingService -> BookingVolgorde: 9. processBooking(request: BookingRequest)
 
-BookingService -> BookingAdapter: 12. bookFlight(request: BookingRequest)
-BookingAdapter -> ExternalAPI: 13. requestFlightBooking()
-ExternalAPI --> BookingAdapter: 14. returnFlightBooking()
-BookingVolgorde -> FlightBookingState: 15. handleRequest(context: BookingVolgorde, request: BookingRequest)
+BookingVolgorde -> HotelBookingState: 10. handleRequest(context: BookingVolgorde, request: BookingRequest)
+BookingVolgorde -> FlightBookingState: 11. handleRequest(context: BookingVolgorde, request: BookingRequest)
+BookingVolgorde -> CarBookingState: 12. handleRequest(context: BookingVolgorde, request: BookingRequest)
 
-BookingService -> BookingAdapter: 16. bookCar(request: BookingRequest)
-BookingAdapter -> ExternalAPI: 17. requestCarBooking()
-ExternalAPI --> BookingAdapter: 18. returnCarBooking()
-BookingVolgorde -> CarBookingState: 19. handleRequest(context: BookingVolgorde, request: BookingRequest)
-
-BookingVolgorde -> CompletedState: 20. handleRequest(context: BookingVolgorde, request: BookingRequest)
-CompletedState --> BookingVolgorde: 21. Booking Completed
-
-BookingVolgorde --> BookingService: 22. BookingResponse
-BookingService --> ReservationController: 23. return BookingResponse
-ReservationController --> Boeker: 24. return BookingResponse
+BookingVolgorde --> BookingService: 13. BookingResponse
+BookingService --> ReservationController: 14. return BookingResponse
+ReservationController --> Reiziger: 15. return BookingResponse
 @enduml
