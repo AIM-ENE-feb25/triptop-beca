@@ -223,21 +223,19 @@ Hoe werkt het?
 
 ![Afbeelding van component diagram](./ontwerpvraag-burak/component-diagram-burak.svg)
 
-In de afbeelding wordt laten zien hoe het component diagram bij het ontwerpvraag "Hoe maak je meerdere API calls bij hetzelfde service" eruit ziet
-
-1. BookingService als centrale aansturing van de boeking, waardoor de controller ontlast wordt.
-
-2. State Pattern in BookingVolgorde om de juiste volgorde van boekingen te garanderen.
-
-3. BookingAdapter als tussenlaag, zodat het systeem flexibel blijft bij API-wijzigingen.
-
-4. Duidelijke scheiding tussen verwerking (BookingVolgorde) en opslag (TripRepository).
+Het component diagram hierboven maakt gebruik van een state pattern. Dit is in het diagram te zien in de vorm van de Booking States component. Er werd hiervoor gekozen, omdat de koppeling tussen de vier gebruikte states hoog zijn.
+De details van de states worden uitgelicht in het klassediagram (te zien op hoofdstuk 7.3.4). Voor de design principe werd er gekozen voor een open/closed design. Dit staat nauw in verband met de states, die niet worden veranderd, maar wel uitgebreid kunnen worden.
+Het diagram laat ook een repository en database zien. Dit is meegenomen in het diagram om het verband tussen de componenten te kunnen laten zien, maar vallen wel buiten de scope van de ontwerpvraag.
+Hierdoor is ervoor gekozen bij nader inzien en overleg met een docent om dit buitenwege te laten bij de gemaakte prototype.
 
 #### 7.2.8 Dynamic diagram meerdere endpoints aanroepen in dezelfde API
 
-Dit diagram laat de stappen bij de componenten zien wanneer er meerdere keer dezelfde API wordt aaangeroepen.
-
 ![Afbeelding van dynamic diagram](./ontwerpvraag-burak/dynamic-component-diagram-burak.svg)
+
+Het dynamic diagram laat de volgorde zien die de componenten aflopen. In totaal zijn er elf stappen beschreven. Er is alhoewel één plekken in het diagram wat meer uitleg vraagt.
+Bij stap vijf gaat er één pijl naar de api, maar geen pijl terug. Dit is zo gedaan, omdat de pijl de context beschrijft op een manier dat laat zien dat er een reactie is. 
+De adapter vraagt de beschikbaarheid op bij de api, nu wordt er al verteld wat er terug komt en is het niet noodzakelijk om het nog een te benoemen.
+Hetzelfde gelt voor stap negen uiteraard.
 
 ### 7.3. Design & Code
 
@@ -275,8 +273,10 @@ Dit diagram laat zien hoe de verschillende onderdelen van het **Triptop backend-
 
 ![Afbeelding van class diagram](./ontwerpvraag-burak/class-diagram-burak.svg)
 
-In het klasse diagram is te zien hoe de verschillende states in samenhang houden met de rest van de code
-
+Het klasse diagram zoals te zien op het plaatje verantwoord niet elke klasse aanwezig in het prototype. Dit komt doordat vele klasse niet essentieel zijn om op te nemen in het diagram, als dit wel werd gedaan zou het voor meer onduidelijkheid zorgen.
+Dit geldt voor de volgende klasse. De domein klasse, de exception klassen en de adapter wrapper zijn buiten gesloten. De domein en exception klasse gelden voor zichzelf, maar de adapter wrapper in inprincipe een tussen klasse voor de states en de adapter.
+Dit is zo gedaan om de cohesie te vergroten. Daarnaast is er in het diagram te zien dat initialstate over gaat naar de hotelbookingstate, maar deze state niet naar de andere. Dit is zo gedaan om geen verwarring op te wekken, aangezien ze in werkelijkheid elkaar niet aanroepen, maar switchen van state.
+De switchen van states wordt gedaan door de aanroep van een methode en de code in de service. Voor verduidelijking, de hotel state gaat naar vlucht state en vanaf daar naar auto state.
 ## 8. Architectural Decision Records
 
 ## 8.1. 001. Betaling API
