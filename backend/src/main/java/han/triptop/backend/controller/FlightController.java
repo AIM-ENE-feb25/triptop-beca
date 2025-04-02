@@ -27,7 +27,7 @@ public class FlightController {
             @RequestParam(defaultValue = "v1") String version
     ) throws UnirestException {
 
-        Flight flight = flightService.getFlights(from, to, date, version);
+        Flight flight = flightService.getFlights(from, to, date);
 
         return ResponseEntity.ok(flight);
     }

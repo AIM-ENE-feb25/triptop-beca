@@ -1,28 +1,31 @@
 package han.triptop.backend.service;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
-import han.triptop.backend.booking_api.ApiInterface;
 import han.triptop.backend.domain.Flight;
+import han.triptop.backend.state.ApiState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class FlightService {
 
-    private final ApiInterface apiV1;
-    private final ApiInterface apiV2;
+    private ApiState currentState;
+    private final ApiState apiV1;
+    private final ApiState apiV2;
 
     @Autowired
-    public FlightService(ApiInterface apiV1, ApiInterface apiV2) {
+    public FlightService(ApiState apiV1, ApiState apiV2) {
         this.apiV1 = apiV1;
         this.apiV2 = apiV2;
+        this.currentState = apiV1;
     }
 
-    public Flight getFlights(String from, String to, String date, String version) throws UnirestException {
-        if ("v2".equalsIgnoreCase(version)) {
-            return apiV2.getFlights(from, to, date);
-        } else {
-            return apiV1.getFlights(from, to, date);
+    public Flight getFlights(String from, String to, String date) throws UnirestException {
+        Flight flight = currentState.getFlights(from, to, date);
+        if (flight == null && currentState == apiV1) {
+            currentState = apiV2;
+            flight = currentState.getFlights(from, to, date);
         }
+        return flight;
     }
 }

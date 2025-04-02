@@ -1,9 +1,8 @@
-package han.triptop.backend.booking_api;
+package han.triptop.backend.state;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
 import han.triptop.backend.domain.Flight;
-import han.triptop.backend.state.ApiState;
 
-public interface ApiInterface extends ApiState {
+public interface ApiState {
     Flight getFlights(String from, String to, String date) throws UnirestException;
 }
