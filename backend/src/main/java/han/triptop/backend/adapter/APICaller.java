@@ -9,18 +9,11 @@ public abstract class APICaller {
     protected String APIKey;
     protected String APIURL;
 
-    public String executeAPICall() {
-        if (token == null || token.isEmpty()) {
-            login();
-        }
-        return callAPI(Map.of()); // lege map voor api aanroep zonder params
-    }
-
     public String executeAPICall(Map<String, String> parameters) {
         if (token == null || token.isEmpty()) {
             login();
         }
-        return callAPI(parameters);
+        return callAPI(parameters); // lege map als default?
     }
 
     public abstract void login();
