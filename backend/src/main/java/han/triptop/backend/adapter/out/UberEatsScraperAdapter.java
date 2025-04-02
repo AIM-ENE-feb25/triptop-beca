@@ -1,10 +1,12 @@
-package han.triptop.backend.adapter;
+package han.triptop.backend.adapter.out;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import han.triptop.backend.adapter.APICaller;
 import han.triptop.backend.domain.Restaurant;
+import han.triptop.backend.domain.port.RestaurantPort;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class UberEatsScraperAdapter extends APICaller implements APICaller.RestaurantPort {
+public class UberEatsScraperAdapter extends APICaller implements RestaurantPort {
 
     public UberEatsScraperAdapter(@Value("${ubereats.API.key}") String APIKey, @Value("${ubereats.API.url}") String APIURL) {
         this.APIURL = APIURL;

@@ -1,4 +1,4 @@
-package han.triptop.backend.adapter;
+package han.triptop.backend.domain.port;
 
 import han.triptop.backend.domain.Hotel;
 
