@@ -1,0 +1,54 @@
+@startuml
+class ReservationController {
+  + bookTrip(request: BookingRequest) : BookingResponse
+}
+
+class BookingService {
+  + processBooking(request: BookingRequest) : BookingResponse
+}
+
+interface BookingState {
+  + handleRequest(context: BookingVolgorde, request: BookingRequest) : void
+}
+
+class InitialState {
+  + handleRequest(context: BookingVolgorde, request: BookingRequest) : void
+}
+
+class HotelBookingState {
+  + handleRequest(context: BookingVolgorde, request: BookingRequest) : void
+}
+
+class FlightBookingState {
+  + handleRequest(context: BookingVolgorde, request: BookingRequest) : void
+}
+
+class CarBookingState {
+  + handleRequest(context: BookingVolgorde, request: BookingRequest) : void
+}
+
+interface IAdapter {
+  + bookHotel(request: BookingRequest) : HotelBookingResponse
+  + bookFlight(request: BookingRequest) : FlightBookingResponse
+  + bookCar(request: BookingRequest) : CarRentalResponse
+}
+
+class BookingAdapter {
+  + bookHotel(request: BookingRequest) : HotelBookingResponse
+  + bookFlight(request: BookingRequest) : FlightBookingResponse
+  + bookCar(request: BookingRequest) : CarRentalResponse
+}
+
+
+ReservationController --> "Roept" BookingService
+BookingService --> "Begint met" InitialState
+BookingState "Implementeert" <|.. InitialState
+BookingState "Implementeert" <|.. HotelBookingState
+BookingState "Implementeert" <|.. FlightBookingState
+BookingState "Implementeert" <|.. CarBookingState
+InitialState --> "Gaat over na" HotelBookingState
+HotelBookingState --> "Gebruikt" BookingAdapter
+FlightBookingState --> "Gebruikt" BookingAdapter
+CarBookingState --> "Gebruikt" BookingAdapter
+BookingAdapter "Implementeert" <|.. IAdapter
+@enduml
