@@ -18,7 +18,7 @@ Container_Boundary(backend, "API Calls System") {
   Rel(reservatie_controller, booking_service, "Stuurt boeking aanvragen naar", "REST")
   Rel(booking_service, booking_states, "Stuurt aanvraag door naar", "REST")
   Rel(booking_states, booking_adapter, "Vraagt benodigde data op via", "REST")
-  Rel(booking_states, trip_repository, "Data wordt verzameld in", "REST")
+  Rel(booking_service, trip_repository, "Stuurt gekregen data naar", "REST")
   Rel(trip_repository, db, "Slaat gekregen data op in", "JSON")
   Rel(booking_adapter, booking_api, "Haalt boeking data op van", "JSON / HTTPS")
 }
