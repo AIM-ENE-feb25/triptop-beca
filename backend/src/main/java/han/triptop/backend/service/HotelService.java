@@ -1,7 +1,7 @@
 package han.triptop.backend.service;
 
 import han.triptop.backend.domain.Hotel;
-import han.triptop.backend.domain.port.HotelPort;
+import han.triptop.backend.adapter.HotelPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

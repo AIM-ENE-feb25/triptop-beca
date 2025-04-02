@@ -1,6 +1,9 @@
 package han.triptop.backend.adapter;
 
 
+import han.triptop.backend.domain.Restaurant;
+
+import java.util.List;
 import java.util.Map;
 
 public abstract class APICaller {
@@ -25,4 +28,9 @@ public abstract class APICaller {
     public abstract void checkToken();
 
     public abstract String callAPI(Map<String, String> parameters);
+
+    public static interface RestaurantPort {
+
+        public List<Restaurant> getRestaurants(String query, String address);
+    }
 }

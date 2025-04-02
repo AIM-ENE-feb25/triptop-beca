@@ -1,12 +1,10 @@
-package han.triptop.backend.adapter.out;
+package han.triptop.backend.adapter;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import han.triptop.backend.adapter.APICaller;
 import han.triptop.backend.domain.Hotel;
-import han.triptop.backend.domain.port.HotelPort;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
