@@ -36,8 +36,6 @@ public class BookingCOMAdapter extends APICaller implements HotelPort {
     public String callAPI(Map<String, String> parameters) {
         String requestURL = APIURL + "dest_id=" + parameters.get("dest_id") + "&search_type=" + parameters.get("search_type") + "&arrival_date=" + parameters.get("arrival_date")  + "&departure_date=" + parameters.get("departure_date");
 
-        System.out.println("url: " + requestURL);
-
         try {
             HttpResponse<JsonNode> response = Unirest.get(requestURL)
                     .header("x-rapidapi-key", APIKey)
