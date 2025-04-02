@@ -1,7 +1,6 @@
 package han.triptop.backend.strategy;
 
-import com.mashape.unirest.http.JsonNode;
-import han.triptop.backend.adapter.EatsAdapter;
+import han.triptop.backend.adapter.EatsAdapterPort;
 import han.triptop.backend.domain.Restaurant;
 import han.triptop.backend.domain.RestaurantResponse;
 import han.triptop.backend.exception.APIStrategyFailureException;
@@ -19,12 +18,12 @@ import java.util.List;
 @Component
 public class RetrieveFromAPIStrategy implements RetrieveDataStrategy {
 
-    private final EatsAdapter eatsAdapter;
+    private final EatsAdapterPort eatsAdapterPort;
     private final EatsRepository eatsRepository;
 
     @Autowired
-    public RetrieveFromAPIStrategy(EatsAdapter eatsAdapter, EatsRepository eatsRepository) {
-        this.eatsAdapter = eatsAdapter;
+    public RetrieveFromAPIStrategy(EatsAdapterPort eatsAdapterPort, EatsRepository eatsRepository) {
+        this.eatsAdapterPort = eatsAdapterPort;
         this.eatsRepository = eatsRepository;
     }
 
@@ -32,9 +31,9 @@ public class RetrieveFromAPIStrategy implements RetrieveDataStrategy {
     public RestaurantResponse retrieveData(String query, String address) {
         try {
             // DOEN ALSOF DE API NIET WERKT OM NAAR DE VOLGENDE STRATEGIE TE GAAN
-            //JSONObject responseJson = new JSONObject();
+            JSONObject responseJson = new JSONObject();
 
-            JSONObject responseJson = eatsAdapter.getRestaurantsNearUser(query, address);
+            // JSONObject responseJson = eatsAdapterPort.getRestaurantsNearUser(query, address);
             JSONArray restaurants = responseJson.optJSONObject("returnvalue").optJSONArray("data");
 
             if (restaurants == null || restaurants.length() == 0) {

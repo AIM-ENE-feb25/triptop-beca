@@ -2,7 +2,6 @@ package han.triptop.backend.service;
 
 import han.triptop.backend.domain.Restaurant;
 import han.triptop.backend.domain.RestaurantResponse;
-import han.triptop.backend.exception.APIStrategyFailureException;
 import han.triptop.backend.exception.RestaurantNotFoundException;
 import han.triptop.backend.repository.EatsRepository;
 import han.triptop.backend.strategy.RetrieveDataStrategy;
@@ -13,13 +12,13 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class EatsServiceImpl implements EatsService {
+public class EatsServicePortImpl implements EatsServicePort {
 
     private final List<RetrieveDataStrategy> retrieveDataStrategies;
     private final EatsRepository eatsRepository;
 
     @Autowired
-    public EatsServiceImpl(List<RetrieveDataStrategy> retrieveDataStrategies, EatsRepository eatsRepository) {
+    public EatsServicePortImpl(List<RetrieveDataStrategy> retrieveDataStrategies, EatsRepository eatsRepository) {
         this.retrieveDataStrategies = retrieveDataStrategies;
         this.eatsRepository = eatsRepository;
     }

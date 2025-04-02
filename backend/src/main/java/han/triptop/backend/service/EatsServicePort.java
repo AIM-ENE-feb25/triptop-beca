@@ -6,7 +6,7 @@ import han.triptop.backend.domain.RestaurantResponse;
 
 import java.util.List;
 
-public interface EatsService {
+public interface EatsServicePort {
 
     List<Restaurant> findAllRestaurants();
 
