@@ -1,4 +1,4 @@
-package han.triptop.backend.controller;
+package han.triptop.backend.domain;
 
 public class Flight {
     private final String code;
