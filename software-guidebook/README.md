@@ -145,7 +145,7 @@ Dit diagram toont alleen de happy path. Edge cases zijn momenteel nog niet in de
 
 ### 7.2. Components
 
-#### 7.2.1 Component diagram integriteit exteren API's
+#### 7.2.1 Component diagram integriteit externe API's
 
 ![Afbeelding van component diagram](ontwerpvraag-cas/component-diagram-cas.svg)
 
@@ -154,7 +154,7 @@ De API Gateway is de kern van de backend en verwerkt API-verzoeken. Het implemen
 Om de kwaliteit van de gegevens te waarborgen, controleert de Validation Service alle inkomende en uitgaande data. Daarnaast registreert de Logging Service alle API-verzoeken, responses en versies, zodat deze later kunnen worden geanalyseerd.
 De backend communiceert met verschillende externe APIs, bijvoorbeeld voor reis- of betalingsgegevens. Voordat data wordt verzonden, wordt deze eerst gevalideerd. De ontvangen response wordt gelogd en eventueel verder verwerkt.
 
-#### 7.2.2 Dynamic diagram integriteit exteren API's
+#### 7.2.2 Dynamic diagram integriteit externe API's
 
 ![Afbeelding van dynamic diagram](ontwerpvraag-cas/dynamic-diagram-cas.svg)
 
@@ -219,7 +219,7 @@ Hoe werkt het?
 
 7. De restaurantgegevens worden teruggestuurd naar de gebruiker.
 
-#### 7.2.7 Component diagram meerdere endpoints in zelfde API
+#### 7.2.7 Component diagram meerdere endpoints aanroepen in dezelfde API
 
 ![Afbeelding van component diagram](./ontwerpvraag-burak/component-diagram-burak.svg)
 
@@ -233,7 +233,7 @@ In de afbeelding wordt laten zien hoe het component diagram bij het ontwerpvraag
 
 4. Duidelijke scheiding tussen verwerking (BookingVolgorde) en opslag (TripRepository).
 
-#### 7.2.8 Dynamic diagram meerdere endpoints in zelfde API
+#### 7.2.8 Dynamic diagram meerdere endpoints aanroepen in dezelfde API
 
 Dit diagram laat de stappen bij de componenten zien wanneer er meerdere keer dezelfde API wordt aaangeroepen.
 
