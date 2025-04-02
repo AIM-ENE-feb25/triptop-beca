@@ -1,0 +1,32 @@
+@startuml
+actor Reiziger
+participant ReservationController
+participant BookingService
+participant InitialState
+participant HotelBookingState
+participant FlightBookingState
+participant CarBookingState
+participant BookingAdapter
+
+Reiziger -> ReservationController: 1. bookTrip(request: BookingRequest)
+ReservationController -> BookingService: 2. bookTrip(request: BookingRequest)
+
+BookingService -> InitialState: 3. processBooking(BookingRequest request)
+
+InitialState -> HotelBookingState: 4. HotelBookingState();
+HotelBookingState -> BookingAdapter: 5. handleRequest(BookingRequest request, BookingAdapterWrapper adapterWrapper)
+BookingAdapter --> HotelBookingState: 6. hotelBookingResponse
+
+HotelBookingState -> FlightBookingState: 7. FlightBookingState();
+FlightBookingState -> BookingAdapter: 8. handleRequest(BookingRequest request, BookingAdapterWrapper adapterWrapper)
+BookingAdapter --> FlightBookingState: 9. flightBookingResponse
+
+FlightBookingState -> CarBookingState: 10. CarBookingState();
+CarBookingState -> BookingAdapter: 11. handleRequest(BookingRequest request, BookingAdapterWrapper adapterWrapper)
+BookingAdapter --> CarBookingState: 12. carBookingResponse
+
+CarBookingState -> InitialState: 13. InitialState();
+InitialState --> BookingService: 14. return BookingResponse
+BookingService --> ReservationController: 15. return BookingResponse
+ReservationController --> Reiziger: 16. return BookingResponse
+@enduml
