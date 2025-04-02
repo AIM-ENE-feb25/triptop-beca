@@ -17,10 +17,6 @@ public class BookingAdapterWrapper {
         this.bookingAdapter = bookingAdapter;
     }
 
-    public boolean checkAvailability(BookingRequest request) throws BookingException {
-        return bookingAdapter.checkAvailability(request);
-    }
-
     public HotelBookingResponse bookHotel(BookingRequest request) throws BookingException {
         return bookingAdapter.bookHotel(request);
     }

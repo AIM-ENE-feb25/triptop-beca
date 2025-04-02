@@ -7,7 +7,6 @@ import han.triptop.backend.domain.CarRentalResponse;
 import han.triptop.backend.exception.BookingException;
 
 public interface IAdapter {
-    boolean checkAvailability(BookingRequest request) throws BookingException;
     HotelBookingResponse bookHotel(BookingRequest request) throws BookingException;
     FlightBookingResponse bookFlight(BookingRequest request) throws BookingException;
     CarRentalResponse bookCar(BookingRequest request) throws BookingException;

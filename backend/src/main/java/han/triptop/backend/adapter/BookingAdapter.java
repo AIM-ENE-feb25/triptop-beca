@@ -21,32 +21,6 @@ public class BookingAdapter implements IAdapter {
     private String apiHost;
 
     @Override
-    public boolean checkAvailability(BookingRequest request) throws BookingException {
-        try {
-            String url = "https://booking-com15.p.rapidapi.com/api/v1/hotels/getAvailability" +
-                    "?hotel_id=" + request.getHotelId() +
-                    "&currency_code=" + request.getCurrency() +
-                    "&location=" + request.getLocation();
-            // Voorbeeld test URL:
-            // GET https://booking-com15.p.rapidapi.com/api/v1/hotels/getAvailability?hotel_id=5218600&currency_code=USD&location=US
-
-            HttpResponse<JsonNode> response = Unirest.get(url)
-                    .header("x-rapidapi-key", apiKey)
-                    .header("x-rapidapi-host", apiHost)
-                    .asJson();
-
-            if (response.getStatus() == 200) {
-                boolean available = response.getBody().getObject().optBoolean("available", true);
-                return available;
-            } else {
-                throw new BookingException("Failed to check availability, status: " + response.getStatus());
-            }
-        } catch (Exception e) {
-            throw new BookingException("Error checking availability: " + e.getMessage());
-        }
-    }
-
-    @Override
     public HotelBookingResponse bookHotel(BookingRequest request) throws BookingException {
         try {
             String url = "https://booking-com15.p.rapidapi.com/api/v1/hotels/searchHotels" +
