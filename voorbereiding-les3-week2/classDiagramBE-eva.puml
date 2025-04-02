@@ -16,8 +16,8 @@ class RestaurantService {
 abstract class APICaller {
 + executeAPICall(): String
 # login(): void
-# tokenCheck(): void
-# APICall(): String
+# checkToken(): void
+# callAPI(): String
 }
 
 interface RestaurantPort {
@@ -27,8 +27,8 @@ interface RestaurantPort {
 class UberEatsScraperAdapter {
 + getRestaurants(): List<Restaurant>
 # login(): void
-# tokenCheck(): void
-# APICall(): String
+# checkToken(): void
+# callAPI(): String
 }
 
 class Restaurant {
