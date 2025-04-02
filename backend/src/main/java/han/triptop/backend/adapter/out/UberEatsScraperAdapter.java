@@ -32,7 +32,6 @@ public class UberEatsScraperAdapter extends APICaller implements RestaurantPort 
     @Override
     public void checkToken() {
         this.token = null;
-        // uitleggen in SGB/comment dat deze leeg is en later geimplementeerd moet worden
     }
 
     @Override
