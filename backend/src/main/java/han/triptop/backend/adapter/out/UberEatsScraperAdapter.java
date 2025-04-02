@@ -26,7 +26,7 @@ public class UberEatsScraperAdapter extends APICaller implements RestaurantPort 
 
     @Override
     public void login() {
-        System.out.println("login bij de externe API");
+        System.out.println("login bij de externe Uber Eats API");
     }
 
     @Override
