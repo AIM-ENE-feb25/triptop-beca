@@ -60,7 +60,6 @@ public class UberEatsScraperAdapter extends APICaller implements RestaurantPort 
                     .body(body)
                     .asJson();
 
-
             return response.getBody().toString();
         } catch (UnirestException ue) {
             throw new RuntimeException("Er ging iets mis bij het ophalen van de data van Uber Eats.", ue);
