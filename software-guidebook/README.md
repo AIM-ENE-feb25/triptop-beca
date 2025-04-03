@@ -242,10 +242,9 @@ Hetzelfde gelt voor stap negen uiteraard.
 
 ![Afbeelding van class diagram](ontwerpvraag-cas/class-diagram-cas.svg)
 
-Dit klassendiagram laat zien hoe de Triptop backend API-verzoeken verwerkt.
-De ApiClient-interface bepaalt hoe API-verzoeken moeten worden verstuurd. De ApiGateway implementeert deze interface en handelt de communicatie met externe systemen af.
-De ValidationService controleert of de ontvangen en verzonden data correct is. De LoggingService registreert API-verzoeken, responses en versies voor traceerbaarheid.
-De TriptopBackend gebruikt deze services om API-verzoeken te verwerken. Eerst wordt het verzoek via de ApiGateway verstuurd. Vervolgens wordt de data gevalideerd en wordt alles gelogd. Dit zorgt voor een veilige en betrouwbare API-communicatie.
+Het klassendiagram toont de structuur van het systeem voor het ophalen van vluchtgegevens via verschillende API-versies. De architectuur is gebaseerd op het State Pattern, wat zorgt voor een flexibele overgang tussen API-versies zonder dat de service expliciet verantwoordelijk is voor het wisselen van strategieën.
+
+De ApiState-interface is de basis voor de API-states en bevat methoden om vluchtgegevens op te halen en over te schakelen naar een volgende staat. Deze interface wordt geïmplementeerd door ApiV1 en ApiV2, die elk hun eigen versie van getFlights() bevatten. De API's houden daarnaast een referentie bij naar een volgende API-state, zodat de overgang naar een nieuwere API-versie eenvoudig kan worden beheerd.
 
 #### 7.3.2. Class diagram toevoegen van een nieuwe externe service
 
