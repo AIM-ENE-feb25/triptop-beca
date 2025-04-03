@@ -40,6 +40,11 @@ De reisagent is een medewerker van Triptop die de reiziger ondersteunt bij het p
 
 We hebben ervoor gekozen om de reisagent niet op te nemen in het context diagram, omdat de reisagent momenteel niet met het systeem communiceert. De reiziger communiceert voor nu telefonisch met de reisagent.
 
+Zodra wij wel iets gaan maken voor de reisagent, gaan we eerst een 'freemium' model bedenken als uitbreiding op de (latere) registratie pagina waarin we 3 tiers hebben:
+- TripTop free - Plan en boek je reis geheel gratis, betaal alleen de aanbieders van overnachting (inkomsten via affiliate marketing)
+- TripTop NoStress - Raadpleeg al je boekingen en status ook als je offline bent in de middel of nowhere, al je wijzigingen worden geregistreerd en gesynchroniseerd zodra je weer wifi heb. Ook kun je 3 maal tijdens je reis gratis een reisagent raadplegen die expert is in jouw gekozen gebied voor leuke lokale activiteiten
+- TripTop Gold - Offline functionaliteit, en daarnaast ook tot 5x per reisdag raadplegen van de reisagent, voor niet alleen leuke activiteiten, maar ook leuke en betaalbare overnachtingsplekken erbij weet, voor alle gaten in je reis.
+
 ### Externe systemen
 
 De Triptop applicatie maakt gebruik van verschillende externe systemen. We hebben nog geen keuze gemaakt voor de specifieke API's die we gaan gebruiken voor de verschillende bouwstenen. Hierom hebben we deze onderdelen opgenomen in het diagram als **Provider** van de bijpassende bouwstenen, zoals "Overnachtingprovider" en "Autoverhuurprovider".
