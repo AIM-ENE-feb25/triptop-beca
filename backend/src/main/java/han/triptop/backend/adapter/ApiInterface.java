@@ -1,4 +1,4 @@
-package han.triptop.backend.booking_api;
+package han.triptop.backend.adapter;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
 import han.triptop.backend.domain.Flight;

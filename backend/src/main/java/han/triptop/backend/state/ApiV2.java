@@ -1,11 +1,11 @@
-package han.triptop.backend.booking_api;
+package han.triptop.backend.state;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import han.triptop.backend.adapter.ApiInterface;
 import han.triptop.backend.domain.Flight;
-import han.triptop.backend.state.ApiState;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
