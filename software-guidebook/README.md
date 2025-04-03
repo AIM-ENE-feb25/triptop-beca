@@ -459,7 +459,7 @@ Het sequence diagram laat de volgorde zien van de verschillende klassen en state
 1. **De Reiziger stuurt een boekingsaanvraag naar de ReservationController met de details van de reis en de ReservationController stuurt de aanvraag door naar de BookingService.**
 2. **De BookingService ontvangt de aanvraag en roept de InitialState aan om de boeking te verwerken.**
 3. **De InitialState roept als eerst HotelBookingState aan die vervolgens met de adapter communiceert. De HotelBookingState krijgt een response terug en switcht van state. Dit gebeurt nog is twee keer van vlucht naar auto en dan terug naar de InitialState.**
-4. **Elke state returnt zijn response naar de BookingService en de service returnt de response terug naar de controller en uiteindelijk de reiziger.**
+4. **Elke state returnt zijn response naar de BookingService en de service returnt de response terug naar de controller en uiteindelijk naar de reiziger.**
 
 Er zijn geen edge cases meegenomen in het diagram, aangezien deze buiten de scope van de ontwerpvraag vallen.
 
