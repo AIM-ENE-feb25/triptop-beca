@@ -12,21 +12,24 @@ import org.springframework.stereotype.Service;
 @Service
 public class BookingService {
     private final BookingAdapterWrapper adapterWrapper;
+    private BookingState currentState;
 
     @Autowired
     public BookingService(BookingAdapterWrapper adapterWrapper) {
         this.adapterWrapper = adapterWrapper;
+        this.currentState = new InitialState();
+    }
+
+    public void setState(BookingState state) {
+        this.currentState = state;
+    }
+
+    public BookingState getCurrentState() {
+        return currentState;
     }
 
     public BookingResponse processBooking(BookingRequest request) throws BookingException {
-        BookingState currentState = new InitialState();
-
-
-        currentState.handleRequest(request, adapterWrapper);
-        currentState.handleRequest(request, adapterWrapper);
-        currentState.handleRequest(request, adapterWrapper);
-        currentState.handleRequest(request, adapterWrapper);
-
+        currentState.handleRequest(this, request, adapterWrapper);
         return new BookingResponse("Booking completed successfully.", true);
     }
 }
