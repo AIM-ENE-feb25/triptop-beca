@@ -41,6 +41,7 @@ De reisagent is een medewerker van Triptop die de reiziger ondersteunt bij het p
 We hebben ervoor gekozen om de reisagent niet op te nemen in het context diagram, omdat de reisagent momenteel niet met het systeem communiceert. De reiziger communiceert voor nu telefonisch met de reisagent.
 
 Zodra wij wel iets gaan maken voor de reisagent, gaan we eerst een 'freemium' model bedenken als uitbreiding op de (latere) registratie pagina waarin we 3 tiers hebben:
+
 - TripTop free - Plan en boek je reis geheel gratis, betaal alleen de aanbieders van overnachting (inkomsten via affiliate marketing)
 - TripTop NoStress - Raadpleeg al je boekingen en status ook als je offline bent in de middel of nowhere, al je wijzigingen worden geregistreerd en gesynchroniseerd zodra je weer wifi heb. Ook kun je 3 maal tijdens je reis gratis een reisagent raadplegen die expert is in jouw gekozen gebied voor leuke lokale activiteiten
 - TripTop Gold - Offline functionaliteit, en daarnaast ook tot 5x per reisdag raadplegen van de reisagent, voor niet alleen leuke activiteiten, maar ook leuke en betaalbare overnachtingsplekken erbij weet, voor alle gaten in je reis.
@@ -363,6 +364,7 @@ Voor meer informatie over het Template Method Pattern, zie de volgende bron:
 ![Afbeelding van sequence diagram](./ontwerpvraag-eva/sequence-diagram-eva.svg)
 
 Bovenstaand diagram geeft de stappen weer om restaurantdata op te halen. Het diagram geeft alleen het happy path weer. Er zijn dus geen edge cases meegenomen, zoals het mislukken van de API aanroep. Als de API aanroep mislukt, wordt er een foutmelding teruggegeven aan de reiziger. De stappen zijn als volgt:
+
 1. De reiziger stuurt een POST request naar de `RestaurantController` met een `RestaurantDTO` (een query en een address);
 2. `RestaurantController` roept `RestaurantService` aan met `getRestaurants(query, address)`;
 3. `RestaurantService` roept `UberEatsScraperAdapter` aan met `getRestaurants(query, address)` om de API-aanroep te doen;
@@ -483,20 +485,56 @@ Er zijn geen edge cases meegenomen in het diagram, aangezien deze buiten de scop
 
 Om de software te installeren en te kunnen draaien, volg je de onderstaande stappen:
 
-1. Clone de repository: Begin met het klonen van de projectrepository naar je lokale machine. Dit kan onder andere met het volgende command:
+### Wat heb je vantevoren nodig?
+
+De volgende software heb je nodig om de Triptop Applicatie te kunnen draaien:
+
+- **Redis:** Redis kan je installeren door [deze tutorial](https://redis.io/docs/latest/operate/oss_and_stack/install/install-redis/) van de officiele redis website te volgen.
+- **Java:** De programmeer taal waarop de Triptop Applicatie gemaakt is.
+- **Maven:** Nodig voor de programma en libraries die gebruikt zijn.
+- **IntelliJ Idea:** Om de programma op te starten en verder uit te breiden.
+
+### Installatie stappen
+
+#### Clone de repository
+
+Begin met het klonen van de projectrepository naar je lokale machine. Dit kan onder andere met het volgende command:
+
 ```bash
 git clone https://github.com/AIM-ENE-feb25/triptop-beca.git
 ```
 
-2. Installeer de benodigde software: Zorg ervoor dat je Java 21 of hoger geïnstalleerd hebt. Installeer Maven als je dat nog niet hebt gedaan.
+#### Start redis
 
-3. Depenencies installeren: Navigeer naar de projectdirectory en voer het volgende commando uit om de dependencies te installeren:
+Start redisdoor de volgende commando in te voeren:
+
+```
+sudo service redis-server start
+```
+
+Om te checken of je redis server werkt, kan je de in de cli gaan door `redis-cli` in je command line in te voeren. Je resultaat hoort er als volgt uit te zien:
+
+```
+127.0.0.1:6379> ping
+PONG
+```
+
+#### Installeer dependencies
+
+Navigeer naar de projectdirectory en voer het volgende commando uit om de dependencies te installeren:
+
 ```bash
 mvn install
 ```
 
-4. Start de applicatie: Start de applicatie op door in IntelliJ op de start knop rechtsboven te drukken.
-5. API testen met Postman: Gebruik Postman om de verschillende endpoints van de applicatie te testen. Bijvoorbeeld, je kunt de GET /flights endpoint testen door de juiste parameters zoals from, to, en date mee te geven:
+#### Start de applicatie
+
+Start de applicatie op door in IntelliJ op de start knop rechtsboven te drukken.
+
+#### Test de API endpoints met Postman
+
+Gebruik Postman om de verschillende endpoints van de applicatie te testen. Bijvoorbeeld, je kunt de GET /flights endpoint testen door de juiste parameters zoals from, to, en date mee te geven:
+
 ```http request
 http://localhost:8080/flights?from=EIN&to=BCN&date=2025-05-03
 ```
