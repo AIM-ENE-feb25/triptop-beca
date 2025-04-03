@@ -311,16 +311,25 @@ De TriptopBackend gebruikt deze services om API-verzoeken te verwerken. Eerst wo
 #### 7.3.2. Class diagram toevoegen van een nieuwe externe service
 
 ![Afbeelding van class diagram](./ontwerpvraag-eva/class-diagram-eva.svg)
+Dit klassendiagram geeft de klassen weer die betrokken zijn bij het ophalen van restaurantdata via de externe service.
 
-Om binnen de adapters consistentie te behouden in de manier waarop externe API’s worden aangeroepen, passen we het Template Method Pattern toe. De abstracte klasse `APICaller` definieert de structuur van een API-aanroep via `executeAPICall()`. Deze methode bepaalt de vaste volgorde van stappen, namelijk het controleren van de token, eventueel inloggen en de daadwerkelijke API-aanroep. <!-- parameters toelichten -->
+Om binnen de adapters consistentie te behouden in de manier waarop externe API’s worden aangeroepen, passen we het Template Method Pattern toe. De abstracte klasse `APICaller` definieert de structuur van een API-aanroep via `executeAPICall()`. Deze methode bepaalt de vaste volgorde van stappen, namelijk het controleren van de token, eventueel inloggen en de daadwerkelijke API-aanroep.
 
-In `checkToken()` wordt gecontroleerd of er een geldige acccess token beschikbaar is. Zo niet, dan wordt `login()` uitgevoerd. In `login()` wordt de access token opgehaald bij de officiële API’s. Omdat we in het prototype werken met mockAPI’s via RapidAPI (waar geen token vereist is), wordt in `checkToken()` de token op null gezet. `login()` print een String dat er is ingelogd, maar bevat nog geen inloglogica. Het was de bedoeling om de API key en URL op te halen uit application.properties in de loginmethode, zodat het nut van het Template Method pattern gedemonstreerd kon worden. Echter lukte dit niet, dus wordt dit via de constructor van de adapters gedaan.
+In `checkToken()` wordt gecontroleerd of er een geldige access token beschikbaar is. Zo niet, dan wordt `login()` uitgevoerd. In `login()` wordt de access token opgehaald bij de officiële API. Omdat we in het prototype werken met mockAPI’s via RapidAPI (waar geen token vereist is), wordt in `checkToken()` de token op 'null' gezet. `login()` print een String dat er is ingelogd, maar bevat nog geen inloglogica. Het was de bedoeling om de API key en URL op te halen uit application.properties in de loginmethode, zodat het nut van het Template Method Pattern gedemonstreerd kon worden. Echter lukte dit niet, dus wordt dit via de constructor van de adapters gedaan.
 
-`callAPI()` voert de daadwerkelijke API aanroep uit. De adapterklassen zelf verzorgen de concrete invulling van deze methoden per aanbieder. Dit zorgt voor een herbruikbare en consistente aanroepstructuur.
+`callAPI()` voert de daadwerkelijke API aanroep uit. De adapterklassen zelf verzorgen de concrete invulling van deze methode per aanbieder.
 
-<!-- uitleggen welk probleem dit pattern oplost -->
+Dit zorgt voor een herbruikbare en consistente aanroepstructuur, terwijl de specifieke implementatie voor iedere aanbieder flexibel blijft. Dit is van belang in de constructiefase, wanneer we met de officiële API's gaan werken. De Template Method Pattern garandeert dat er eerst wordt ingelogd, mits er niet al een geldige token bestaat, en pas daarna een API aanroep gedaan wordt.
 
 > De Location class uit het domeinmodel is weggelaten i.v.m. leesbaarheid van het diagram.
+
+Voor meer informatie over Template Method Pattern, zie de volgende bron:
+
+- Het artikel [Template Method Design Pattern in Java](https://www.geeksforgeeks.org/template-method-design-pattern-in-java/) van Geeks for Geeks geeft een praktische uitleg van het pattern in Java.
+
+##### Sequence Diagram toevoegen van een nieuwe externe service
+
+![Afbeelding van sequence diagram](./ontwerpvraag-eva/sequence-diagram-eva.svg)
 
 #### 7.3.3. Class diagram aanroepen van externe services die niet beschikbaar zijn
 
@@ -398,7 +407,7 @@ Dit geldt voor de volgende klasse. De domein klasse, de exception klassen en de 
 Dit is zo gedaan om de cohesie te vergroten. Daarnaast is er in het diagram te zien dat initialstate over gaat naar de hotelbookingstate, maar deze state niet naar de andere. Dit is zo gedaan om geen verwarring op te wekken, aangezien ze in werkelijkheid elkaar niet aanroepen, maar switchen van state.
 De switchen van states wordt gedaan door de aanroep van een methode en de code in de service. Voor verduidelijking kijk naar sequencediagram meerdere endpoints aanroepen in dezelfde API.
 
-##### Sequence diagram - meerdere endpoints aanroepen in dezelfde API
+##### Sequence diagram meerdere endpoints aanroepen in dezelfde API
 
 ![Sequence diagram](./ontwerpvraag-burak/sequence-diagram-burak.svg)
 
