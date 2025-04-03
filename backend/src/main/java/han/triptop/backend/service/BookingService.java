@@ -22,10 +22,10 @@ public class BookingService {
         BookingState currentState = new InitialState();
 
 
-        currentState = currentState.handleRequest(request, adapterWrapper);
-        currentState = currentState.handleRequest(request, adapterWrapper);
-        currentState = currentState.handleRequest(request, adapterWrapper);
-        currentState = currentState.handleRequest(request, adapterWrapper);
+        currentState.handleRequest(request, adapterWrapper);
+        currentState.handleRequest(request, adapterWrapper);
+        currentState.handleRequest(request, adapterWrapper);
+        currentState.handleRequest(request, adapterWrapper);
 
         return new BookingResponse("Booking completed successfully.", true);
     }
