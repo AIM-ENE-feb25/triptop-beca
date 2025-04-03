@@ -18,17 +18,19 @@ Daarom zoeken we een structuur waarmee we eenvoudig een nieuwe externe service k
 
 | Forces                           | Directe koppeling met API-implementatieklasse (zonder interface) | Centrale API-gatewayklasse                           | Ports en Adapters                              |
 | -------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------- |
-| Uitbreidbaarheid (OCP)           | - (Nieuwe aanbieder vereist wijziging service)                   | - (Nieuwe aanbieder vereist wijziging gatewayklasse) | + (Nieuwe adapter toevoegen)                   |
-| Herbruikbare structuur           | - (Geen gedeelde interface of abstractie)                        | - (Alles in één klasse, dus beperkt per aanbieder)   | + (Via adapters en ports)                      |
+| Uitbreidbaarheid (OCP)           | - (Nieuwe aanbieder vereist wijziging service)                   | - (Nieuwe aanbieder vereist wijziging gatewayklasse. Kan bij veel externe API's erg onoverzichtelijk worden) | + (Nieuwe adapter toevoegen zonder wijzigingen in controller of service)                   |
+| Herbruikbare structuur           | - (Geen gedeelde interface of abstractie)                        | - (Alles in één klasse, dus beperkt per aanbieder.)   | + (Via adapters en ports)                      |
 | Afhankelijkheid                  | - (Service hangt direct af van concrete implementatieklasse)     | - (Service hangt af van gatewayklasse)               | + (Service hangt alleen af van port-interface) |
-| Complexiteit                     | + (Gemakkelijk en snel te implementeren)                         | + (Gemakkelijk te begrijpen en beheren)              | - (Meer structuur nodig)                       |
-| Consistente manier van aanroepen | - (Geen vaste structuur)                                         | + (Centrale plek om consistentie af te dwingen)      | + (Afgedwongen via adapter-structuur)          |
+| Complexiteit                     | + (Gemakkelijk en snel te implementeren)                         | + (Gemakkelijk te begrijpen en beheren)              | - (Meer structuur nodig. Nieuwe teamleden zijn mogelijk niet bekend met hexagonale architectuur.)                       |
+| Mogelijk om vaste aanroepstructuur af te dwingen voor bijv. inloggen (m.b.v. Template Method Pattern) | - (Service spreekt direct implementatieklassen aan) | - (Alle API aanroepen zitten in één klasse.) | + (Structuur van aanroep is te centraliseren in abstracte klasse naast de interface) |
 
 ## Beslissing
 
 We kiezen voor de Ports & Adapters-architectuur (hexagonale architectuur). Hierdoor spreken services niet direct met concrete klassen, maar gebruiken ze een port-interface die door externe adapters wordt geïmplementeerd. Elke externe service (zoals Uber Eats of Booking.com) heeft zijn eigen adapter, die de interface van de bijbehorende bouwsteen implementeert.
 
-Deze structuur maakt het mogelijk om een nieuwe externe service toe te voegen zonder de bestaande code te wijzigen. De service hoeft alleen de interface te gebruiken. Dit sluit aan op het Open/Closed Principle (OCP) en het Dependency Inversion Principle (DIP), waarbij je afhankelijk bent van abstracties in plaats van concrete implementaties.
+Deze structuur maakt het mogelijk om een nieuwe externe service toe te voegen zonder de bestaande code te wijzigen. De service hoeft alleen de interface te gebruiken. Dit sluit aan op het [Open/Closed Principle](../README.md#61-openclosed-principe) (OCP) en het [Dependency Inversion Principle](../README.md#62-dependency-inversion-principe) (DIP), waarbij je afhankelijk bent van abstracties in plaats van concrete implementaties. 
+
+Daarnaast is deze architectuur goed te combineren met het [Template Method Pattern](../README.md#732-class-diagram-toevoegen-van-een-nieuwe-externe-service). Hierdoor kan de structuur van het aanroepen van externe API's gegarandeerd worden. 
 
 Voor meer informatie over de hexagonale architectuur, zie de volgende bronnen:
 
