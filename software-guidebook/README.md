@@ -190,9 +190,9 @@ De frontend applicatie communiceert met de backend, die de benodigde gegevens ui
 
 ![Afbeelding van dynamisch login container diagram](./login-diagram.svg)
 
-Dit diagram beschrijft de dynamische architectuur van de Triptop applicatie tijdens het inloggen van een reiziger. De reiziger start de authenticatie door zijn inloggegevens in te voeren op de frontend applicatie, die ontwikkeld is met React.js en Vite. De frontend stuurt vervolgens een authenticatieverzoek naar de WireMock API. Als de verificatie succesvol is, ontvangt de frontend een token van de WireMock API.
+Dit diagram beschrijft de dynamische architectuur van de Triptop applicatie bij het inloggen van de reiziger. De reiziger start de authenticatie door zijn inloggegevens in te voeren op de frontend van de applicatie. De frontend stuurt vervolgens een authenticatieverzoek naar de WireMock API. Als de verificatie succesvol is, ontvangt de frontend een token van de WireMock API.
 
-Met deze token stuurt de frontend een validatieverzoek naar de backend, die ontwikkeld is met Java en Spring Boot. De backend controleert de token en haalt de bijbehorende gegevens op uit de database. Na het ophalen van de gegevens stuurt de backend het resultaat van de inlogpoging terug naar de frontend. Als alles correct is verlopen, wordt de reiziger ingelogd en krijgt hij/zij toegang tot de applicatie.
+Met deze token stuurt de frontend een validatieverzoek naar de backend. De backend controleert de token en haalt de bijbehorende gegevens op uit de database. Na het ophalen van de gegevens stuurt de backend het resultaat van de inlogpoging terug naar de frontend. Als alles correct is verlopen, wordt de reiziger ingelogd en krijgt hij/zij toegang tot de applicatie.
 
 Dit diagram toont alleen de happy path. Edge cases zijn momenteel nog niet in de scope en worden later behandeld.
 
@@ -200,9 +200,9 @@ Dit diagram toont alleen de happy path. Edge cases zijn momenteel nog niet in de
 
 ![Afbeelding van dynamisch reis boeken container diagram](./boeken-diagram.svg)
 
-Dit diagram beschrijft de dynamische architectuur van de Triptop applicatie wanneer een reiziger een reis plant en boekt. De reiziger begint door een reis samen te stellen via de frontend applicatie, die ontwikkeld is met React.js en Vite. De frontend stuurt de ingevoerde reisgegevens door naar de backend, die ontwikkeld is met Java en Spring Boot.
+Dit diagram beschrijft de dynamische architectuur van de Triptop applicatie wanneer een reiziger een reis plant en boekt. De reiziger begint door een reis samen te stellen via de frontend van de applicatie. De frontend stuurt de ingevulde reisgegevens door naar de backend.
 
-De backend verwerkt deze gegevens en slaat de boeking op in de database. Zodra het opslaan van de data voltooid is, stuurt de backend een bevestiging terug naar de frontend. De frontend toont vervolgens de bevestiging aan de reiziger, die hiermee geïnformeerd wordt dat zijn/haar reis succesvol is geboekt.
+De backend verwerkt deze gegevens en slaat de boeking op in de database. Zodra de data opgeslagen is, stuurt de backend een bevestiging hiervan naar de frontend. De frontend toont vervolgens de bevestiging aan de reiziger, die hiermee geïnformeerd wordt dat zijn/haar reis succesvol is geboekt.
 
 Dit diagram toont alleen de happy path. Edge cases zijn momenteel nog niet in de scope en worden later behandeld.
 
@@ -221,7 +221,7 @@ De Flight Service verzorgt de communicatie met de ApiV1 en ApiV2 componenten, af
 Tijdens het uitprogrammeren van het prototype ontstond er een misverstand. Het werd later pas duidelijk dat de ApiInterface eigenlijk dezelfde functionaliteit heeft als de ApiState en dat het eigenlijk maar één bestand hoefte te zijn. Toch is er besloten om de ApiInterface te houden aangezien deze al was geïmplementeerd en het tijd zou kosten om het er uit te halen.
 
 In de tekening is ook de API Gateway te zien. We hebben gekozen om deze niet meer te gebruiken, maar nog wel te tonen in onze diagrammen.
-De beslissing voor het niet gebruiken van de API Gateway wordt benoemt in [adr 004](./adrs/004-api_gateway.md).
+De beslissing voor het niet gebruiken van de API Gateway wordt benoemt in [ADR-004](./adrs/004-api_gateway.md).
 
 #### 7.2.2 Dynamic diagram integriteit externe API's
 
@@ -239,15 +239,15 @@ Nadat de juiste gegevens zijn opgehaald, stuurt de ApiState-component de vluchti
 Tijdens het uitprogrammeren van het prototype ontstond er een misverstand. Het werd later pas duidelijk dat de ApiInterface eigenlijk dezelfde functionaliteit heeft als de ApiState en dat het eigenlijk maar één bestand hoefte te zijn. Toch is er besloten om de ApiInterface te houden aangezien deze al was geïmplementeerd en het tijd zou kosten om het er uit te halen.
 
 In de tekening is ook de API Gateway te zien. We hebben gekozen om deze niet meer te gebruiken, maar nog wel te tonen in onze diagrammen.
-De beslissing voor het niet gebruiken van de API Gateway wordt benoemt in [adr 004](./adrs/004-api_gateway.md).
+De beslissing voor het niet gebruiken van de API Gateway wordt benoemt in [ADR-004](./adrs/004-api_gateway.md).
 
 #### 7.2.3 Component diagram toevoegen van een nieuwe externe service
 
 ![Afbeelding van component diagram](./ontwerpvraag-eva/component-diagram-eva-1.svg)
 
-Dit diagram laat de componenten uit de back-end zien die betrokken zijn bij het ophalen van restaurantdata via de externe service. De structuur is ingericht volgens een [hexagonale architectuur](#keuze-1). De `RestaurantService` communiceert niet direct met de API-implementatieklasse, maar maakt gebruik van een port-interface (RestaurantPort) die wordt geïmplementeerd door een adapterklasse (UberEatsScraperAdapter).
+Dit diagram geeft de componenten uit de back-end weer die betrokken zijn bij het ophalen van restaurantdata via de externe service. De structuur is ingericht volgens de [hexagonale architectuur](./adrs/006-nieuwe-service.md). De `RestaurantService` communiceert niet direct met de API-implementatieklasse, maar maakt gebruik van een port-interface (RestaurantPort) die wordt geïmplementeerd door een adapterklasse (UberEatsScraperAdapter).
 
-De adapter is verantwoordelijk voor de communicatie met de externe Uber Eats API en zet de ontvangen data om naar de structuur van het domeinmodel. Binnen de adapter wordt het Template Method Pattern toegepast om de aanroep van de externe API te structureren. Dit houdt in dat de abstracte klasse, `APICaller`, de vaste stappen van de API-aanroep definieert. Deze structuur wordt verder toegelicht in de paragraaf [Class diagram toevoegen van een nieuwe externe service](#724-dynamic-diagram-toevoegen-van-een-nieuwe-externe-service).
+De adapter is verantwoordelijk voor de communicatie met de externe Uber Eats Scraper API en zet de ontvangen data om naar de structuur van het domeinmodel. Binnen de adapter wordt het Template Method Pattern toegepast om de aanroep van de externe API te structureren. Dit houdt in dat de abstracte klasse, `APICaller`, de vaste stappen van de API-aanroep definieert. Deze structuur wordt verder toegelicht in de paragraaf [Class diagram toevoegen van een nieuwe externe service](#732-class-diagram-toevoegen-van-een-nieuwe-externe-service).
 
 Bovenstaand diagram is beperkt tot de aanroep van restaurantdata. Andere bouwstenen (zoals hotels of autoverhuur) volgen dezelfde structuur, maar zijn niet in dit diagram meegenomen. Om dit te verduidelijken hebben we een diagram gemaakt waar, als voorbeeld, een tweede externe restaurantservice (Tripadvisor) is toegevoegd en een externe hotelservice (Booking COM). Dit diagram is opgenomen in [Bijlage A - Voorbeeld toevoegen van een externe service en stappenplan](./bijlageA.md), samen met een concreet stappenplan hoe je een nieuwe feature toevoegd.
 
@@ -255,21 +255,23 @@ Bovenstaand diagram is beperkt tot de aanroep van restaurantdata. Andere bouwste
 
 ![Afbeelding van component diagram](./ontwerpvraag-eva/dynamic-diagram-eva.svg)
 
-Dit diagram laat zien hoe de componenten samenwerken tijdens een runtime-scenario waarin de gebruiker restaurants opvraagt via de frontend. De service roept via de port de adapter aan, die vervolgens met de externe API communiceert. De interactie tussen de componenten is gebaseerd op de Ports en Adapters structuur en maakt gebruik van het Template Method Pattern om de stappen binnen de API-aanroep (zoals authenticatie en dataverwerking) te structureren. Dit diagram is beperkt tot de aanroep van restaurantdata. Andere bouwstenen (zoals hotels of autoverhuur) volgen dezelfde structuur, maar zijn niet in dit diagram meegenomen.
+Dit diagram laat zien hoe de componenten samenwerken tijdens een runtime-scenario waarin de gebruiker restaurants opvraagt via de front-end. De service roept via de port de adapter aan, die vervolgens met de externe API communiceert. De interactie tussen de componenten is gebaseerd op de Ports en Adapters structuur en maakt gebruik van het Template Method Pattern om de stappen binnen de API-aanroep (zoals authenticatie en dataverwerking) te structureren. 
+
+Dit diagram is beperkt tot de aanroep van restaurantdata. Andere bouwstenen (zoals hotels of autoverhuur) volgen dezelfde structuur, maar zijn niet in dit diagram meegenomen.
 
 #### 7.2.5 Component diagram aanroepen van externe services die niet beschikbaar zijn
 
 ![Afbeelding van component diagram](./ontwerpvraag-atakan/component-diagram-atakan.svg)
 
-Dit component diagram toont de architectuur van het **Triptop** systeem, met name over de backend. De **Triptop Applicatie** stuurt verzoeken naar de backend, die bestaat uit meerdere componenten zoals de **EatsController**, **EatsService**, **EatsAdapter** en **EatsRepository**. Deze backend verwerkt API-aanvragen, beheert data en communiceert met externe systemen zoals de **UberEats API** en een **Redis Cache** voor tijdelijke opslag van restaurantgegevens.
+Dit component diagram toont de architectuur van het **Triptop** systeem, met name die van de backend. De **Triptop Applicatie** stuurt verzoeken naar de backend, die bestaat uit meerdere componenten zoals de **EatsController**, **EatsService**, **EatsAdapter** en **EatsRepository**. De backend verwerkt API-aanvragen, beheert data en communiceert met externe systemen zoals de **UberEats API** en een **Redis Cache** voor tijdelijke opslag van restaurantgegevens.
 
-##### Wat voor keuzes zijn er gemaakt?
+##### Welke keuzes zijn er gemaakt?
 
-Tijdens het ontwerpen van mijn prototype, kwam ik erachter dat er meerdere manieren waren om mijn onderzoeksvraag te beantwoorden. Hierdoor zat ik te twijvelen tussen een alternatieve API of de Redis Cache. Uiteindelijk heb ik voor de redis cache gekozen. Mijn redenering is te vinden in [ADR 7](./adrs/007-api_or_cache.md).
+Tijdens het ontwerpen van mijn prototype, kwam ik erachter dat er meerdere manieren waren om mijn onderzoeksvraag te beantwoorden. Hierdoor twijfelde ik tussen een alternatieve API of de Redis Cache. Uiteindelijk heb ik voor de redis cache gekozen. Mijn redenering is te vinden in [ADR-7](./adrs/007-api_or_cache.md).
 
 Voor mijn ontwerp heb ik gekozen voor het **Strategy Pattern**. Dit patroon maakt het mogelijk om flexibel te schakelen tussen verschillende strategieën als de UberEats API tijdelijk niet beschikbaar is. Bijvoorbeeld, in plaats van een foutmelding te geven, kan de applicatie overschakelen op een caching-strategie met Redis. Het Strategy Pattern heb ik geintegreerd in het [code diagram](#733-class-diagram-aanroepen-van-externe-services-die-niet-beschikbaar-zijn).
 
-Voor de meest passende principe koos ik voor de **Open/Closed Principle (OCP)**. Dit principe stelt dat softwarecomponenten open moeten zijn voor uitbreiding, maar gesloten voor modificatie. Dit sluit goed aan bij het Strategy Pattern, omdat nieuwe strategieën kunnen worden toegevoegd zonder bestaande code te wijzigen. Hierdoor blijft de architectuur flexibel en onderhoudbaar. Informatie over de Open/Closed principe is te vinden in [de principes hoofdstuk](#61-openclosed-principe) en de code implementatie is te zien in mijn [code diagram](#733-class-diagram-aanroepen-van-externe-services-die-niet-beschikbaar-zijn).
+Voor het meest passende principe koos ik voor het **Open/Closed Principle (OCP)**. Dit principe stelt dat softwarecomponenten open moeten zijn voor uitbreiding, maar gesloten voor modificatie. Dit sluit goed aan bij het Strategy Pattern, omdat nieuwe strategieën kunnen worden toegevoegd zonder bestaande code te wijzigen. Hierdoor blijft de architectuur flexibel en onderhoudbaar. Informatie over het Open/Closed principe is te vinden in [de principes hoofdstuk](#61-openclosed-principe) en de code implementatie is te zien in mijn [code diagram](#733-class-diagram-aanroepen-van-externe-services-die-niet-beschikbaar-zijn).
 
 #### 7.2.6 Dynamic diagram aanroepen van externe services die niet beschikbaar zijn
 
@@ -320,8 +322,8 @@ Componenten in de backend:
 
 ##### Extra toelichting
 
-Het component diagram maakt gebruik van een state pattern. Dit is in het diagram te zien in de vorm van de Booking States component. Er werd hiervoor gekozen, omdat de koppeling tussen de vier gebruikte states hoog zijn(voor meer uitleg bekijk ADR 8 in hoofdstuk 8).
-De details van de states worden uitgelicht in het klassediagram (te zien op hoofdstuk 7.3.4). Voor de design principe werd er gekozen voor een open/closed design. Dit staat nauw in verband met de states, die niet worden veranderd, maar wel uitgebreid kunnen worden.
+Het component diagram maakt gebruik van een state pattern. Dit is in het diagram te zien in de vorm van de Booking States component. Er werd hiervoor gekozen, omdat de koppeling tussen de vier gebruikte states hoog is (voor meer uitleg, bekijk [ADR-008](./adrs/008-pattern-keuze.md)).
+De details van de states worden uitgelicht in het [klassediagram](#734-class-diagram-meerdere-endpoints-aanroepen-in-dezelfde-api). Voor het design principe is er gekozen voor een open/closed design. Dit staat nauw in verband met de states, die niet worden veranderd, maar wel uitgebreid kunnen worden.
 Het diagram laat ook een repository en database zien. Dit is meegenomen in het diagram om het verband tussen de componenten te kunnen laten zien, maar vallen wel buiten de scope van de ontwerpvraag.
 Hierdoor is ervoor gekozen bij nader inzien en overleg met een docent om dit buitenwege te laten bij de gemaakte prototype.
 
@@ -402,7 +404,7 @@ Voor meer informatie over het Template Method Pattern, zie de volgende bron:
 
 ![Afbeelding van sequence diagram](./ontwerpvraag-eva/sequence-diagram-eva.svg)
 
-Bovenstaand diagram geeft de stappen weer om restaurantdata op te halen. Het diagram geeft alleen het happy path weer. Er zijn dus geen edge cases meegenomen, zoals het mislukken van de API aanroep. Als de API aanroep mislukt, wordt er een foutmelding teruggegeven aan de reiziger. De stappen zijn als volgt:
+Bovenstaand diagram geeft de stappen weer om restaurantdata op te halen. Het diagram geeft alleen de happy path weer. Er zijn dus geen edge cases meegenomen, zoals het mislukken van de API aanroep. Als de API aanroep mislukt, wordt er een foutmelding teruggegeven aan de reiziger. De stappen zijn als volgt:
 
 1. De reiziger stuurt een POST request naar de `RestaurantController` met een `RestaurantDTO` (een query en een address);
 2. `RestaurantController` roept `RestaurantService` aan met `getRestaurants(query, address)`;
@@ -524,20 +526,20 @@ Er zijn geen edge cases meegenomen in het diagram, aangezien deze buiten de scop
 
 Om de software te installeren en te kunnen draaien, volg je de onderstaande stappen:
 
-### Wat heb je vantevoren nodig?
+### Wat heb je nodig?
 
 De volgende software heb je nodig om de Triptop Applicatie te kunnen draaien:
 
 - **Redis:** Redis kan je installeren door [deze tutorial](https://redis.io/docs/latest/operate/oss_and_stack/install/install-redis/) van de officiele redis website te volgen.
-- **Java:** De programmeer taal waarop de Triptop Applicatie gemaakt is.
-- **Maven:** Nodig voor de programma en libraries die gebruikt zijn.
-- **IntelliJ Idea:** Om de programma op te starten en verder uit te breiden.
+- **Java:** De programmeertaal waarin de Triptop Applicatie gemaakt is.
+- **Maven:** Nodig voor het programma en de libraries die gebruikt zijn.
+- **IntelliJ Idea:** Om het programma op te starten en verder uit te breiden.
 
 ### Installatie stappen
 
 #### Clone de repository
 
-Begin met het klonen van de projectrepository naar je lokale machine. Dit kan onder andere met het volgende command:
+Begin met het clonen van de projectrepository naar je lokale machine. Dit kan onder andere met het volgende command:
 
 ```bash
 git clone https://github.com/AIM-ENE-feb25/triptop-beca.git
@@ -545,13 +547,13 @@ git clone https://github.com/AIM-ENE-feb25/triptop-beca.git
 
 #### Start redis
 
-Start redis door de volgende commando in te voeren:
+Start redis door het volgende commando in te voeren:
 
 ```
 sudo service redis-server start
 ```
 
-Om te checken of je redis server werkt, kan je de in de cli gaan door `redis-cli` in je command line in te voeren. Je resultaat hoort er als volgt uit te zien:
+Om te checken of je redis server werkt, kan je in de cli gaan door `redis-cli` in je command line in te voeren. Je resultaat hoort er als volgt uit te zien:
 
 ```
 127.0.0.1:6379> ping
@@ -568,7 +570,7 @@ mvn install
 
 #### Start de applicatie
 
-Start de applicatie op door in IntelliJ op de start knop rechtsboven te drukken.
+Start de applicatie op door in IntelliJ op de startknop rechtsboven te drukken.
 
 #### Test de API endpoints met Postman
 
