@@ -358,5 +358,22 @@ De switchen van states wordt gedaan door de aanroep van een methode en de code i
 
 ## 9. Deployment, Operation and Support
 
-> [!TIP]
-> Zelf beschrijven van wat je moet doen om de software te installeren en te kunnen runnen.
+Om de software te installeren en te kunnen draaien, volg je de onderstaande stappen:
+
+1. Clone de repository: Begin met het klonen van de projectrepository naar je lokale machine. Dit kan onder andere met het volgende command:
+```bash
+git clone https://github.com/AIM-ENE-feb25/triptop-beca.git
+```
+
+2. Installeer de benodigde software: Zorg ervoor dat je Java 21 of hoger geïnstalleerd hebt. Installeer Maven als je dat nog niet hebt gedaan.
+
+3. Depenencies installeren: Navigeer naar de projectdirectory en voer het volgende commando uit om de dependencies te installeren:
+```bash
+mvn install
+```
+
+4. Start de applicatie: Start de applicatie op door in IntelliJ op de start knop rechtsboven te drukken.
+5. API testen met Postman: Gebruik Postman om de verschillende endpoints van de applicatie te testen. Bijvoorbeeld, je kunt de GET /flights endpoint testen door de juiste parameters zoals from, to, en date mee te geven:
+```http request
+http://localhost:8080/flights?from=EIN&to=BCN&date=2025-05-03
+```
