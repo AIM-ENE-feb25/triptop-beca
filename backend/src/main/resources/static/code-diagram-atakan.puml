@@ -34,11 +34,11 @@ class RetrieveFromCacheStrategy {
 }
 
 interface EatsAdapter {
-  + getRestaurantsNearUser(String, String): JsonNode
+  + getRestaurantsNearUser(String, String): JSONObject
 }
 class EatsAdapterImpl {
   - String apiKey
-  + getRestaurantsNearUser(String, String): JsonNode
+  + getRestaurantsNearUser(String, String): JSONObject
 }
 
 interface EatsRepository <<Repository>> {
