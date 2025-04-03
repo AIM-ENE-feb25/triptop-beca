@@ -260,6 +260,18 @@ De ApiState-interface is de basis voor de API-states en bevat methoden om vlucht
 
 Tijdens het uitprogrammeren van het prototype ontstond er een misverstand. Het werd later pas duidelijk dat de ApiInterface eigenlijk dezelfde functionaliteit heeft als de ApiState en dat het eigenlijk maar één bestand hoefte te zijn. Toch is er besloten om de ApiInterface te houden aangezien deze al was geïmplementeerd en het tijd zou kosten om het er uit te halen.
 
+#### Sequence diagram integriteit externe API's
+
+![Afbeelding van sequence diagram](ontwerpvraag-cas/sequence-diagram-cas.svg)
+
+Het sequence diagram beschrijft de dynamische interactie tussen verschillende componenten van de Triptop Backend bij het ophalen van vluchtinformatie.
+
+De Triptop Backend verwerkt een GET-aanvraag van de client om vluchtinformatie op te halen. De Flight Controller stuurt deze door naar de Flight Service, die via ApiState standaard ApiV1 gebruikt.
+
+ApiV1 vraagt gegevens op bij een externe API. Als de respons correct is, worden de gegevens teruggestuurd naar de client. Als de gegevens onjuist of onvolledig zijn, wordt overgeschakeld naar ApiV2 via setNextState(ApiV2). ApiV2 haalt vervolgens opnieuw vluchtinformatie op en retourneert deze.
+
+De Flight Service ontvangt de vluchtinformatie van ApiV1 of ApiV2 en stuurt deze terug naar de Flight Controller, die een HTTP 200 OK-respons naar de client verstuurt.
+
 #### 7.3.2. Class diagram toevoegen van een nieuwe externe service
 
 ![Afbeelding van class diagram](./ontwerpvraag-eva/class-diagram-eva.svg)
