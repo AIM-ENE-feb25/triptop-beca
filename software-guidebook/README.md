@@ -170,12 +170,18 @@ De beslissing voor het niet gebruiken van de API Gateway wordt benoemt in [adr 0
 ![Afbeelding van dynamic diagram](ontwerpvraag-cas/dynamic-diagram-cas.svg)
 
 Dit dynamische componentendiagram laat zien hoe API-verzoeken door de Triptop backend worden verwerkt en welke stappen daarbij worden doorlopen.
-De API Gateway stuurt een verzoek naar de ApiClient Interface. Dit verzoek bevat de benodigde gegevens en instructies om met een externe API te communiceren.
-De ApiClient Interface stuurt het verzoek door naar de externe API en ontvangt een response via HTTPS in JSON-formaat.
-Voordat de ontvangen data wordt verwerkt, controleert de Validation Service de data-integriteit. Dit voorkomt dat ongeldige of schadelijke gegevens het systeem binnenkomen.
-De Validation Service stuurt een validatieresultaat terug naar de API Gateway. Dit is meestal een boolean (true of false) die aangeeft of de data correct is.
-De API Gateway stuurt loggegevens naar de Logging Service. Hierin worden API-verzoeken, responses en versies vastgelegd voor traceerbaarheid.
-De Logging Service bevestigt de logging-status aan de API Gateway. Dit helpt bij het monitoren van systeemactiviteit en bij het debuggen van mogelijke problemen.
+
+De Flight Controller ontvangt een vluchtverzoek van de client en stuurt dit door naar de Flight Service voor verdere verwerking.
+De Flight Service vraagt via de ApiState-interface welke API-versie geschikt is voor het ophalen van de vluchtdata.
+De ApiState-component bepaalt op basis van het verzoek of ApiV1 moet worden gebruikt en schakelt deze in als versie 1 van de API de benodigde informatie kan leveren.
+Indien ApiV1 geen bevredigend resultaat oplevert, wordt het verzoek doorgestuurd naar ApiV2 voor een alternatieve verwerking.
+ApiV2 maakt vervolgens verbinding met een externe API om de meest actuele vluchtinformatie op te halen.
+Nadat de juiste gegevens zijn opgehaald, stuurt de ApiState-component de vluchtinformatie terug naar de Flight Service en die stuurt de informatie door naar de Flight Controller.
+
+Tijdens het uitprogrammeren van het prototype ontstond er een misverstand. Het werd later pas duidelijk dat de ApiInterface eigenlijk dezelfde functionaliteit heeft als de ApiState en dat het eigenlijk maar één bestand hoefte te zijn. Toch is er besloten om de ApiInterface te houden aangezien deze al was geïmplementeerd en het tijd zou kosten om het er uit te halen.
+
+In de tekening is ook de API Gateway te zien. We hebben gekozen om deze niet meer te gebruiken, maar nog wel te tonen in onze diagrammen.
+De beslissing voor het niet gebruiken van de API Gateway wordt benoemt in [adr 004](./adrs/004-api_gateway.md).
 
 #### 7.2.3 Component diagram toevoegen van een nieuwe externe service
 
