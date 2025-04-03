@@ -118,12 +118,12 @@ Elk plan heeft hogere kosten en is voor dit project niet te gebruiken. Hierom is
 
 ## 6. Principles
 
-### 6.1 Open/Closed principe
+### 6.1 Open/Closed Principe
 
 Het Open/Closed principe (OCP) is 1 van de 5 [SOLID-principes](https://www.baeldung.com/solid-principles).
 > Definitie: Software entities (zoals classes, modules, functies etc.) moeten open zijn voor extensie, maar gesloten voor modificatie. 
 
-Dit houdt in dat je een bestaande codebase niet aangepast om nieuwe functionaliteit toe te voegen. In plaats daarvan voeg je nieuwe code toe via bijv. abstractie, overerving of interfaces.
+Dit houdt in dat je een bestaande codebase niet aangepast om nieuwe functionaliteit toe te voegen. In plaats daarvan voeg je nieuwe code toe via bijv. abstractie, overerving of interfaces (BigBoxCode, 2025b). 
 
 #### Consequenties van het toepassen van het Open/Closed principe
 Voordelen:
@@ -143,6 +143,30 @@ Nadelen:
 Deze ontwerpvragen gebruiken design patterns waarbij het Open/Closed principe centraal staan, omdat het voor flexibiliteit zorgt.
 
 In de hoofdstukken [7.2.7](#727-component-diagram-meerdere-endpoints-aanroepen-in-dezelfde-api), [7.2.5](#725-component-diagram-aanroepen-van-externe-services-die-niet-beschikbaar-zijn) en [ADR-006](./adrs/006-nieuwe-service.md) is meer informatie te vinden over het Open/Closed principe binnen de context van de applicatie.
+
+### 6.2 Dependency Inversion Principe
+
+Het Dependency Inversion principe (DIP) is ook 1 van de 5 SOLID-principes.
+> Definitie: Abstracties moeten niet afhankelijk zijn van details, maar details moeten afhankelijk zijn van abstracties.
+
+Dit houdt in dat hoog-niveau modulen niet direct afhankelijk mogen zijn van laag-niveau modulen, maar beiden van abstracties (interfaces of abstracte klassen). Dit principe zorgt ervoor dat hoog-niveau logica niet afhankelijk is van specifieke implementaties, maar van abstracties. Dit zorgt ervoor dat de code flexibeler en makkelijker uitbreidbaar is. Nieuwe implementaties kunnen worden toegevoegd zonder de code op hoog niveau te wijzigen (BigBoxCode, 2025a).
+
+#### Consequenties van het toepassen van het Dependency Inversion principe
+Voordelen:
+- Makkelijk uit te breiden -> Nieuwe implementaties kunnen gemakkelijk worden toegevoegd zonder de bestaande logica te breken.
+- Flexibeler -> Door het verminderen van afhankelijkheden tussen modulen wordt code flexibeler.
+
+Nadelen:
+- Complexer -> Het toevoegen van abstracties kan code complexer maken.
+
+#### Het Dependency Inversion principe wordt gebruikt bij één ontwerpvraag.
+
+1. Hoe zorg je ervoor dat je makkelijk een nieuwe externe service kan toevoegen? **(Eva)**
+
+##### Bronnenlijst
+- BigBoxCode. (2025, januari 13). Design Principle: Open/Closed Principle(OCP). BigBoxCode. https://bigboxcode.com/design-principle-open-closed-principle-ocp
+
+- BigBoxCode. (2025b, 13 januari). Design Principle: Dependency Inversion Principle(DIP). BigBoxCode. https://bigboxcode.com/design-principle-dependency-inversion-principle-dip
 
 ## 7. Software Architecture
 
