@@ -1,6 +1,11 @@
 package han.triptop.backend.domain;
 
-public class Restaurant {
+import org.springframework.data.redis.core.RedisHash;
+
+import java.io.Serializable;
+
+@RedisHash("restaurants")
+public class Restaurant implements Serializable {
     private String id;
     private String name;
     private String address;

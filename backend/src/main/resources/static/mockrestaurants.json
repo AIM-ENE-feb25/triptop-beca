@@ -1,0 +1,300 @@
+{
+  "hasMorePage": true,
+  "currentPage": 1,
+  "data": [
+    {
+      "title": "NY Pizza Grill (DC)",
+      "sanitizedTitle": "NY Pizza Grill (DC)",
+      "phoneNumber": "+12025473838",
+      "cuisineList": [
+        "Italian",
+        "Pizza",
+        "American"
+      ],
+      "location": {
+        "address": "1442 Pennsylvania Ave Se, Washington, DC 20003",
+        "streetAddress": "1442 Pennsylvania Ave SE",
+        "city": "Washington",
+        "country": "US",
+        "postalCode": "20003",
+        "region": "DC",
+        "latitude": 38.8799987,
+        "longitude": -76.9840023,
+        "geo": {
+          "city": "washington-dc",
+          "country": "us",
+          "neighborhood": "capitol-hill-washington-dc",
+          "region": "dc"
+        },
+        "locationType": "PHYSICAL"
+      },
+      "currencyCode": "USD",
+      "rating": {
+        "ratingValue": 4.4,
+        "reviewCount": "700+"
+      },
+      "etaRange": "Delivered in 35 to 55 min",
+      "hours": [
+        {
+          "dayRange": "Sunday - Thursday",
+          "sectionHours": [
+            {
+              "startTime": 630,
+              "endTime": 60,
+              "sectionTitle": ""
+            }
+          ]
+        },
+        {
+          "dayRange": "Friday - Saturday",
+          "sectionHours": [
+            {
+              "startTime": 630,
+              "endTime": 150,
+              "sectionTitle": ""
+            }
+          ]
+        }
+      ],
+      "categories": [
+        "Italian",
+        "Pizza",
+        "American"
+      ],
+      "categoriesLink": [
+        {
+          "text": "Italian",
+          "link": "/us/category/washington-dc/italian"
+        },
+        {
+          "text": "Pizza",
+          "link": "/us/category/washington-dc/pizza"
+        },
+        {
+          "text": "American",
+          "link": "/us/category/washington-dc/american"
+        }
+      ],
+      "menu": [
+        {
+          "catalogName": "Appetizers",
+          "catalogSectionUUID": "71871c25-cb39-4375-b395-b95fe87f9edc",
+          "catalogItems": [
+            {
+              "title": "Steak and Cheese Egg Roll (3 pcs)",
+              "itemDescription": "3 pieces. Crispy dough filled with minced vegetables.",
+              "price": 1199,
+              "priceTagline": "$11.99",
+              "isSoldOut": false,
+              "isAvailable": true,
+              "hasCustomizations": false,
+              "labelPrimary": "$11.99, 94% of customers liked this based on 18 reviews.",
+              "uuid": "85bca003-a393-4180-af7f-e9e0498821cb",
+              "rating": "100%",
+              "numRatings": 4
+            }
+          ],
+          "catalogSectionPosition": 0
+        }
+      ],
+      "uuid": "bff91760-2d67-54d7-91db-9f6f875086a6",
+      "url": "https://ubereats.com/us/store/ny-pizza-grill-dc/v_kXYC1nVNeR259vh1CGpg"
+    },
+    {
+      "title": "Sushi Sensation (DC)",
+      "sanitizedTitle": "Sushi Sensation (DC)",
+      "phoneNumber": "+12024567890",
+      "cuisineList": [
+        "Japanese",
+        "Sushi",
+        "Asian"
+      ],
+      "location": {
+        "address": "1234 M Street NW, Washington, DC 20005",
+        "streetAddress": "1234 M Street NW",
+        "city": "Washington",
+        "country": "US",
+        "postalCode": "20005",
+        "region": "DC",
+        "latitude": 38.9047987,
+        "longitude": -77.0336023,
+        "geo": {
+          "city": "washington-dc",
+          "country": "us",
+          "neighborhood": "downtown-washington-dc",
+          "region": "dc"
+        },
+        "locationType": "PHYSICAL"
+      },
+      "currencyCode": "USD",
+      "rating": {
+        "ratingValue": 4.7,
+        "reviewCount": "500+"
+      },
+      "etaRange": "Delivered in 30 to 50 min",
+      "hours": [
+        {
+          "dayRange": "Monday - Thursday",
+          "sectionHours": [
+            {
+              "startTime": 1100,
+              "endTime": 2200,
+              "sectionTitle": ""
+            }
+          ]
+        },
+        {
+          "dayRange": "Friday - Saturday",
+          "sectionHours": [
+            {
+              "startTime": 1100,
+              "endTime": 2300,
+              "sectionTitle": ""
+            }
+          ]
+        }
+      ],
+      "categories": [
+        "Japanese",
+        "Sushi",
+        "Asian"
+      ],
+      "categoriesLink": [
+        {
+          "text": "Japanese",
+          "link": "/us/category/washington-dc/japanese"
+        },
+        {
+          "text": "Sushi",
+          "link": "/us/category/washington-dc/sushi"
+        },
+        {
+          "text": "Asian",
+          "link": "/us/category/washington-dc/asian"
+        }
+      ],
+      "menu": [
+        {
+          "catalogName": "Appetizers",
+          "catalogSectionUUID": "a9b8c7d6-e5f4-4321-b098-7654321abcde",
+          "catalogItems": [
+            {
+              "title": "Edamame",
+              "itemDescription": "Steamed soybeans with sea salt.",
+              "price": 599,
+              "priceTagline": "$5.99",
+              "isSoldOut": false,
+              "isAvailable": true,
+              "hasCustomizations": false,
+              "labelPrimary": "$5.99",
+              "uuid": "12345678-90ab-cdef-ghij-klmnopqrstuv",
+              "rating": "95%",
+              "numRatings": 12
+            }
+          ],
+          "catalogSectionPosition": 0
+        }
+      ],
+      "uuid": "c1d2e3f4-5a6b-7c8d-9e0f-1234567890ab",
+      "url": "https://ubereats.com/us/store/sushi-sensation-dc/xyz123456"
+    },
+    {
+      "title": "Taco Paradise (DC)",
+      "sanitizedTitle": "Taco Paradise (DC)",
+      "phoneNumber": "+12023456789",
+      "cuisineList": [
+        "Mexican",
+        "Tacos",
+        "Latin"
+      ],
+      "location": {
+        "address": "5678 U Street NW, Washington, DC 20009",
+        "streetAddress": "5678 U Street NW",
+        "city": "Washington",
+        "country": "US",
+        "postalCode": "20009",
+        "region": "DC",
+        "latitude": 38.9169987,
+        "longitude": -77.0328023,
+        "geo": {
+          "city": "washington-dc",
+          "country": "us",
+          "neighborhood": "u-street-washington-dc",
+          "region": "dc"
+        },
+        "locationType": "PHYSICAL"
+      },
+      "currencyCode": "USD",
+      "rating": {
+        "ratingValue": 4.5,
+        "reviewCount": "600+"
+      },
+      "etaRange": "Delivered in 25 to 45 min",
+      "hours": [
+        {
+          "dayRange": "Tuesday - Thursday",
+          "sectionHours": [
+            {
+              "startTime": 1100,
+              "endTime": 2100,
+              "sectionTitle": ""
+            }
+          ]
+        },
+        {
+          "dayRange": "Friday - Saturday",
+          "sectionHours": [
+            {
+              "startTime": 1100,
+              "endTime": 2300,
+              "sectionTitle": ""
+            }
+          ]
+        }
+      ],
+      "categories": [
+        "Mexican",
+        "Tacos",
+        "Latin"
+      ],
+      "categoriesLink": [
+        {
+          "text": "Mexican",
+          "link": "/us/category/washington-dc/mexican"
+        },
+        {
+          "text": "Tacos",
+          "link": "/us/category/washington-dc/tacos"
+        },
+        {
+          "text": "Latin",
+          "link": "/us/category/washington-dc/latin"
+        }
+      ],
+      "menu": [
+        {
+          "catalogName": "Appetizers",
+          "catalogSectionUUID": "f5e4d3c2-b1a0-9876-5432-10abcdefghij",
+          "catalogItems": [
+            {
+              "title": "Nachos Supreme",
+              "itemDescription": "Tortilla chips topped with cheese, beans, salsa, and sour cream.",
+              "price": 1299,
+              "priceTagline": "$12.99",
+              "isSoldOut": false,
+              "isAvailable": true,
+              "hasCustomizations": true,
+              "labelPrimary": "$12.99, 97% of customers liked this",
+              "uuid": "abcdef12-3456-7890-bcde-f123456789ab",
+              "rating": "97%",
+              "numRatings": 15
+            }
+          ],
+          "catalogSectionPosition": 0
+        }
+      ],
+      "uuid": "d2e3f4a5-b6c7-8d9e-0f1g-2345678901bc",
+      "url": "https://ubereats.com/us/store/taco-paradise-dc/abc987654"
+    }
+  ]
+}

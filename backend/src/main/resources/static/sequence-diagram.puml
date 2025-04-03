@@ -1,0 +1,41 @@
+@startuml
+
+autonumber
+
+actor reiziger as "Reiziger"
+
+participant eatsController as "eatsController:\n EatsController"
+participant eatsServiceImpl as "eatsServiceImpl:\n EatsServiceImpl"
+participant retrieveDataStrategy as "retrieveDataStrategy:\n RetrieveDataStrategy"
+participant retrieveFromAPIStrategy as "retrieveFromAPIStrategy:\n RetrieveFromAPIStrategy"
+participant retrieveFromCacheStrategy as "retrieveFromCacheStrategy:\n RetrieveFromCacheStrategy"
+participant eatsAdapterImpl as "eatsAdapterImpl:\n EatsAdapterImpl"
+
+participant uberEatsAPI as "uberEatsAPI:\n UberEatsAPI"
+participant eatsRepository as "eatsRepository:\n EatsRepository"
+
+database redis as "redisCache"
+
+reiziger -> eatsController: POST /restaurants (query, address)
+eatsController -> eatsServiceImpl: retrieveData(query, address)
+eatsServiceImpl -> retrieveDataStrategy: retrieveData(query, address)
+retrieveDataStrategy -> retrieveFromAPIStrategy: retrieveData(query, address)
+retrieveFromAPIStrategy -> eatsAdapterImpl: getRestaurantsNearUser(query, address)
+eatsAdapterImpl -> uberEatsAPI: JSONObject apiResponse = API request
+eatsAdapterImpl --> retrieveFromAPIStrategy: JSON data
+retrieveFromAPIStrategy -> eatsRepository: saveRestaurants(JSONArray restaurants)
+eatsRepository -> redis: save(Restaurant restaurant)
+retrieveFromAPIStrategy --> eatsServiceImpl: RestaurantResponse (cached=false)
+eatsServiceImpl --> eatsController: RestaurantResponse
+eatsController --> reiziger: JSON Response
+
+alt API Strategie faalt
+    retrieveFromAPIStrategy -> eatsServiceImpl: throw APIStrategyFailureException
+    eatsServiceImpl -> retrieveFromCacheStrategy: retrieveData(query, address)
+    retrieveFromCacheStrategy -> eatsRepository: List<Restaurant> restaurants = findAll()
+    retrieveFromCacheStrategy --> eatsServiceImpl: RestaurantResponse (cached=true)
+    eatsServiceImpl --> eatsController: RestaurantResponse
+    eatsController --> reiziger: JSON Response
+end
+
+@enduml
