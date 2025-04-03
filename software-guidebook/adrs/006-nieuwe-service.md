@@ -26,9 +26,9 @@ Daarom zoeken we een structuur waarmee we eenvoudig een nieuwe externe service k
 
 ## Beslissing
 
-We kiezen voor de Ports & Adapters-architectuur (hexagonale architectuur). Hierdoor spreken services niet direct met concrete klassen, maar gebruiken ze een port-interface die door externe adapters wordt geïmplementeerd. Elke externe service (zoals Uber Eats of Booking.com) heeft zijn eigen adapter, die de interface van de bijbehorende bouwsteen implementeert.
+We hebben gekozen voor de Ports & Adapters architectuur (hexagonale architectuur). Services communiceren hierdoor niet rechtstreeks met specifieke klassen, maar maken gebruik van een port-interface die door externe adapters wordt geïmplementeerd. Iedere externe service (zoals Uber Eats of Booking.com) heeft zijn eigen adapter, die de interface van de bijbehorende bouwsteen implementeert.
 
-Deze structuur maakt het mogelijk om een nieuwe externe service toe te voegen zonder de bestaande code te wijzigen. De service hoeft alleen de interface te gebruiken. Dit sluit aan op het [Open/Closed Principle](../README.md#61-openclosed-principe) (OCP) en het [Dependency Inversion Principle](../README.md#62-dependency-inversion-principe) (DIP), waarbij je afhankelijk bent van abstracties in plaats van concrete implementaties. 
+Dit maakt het mogelijk om een nieuwe externe service toe te voegen zonder de bestaande code te wijzigen. De service hoeft alleen de interface te gebruiken. Dit sluit aan op het [Open/Closed Principle](../README.md#61-openclosed-principe) (OCP) en het [Dependency Inversion Principle](../README.md#62-dependency-inversion-principe) (DIP), waarbij je afhankelijk bent van abstracties in plaats van specifieke implementaties. 
 
 Daarnaast is deze architectuur goed te combineren met het [Template Method Pattern](../README.md#732-class-diagram-toevoegen-van-een-nieuwe-externe-service). Hierdoor kan de structuur van het aanroepen van externe API's gegarandeerd worden. 
 
@@ -44,7 +44,7 @@ Voor meer informatie over de hexagonale architectuur, zie de volgende bronnen:
 
 - Voldoet aan OCP -> Externe services kunnen worden toegevoegd door een nieuwe adapter te implementeren, zonder dat bestaande code aangepast hoeft te worden.
 - Voldoet aan DIP -> Service is losgekoppeld van specifieke implementaties, wat zorgt voor betere testbaarheid.
-- Consistentie -> Consistentie in hoe externe API’s worden aangeroepen, omdat iedere adapter dezelfde interface gebruikt (per bouwsteen).
+- Consistentie -> Consistentie in hoe externe API’s worden aangeroepen, omdat iedere adapter dezelfde interface gebruikt (per bouwsteen). Daarnaast kan het Template Method Pattern toegepast worden.
 - Overzichtelijk -> Door voor iedere bouwsteen (zoals restaurants of hotels) een eigen interface te gebruiken, blijft de architectuur overzichtelijk.
 
 ### Nadelen
