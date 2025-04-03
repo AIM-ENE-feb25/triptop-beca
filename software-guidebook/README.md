@@ -40,6 +40,11 @@ De reisagent is een medewerker van Triptop die de reiziger ondersteunt bij het p
 
 We hebben ervoor gekozen om de reisagent niet op te nemen in het context diagram, omdat de reisagent momenteel niet met het systeem communiceert. De reiziger communiceert voor nu telefonisch met de reisagent.
 
+Zodra wij wel iets gaan maken voor de reisagent, gaan we eerst een 'freemium' model bedenken als uitbreiding op de (latere) registratie pagina waarin we 3 tiers hebben:
+- TripTop free - Plan en boek je reis geheel gratis, betaal alleen de aanbieders van overnachting (inkomsten via affiliate marketing)
+- TripTop NoStress - Raadpleeg al je boekingen en status ook als je offline bent in de middel of nowhere, al je wijzigingen worden geregistreerd en gesynchroniseerd zodra je weer wifi heb. Ook kun je 3 maal tijdens je reis gratis een reisagent raadplegen die expert is in jouw gekozen gebied voor leuke lokale activiteiten
+- TripTop Gold - Offline functionaliteit, en daarnaast ook tot 5x per reisdag raadplegen van de reisagent, voor niet alleen leuke activiteiten, maar ook leuke en betaalbare overnachtingsplekken erbij weet, voor alle gaten in je reis.
+
 ### Externe systemen
 
 De Triptop applicatie maakt gebruik van verschillende externe systemen. We hebben nog geen keuze gemaakt voor de specifieke API's die we gaan gebruiken voor de verschillende bouwstenen. Hierom hebben we deze onderdelen opgenomen in het diagram als **Provider** van de bijpassende bouwstenen, zoals "Overnachtingprovider" en "Autoverhuurprovider".
@@ -168,21 +173,33 @@ Dit diagram toont alleen de happy path. Edge cases zijn momenteel nog niet in de
 ![Afbeelding van component diagram](ontwerpvraag-cas/component-diagram-cas.svg)
 
 Dit componentendiagram toont de structuur van de Triptop backend en hoe de verschillende onderdelen samenwerken om API-communicatie betrouwbaar te verwerken.
-De API Gateway is de kern van de backend en verwerkt API-verzoeken. Het implementeert de IApiClient-interface, die de standaard voor API-communicatie bepaalt. De API Gateway haalt data op en stuurt deze door naar externe APIs via HTTPS en JSON.
-Om de kwaliteit van de gegevens te waarborgen, controleert de Validation Service alle inkomende en uitgaande data. Daarnaast registreert de Logging Service alle API-verzoeken, responses en versies, zodat deze later kunnen worden geanalyseerd.
-De backend communiceert met verschillende externe APIs, bijvoorbeeld voor reis- of betalingsgegevens. Voordat data wordt verzonden, wordt deze eerst gevalideerd. De ontvangen response wordt gelogd en eventueel verder verwerkt.
+
+Binnen het systeem is de ApiState gedefinieerd als de interface die de communicatie tussen de verschillende API-versies en de Flight Service regelt, en het mogelijk maakt om dynamisch over te schakelen tussen verschillende versies van de API.
+ApiV1 en ApiV2 vertegenwoordigen de verschillende versies van de API en implementeren de ApiState interface. Beide versies verzorgen de communicatie met externe vluchtdata-API's via HTTPS en JSON. Ze zijn verantwoordelijk voor het ophalen van vluchtdata van de externe API, die wordt geleverd door verschillende providers.
+De Flight Service verzorgt de communicatie met de ApiV1 en ApiV2 componenten, afhankelijk van de versie die wordt gebruikt, en zorgt ervoor dat de gevraagde vluchtinformatie wordt opgehaald.
+
+Tijdens het uitprogrammeren van het prototype ontstond er een misverstand. Het werd later pas duidelijk dat de ApiInterface eigenlijk dezelfde functionaliteit heeft als de ApiState en dat het eigenlijk maar één bestand hoefte te zijn. Toch is er besloten om de ApiInterface te houden aangezien deze al was geïmplementeerd en het tijd zou kosten om het er uit te halen.
+
+In de tekening is ook de API Gateway te zien. We hebben gekozen om deze niet meer te gebruiken, maar nog wel te tonen in onze diagrammen.
+De beslissing voor het niet gebruiken van de API Gateway wordt benoemt in [adr 004](./adrs/004-api_gateway.md).
 
 #### 7.2.2 Dynamic diagram integriteit externe API's
 
 ![Afbeelding van dynamic diagram](ontwerpvraag-cas/dynamic-diagram-cas.svg)
 
 Dit dynamische componentendiagram laat zien hoe API-verzoeken door de Triptop backend worden verwerkt en welke stappen daarbij worden doorlopen.
-De API Gateway stuurt een verzoek naar de ApiClient Interface. Dit verzoek bevat de benodigde gegevens en instructies om met een externe API te communiceren.
-De ApiClient Interface stuurt het verzoek door naar de externe API en ontvangt een response via HTTPS in JSON-formaat.
-Voordat de ontvangen data wordt verwerkt, controleert de Validation Service de data-integriteit. Dit voorkomt dat ongeldige of schadelijke gegevens het systeem binnenkomen.
-De Validation Service stuurt een validatieresultaat terug naar de API Gateway. Dit is meestal een boolean (true of false) die aangeeft of de data correct is.
-De API Gateway stuurt loggegevens naar de Logging Service. Hierin worden API-verzoeken, responses en versies vastgelegd voor traceerbaarheid.
-De Logging Service bevestigt de logging-status aan de API Gateway. Dit helpt bij het monitoren van systeemactiviteit en bij het debuggen van mogelijke problemen.
+
+De Flight Controller ontvangt een vluchtverzoek van de client en stuurt dit door naar de Flight Service voor verdere verwerking.
+De Flight Service vraagt via de ApiState-interface welke API-versie geschikt is voor het ophalen van de vluchtdata.
+De ApiState-component bepaalt op basis van het verzoek of ApiV1 moet worden gebruikt en schakelt deze in als versie 1 van de API de benodigde informatie kan leveren.
+Indien ApiV1 geen bevredigend resultaat oplevert, wordt het verzoek doorgestuurd naar ApiV2 voor een alternatieve verwerking.
+ApiV2 maakt vervolgens verbinding met een externe API om de meest actuele vluchtinformatie op te halen.
+Nadat de juiste gegevens zijn opgehaald, stuurt de ApiState-component de vluchtinformatie terug naar de Flight Service en die stuurt de informatie door naar de Flight Controller.
+
+Tijdens het uitprogrammeren van het prototype ontstond er een misverstand. Het werd later pas duidelijk dat de ApiInterface eigenlijk dezelfde functionaliteit heeft als de ApiState en dat het eigenlijk maar één bestand hoefte te zijn. Toch is er besloten om de ApiInterface te houden aangezien deze al was geïmplementeerd en het tijd zou kosten om het er uit te halen.
+
+In de tekening is ook de API Gateway te zien. We hebben gekozen om deze niet meer te gebruiken, maar nog wel te tonen in onze diagrammen.
+De beslissing voor het niet gebruiken van de API Gateway wordt benoemt in [adr 004](./adrs/004-api_gateway.md).
 
 #### 7.2.3 Component diagram toevoegen van een nieuwe externe service
 
@@ -303,14 +320,28 @@ Hetzelfde gelt voor stap negen uiteraard.
 
 ![Afbeelding van class diagram](ontwerpvraag-cas/class-diagram-cas.svg)
 
-Dit klassendiagram laat zien hoe de Triptop backend API-verzoeken verwerkt.
-De ApiClient-interface bepaalt hoe API-verzoeken moeten worden verstuurd. De ApiGateway implementeert deze interface en handelt de communicatie met externe systemen af.
-De ValidationService controleert of de ontvangen en verzonden data correct is. De LoggingService registreert API-verzoeken, responses en versies voor traceerbaarheid.
-De TriptopBackend gebruikt deze services om API-verzoeken te verwerken. Eerst wordt het verzoek via de ApiGateway verstuurd. Vervolgens wordt de data gevalideerd en wordt alles gelogd. Dit zorgt voor een veilige en betrouwbare API-communicatie.
+Het klassendiagram toont de structuur van het systeem voor het ophalen van vluchtgegevens via verschillende API-versies. De architectuur is gebaseerd op het State Pattern, wat zorgt voor een flexibele overgang tussen API-versies zonder dat de service expliciet verantwoordelijk is voor het wisselen van strategieën.
+
+De ApiState-interface is de basis voor de API-states en bevat methoden om vluchtgegevens op te halen en over te schakelen naar een volgende staat. Deze interface wordt geïmplementeerd door ApiV1 en ApiV2, die elk hun eigen versie van getFlights() bevatten. De API's houden daarnaast een referentie bij naar een volgende API-state, zodat de overgang naar een nieuwere API-versie eenvoudig kan worden beheerd.
+
+Tijdens het uitprogrammeren van het prototype ontstond er een misverstand. Het werd later pas duidelijk dat de ApiInterface eigenlijk dezelfde functionaliteit heeft als de ApiState en dat het eigenlijk maar één bestand hoefte te zijn. Toch is er besloten om de ApiInterface te houden aangezien deze al was geïmplementeerd en het tijd zou kosten om het er uit te halen.
+
+#### Sequence diagram integriteit externe API's
+
+![Afbeelding van sequence diagram](ontwerpvraag-cas/sequence-diagram-cas.svg)
+
+Het sequence diagram beschrijft de dynamische interactie tussen verschillende componenten van de Triptop Backend bij het ophalen van vluchtinformatie.
+
+De Triptop Backend verwerkt een GET-aanvraag van de client om vluchtinformatie op te halen. De Flight Controller stuurt deze door naar de Flight Service, die via ApiState standaard ApiV1 gebruikt.
+
+ApiV1 vraagt gegevens op bij een externe API. Als de respons correct is, worden de gegevens teruggestuurd naar de client. Als de gegevens onjuist of onvolledig zijn, wordt overgeschakeld naar ApiV2 via setNextState(ApiV2). ApiV2 haalt vervolgens opnieuw vluchtinformatie op en retourneert deze.
+
+De Flight Service ontvangt de vluchtinformatie van ApiV1 of ApiV2 en stuurt deze terug naar de Flight Controller, die een HTTP 200 OK-respons naar de client verstuurt.
 
 #### 7.3.2. Class diagram toevoegen van een nieuwe externe service
 
 ![Afbeelding van class diagram](./ontwerpvraag-eva/class-diagram-eva.svg)
+
 Dit klassendiagram geeft de klassen weer die betrokken zijn bij het ophalen van restaurantdata via de externe service.
 
 Om binnen de adapters consistentie te behouden in de manier waarop externe API’s worden aangeroepen, passen we het Template Method Pattern toe. De abstracte klasse `APICaller` definieert de structuur van een API-aanroep via `executeAPICall()`. Deze methode bepaalt de vaste volgorde van stappen, namelijk het controleren van de token, eventueel inloggen en de daadwerkelijke API-aanroep.
@@ -323,13 +354,21 @@ Dit zorgt voor een herbruikbare en consistente aanroepstructuur, terwijl de spec
 
 > De Location class uit het domeinmodel is weggelaten i.v.m. leesbaarheid van het diagram.
 
-Voor meer informatie over Template Method Pattern, zie de volgende bron:
+Voor meer informatie over het Template Method Pattern, zie de volgende bron:
 
 - Het artikel [Template Method Design Pattern in Java](https://www.geeksforgeeks.org/template-method-design-pattern-in-java/) van Geeks for Geeks geeft een praktische uitleg van het pattern in Java.
 
 ##### Sequence Diagram toevoegen van een nieuwe externe service
 
 ![Afbeelding van sequence diagram](./ontwerpvraag-eva/sequence-diagram-eva.svg)
+
+Bovenstaand diagram geeft de stappen weer om restaurantdata op te halen. Het diagram geeft alleen het happy path weer. Er zijn dus geen edge cases meegenomen, zoals het mislukken van de API aanroep. Als de API aanroep mislukt, wordt er een foutmelding teruggegeven aan de reiziger. De stappen zijn als volgt:
+1. De reiziger stuurt een POST request naar de `RestaurantController` met een `RestaurantDTO` (een query en een address);
+2. `RestaurantController` roept `RestaurantService` aan met `getRestaurants(query, address)`;
+3. `RestaurantService` roept `UberEatsScraperAdapter` aan met `getRestaurants(query, address)` om de API-aanroep te doen;
+4. `UberEatsScraperAdapter` voert de API-aanroep uit via `executeAPICall(parameters)`. Als er geen geldige token beschikbaar is, wordt de loginmethode uitgevoerd. In het prototype is hier nog geen logica voor geïmplementeerd;
+5. `callAPI(parameters)` stuurt een POST request naar de Uber Eats Scraper API en krijgt een response met data terug;
+6. De response data wordt omgezet naar een List met Restaurant-objecten en als returnwaarde van de getRestaurants methode teruggegeven aan de reiziger.
 
 #### 7.3.3. Class diagram aanroepen van externe services die niet beschikbaar zijn
 
@@ -442,5 +481,22 @@ Er zijn geen edge cases meegenomen in het diagram, aangezien deze buiten de scop
 
 ## 9. Deployment, Operation and Support
 
-> [!TIP]
-> Zelf beschrijven van wat je moet doen om de software te installeren en te kunnen runnen.
+Om de software te installeren en te kunnen draaien, volg je de onderstaande stappen:
+
+1. Clone de repository: Begin met het klonen van de projectrepository naar je lokale machine. Dit kan onder andere met het volgende command:
+```bash
+git clone https://github.com/AIM-ENE-feb25/triptop-beca.git
+```
+
+2. Installeer de benodigde software: Zorg ervoor dat je Java 21 of hoger geïnstalleerd hebt. Installeer Maven als je dat nog niet hebt gedaan.
+
+3. Depenencies installeren: Navigeer naar de projectdirectory en voer het volgende commando uit om de dependencies te installeren:
+```bash
+mvn install
+```
+
+4. Start de applicatie: Start de applicatie op door in IntelliJ op de start knop rechtsboven te drukken.
+5. API testen met Postman: Gebruik Postman om de verschillende endpoints van de applicatie te testen. Bijvoorbeeld, je kunt de GET /flights endpoint testen door de juiste parameters zoals from, to, en date mee te geven:
+```http request
+http://localhost:8080/flights?from=EIN&to=BCN&date=2025-05-03
+```
