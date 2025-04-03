@@ -160,9 +160,9 @@ Binnen het systeem is de ApiState gedefinieerd als de interface die de communica
 ApiV1 en ApiV2 vertegenwoordigen de verschillende versies van de API en implementeren de ApiState interface. Beide versies verzorgen de communicatie met externe vluchtdata-API's via HTTPS en JSON. Ze zijn verantwoordelijk voor het ophalen van vluchtdata van de externe API, die wordt geleverd door verschillende providers.
 De Flight Service verzorgt de communicatie met de ApiV1 en ApiV2 componenten, afhankelijk van de versie die wordt gebruikt, en zorgt ervoor dat de gevraagde vluchtinformatie wordt opgehaald.
 
-In de tekening zijn ook de API Gateway en de ApiInterface te zien. We hebben gekozen om deze niet meer te gebruiken, maar nog wel te tonen in onze diagrammen.
+Tijdens het uitprogrammeren van het prototype ontstond er een misverstand. Het werd later pas duidelijk dat de ApiInterface eigenlijk dezelfde functionaliteit heeft als de ApiState en dat het eigenlijk maar één bestand hoefte te zijn. Toch is er besloten om de ApiInterface te houden aangezien deze al was geïmplementeerd en het tijd zou kosten om het er uit te halen.
 
-De reden waarom de ApiInterface niet meer wordt gebruikt is vanwege een misverstand tijdens het uitwerken van het prototype. Het werd later pas duidelijk dat de ApiInterface eigenlijk dezelfde functionaliteit heeft als de ApiState en dat het eigenlijk maar één bestand hoefte te zijn.
+In de tekening is ook de API Gateway te zien. We hebben gekozen om deze niet meer te gebruiken, maar nog wel te tonen in onze diagrammen.
 De beslissing voor het niet gebruiken van de API Gateway wordt benoemt in [adr 004](./adrs/004-api_gateway.md).
 
 #### 7.2.2 Dynamic diagram integriteit externe API's
@@ -251,6 +251,8 @@ Hetzelfde gelt voor stap negen uiteraard.
 Het klassendiagram toont de structuur van het systeem voor het ophalen van vluchtgegevens via verschillende API-versies. De architectuur is gebaseerd op het State Pattern, wat zorgt voor een flexibele overgang tussen API-versies zonder dat de service expliciet verantwoordelijk is voor het wisselen van strategieën.
 
 De ApiState-interface is de basis voor de API-states en bevat methoden om vluchtgegevens op te halen en over te schakelen naar een volgende staat. Deze interface wordt geïmplementeerd door ApiV1 en ApiV2, die elk hun eigen versie van getFlights() bevatten. De API's houden daarnaast een referentie bij naar een volgende API-state, zodat de overgang naar een nieuwere API-versie eenvoudig kan worden beheerd.
+
+Tijdens het uitprogrammeren van het prototype ontstond er een misverstand. Het werd later pas duidelijk dat de ApiInterface eigenlijk dezelfde functionaliteit heeft als de ApiState en dat het eigenlijk maar één bestand hoefte te zijn. Toch is er besloten om de ApiInterface te houden aangezien deze al was geïmplementeerd en het tijd zou kosten om het er uit te halen.
 
 #### 7.3.2. Class diagram toevoegen van een nieuwe externe service
 
