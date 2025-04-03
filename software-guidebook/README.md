@@ -311,11 +311,21 @@ Als de Uber Eats API niet beschikbaar is, wordt door middel van het **Strategy P
 Het klasse diagram zoals te zien op het plaatje verantwoord niet elke klasse aanwezig in het prototype. Dit komt doordat vele klasse niet essentieel zijn om op te nemen in het diagram, als dit wel werd gedaan zou het voor meer onduidelijkheid zorgen.
 Dit geldt voor de volgende klasse. De domein klasse, de exception klassen en de adapter wrapper zijn buiten gesloten. De domein en exception klasse gelden voor zichzelf, maar de adapter wrapper in inprincipe een tussen klasse voor de states en de adapter.
 Dit is zo gedaan om de cohesie te vergroten. Daarnaast is er in het diagram te zien dat initialstate over gaat naar de hotelbookingstate, maar deze state niet naar de andere. Dit is zo gedaan om geen verwarring op te wekken, aangezien ze in werkelijkheid elkaar niet aanroepen, maar switchen van state.
-De switchen van states wordt gedaan door de aanroep van een methode en de code in de service. Voor verduidelijking, de hotel state gaat naar vlucht state en vanaf daar naar auto state.
+De switchen van states wordt gedaan door de aanroep van een methode en de code in de service. Voor verduidelijking kijk naar sequencediagram meerdere endpoints aanroepen in dezelfde API.
 
 ##### Sequence diagram - meerdere endpoints aanroepen in dezelfde API
-
 ![Sequence diagram](./ontwerpvraag-burak/sequence-diagram-burak.svg)
+
+Het sequence diagram laat de volgorde zien van de verschillende klassen en states. Dit gaat als volgt
+
+###### **Happy Path**
+
+1. **De Reiziger stuurt een boekingsaanvraag naar de ReservationController met de details van de reis en de ReservationController stuurt de aanvraag door naar de BookingService.**
+2. **De BookingService ontvangt de aanvraag en roept de InitialState aan om de boeking te verwerken.**
+3. **De InitialState roept als eerst HotelBookingState aan die vervolgens met de adapter communiceert. De HotelBookingState krijgt een response terug en switcht van state. Dit gebeurt nog is twee keer van vlucht naar auto en dan terug naar de InitialState.**
+4. **Elke state returnt zijn response naar de BookingService en de service returnt de response terug naar de controller en uiteindelijk de reiziger.**
+
+Er zijn geen edge cases meegenomen in het diagram, aangezien deze buiten de scope van de ontwerpvraag vallen.
 
 ## 8. Architectural Decision Records
 
