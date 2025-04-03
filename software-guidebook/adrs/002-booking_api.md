@@ -8,7 +8,7 @@ Geaccepteerd
 
 ## Context
 
-In het contextdiagram is gekozen om verschillende externe providers weer te geven voor de verschillende bouwstenen van een reis. Er is weergegeven welke bouwstenen er nodig zijn en welke functionaliteit deze moeten leveren, met voorbeelden van welke providers er gebruikt zouden kunnen worden hiervoor. Dit geeft een volledig beeld van welke externe informatie nodig is voor het plannen van een reis.
+In het contextdiagram hebben wij gekozen om verschillende externe providers weer te geven voor de verschillende bouwstenen van een reis. We hebben weergegeven welke bouwstenen er nodig zijn en welke functionaliteit deze moeten leveren, met voorbeelden van welke providers er gebruikt zouden kunnen worden hiervoor. Dit geeft een volledig beeld van welke externe informatie nodig is voor het plannen van een reis.
 
 Bij het maken van het containerdiagram werd duidelijk dat het grootste deel van de externe data uit de Booking COM API gehaald kon worden. Booking COM biedt namelijk niet alleen overnachtingen aan, maar ook aanvullende services zoals autoverhuur, vluchten en excursies.
 
@@ -26,10 +26,10 @@ Hierdoor ontstond de keuze tussen de Booking COM API als primaire API te gebruik
 
 ## Beslissing
 
-Er is gekozen om de Booking COM API als primaire externe databron te gebruiken voor het ophalen van informatie over overnachtingen, autoverhuur, vluchten en excursies.
-Deze keuze is gemaakt omdat Booking COM een groot aantal diensten aanbiedt via één API, waardoor het aantal externe afhankelijkheden verminderd wordt, de technische implementatie eenvoudiger is, en er sneller ontwikkelt kan worden.
+We hebben gekozen om de Booking COM API als primaire externe databron te gebruiken voor het ophalen van informatie over overnachtingen, autoverhuur, vluchten en excursies.
+We hebben deze keuze gemaakt omdat Booking COM een groot aantal diensten aanbiedt via één API, waardoor het aantal externe afhankelijkheden verminderd wordt, de technische implementatie eenvoudiger is, en er sneller ontwikkelt kan worden.
 
-Later kan de applicatie nog uitgebreidt worden met andere externe providers, zoals een API die trein- of busreizen biedt. Naast de Booking API is er een aparte API voor eten en drinken (Uber Eats API) en voor routeplanning.
+Later kunnen we deze applicatie nog uitbreiden met andere externe providers, zoals een API die trein- of busreizen aanbiedt. Naast de Booking API is er een aparte API voor eten en drinken (Uber Eats API) en voor routeplanning.
 
 ## Consequenties
 
@@ -45,4 +45,4 @@ Later kan de applicatie nog uitgebreidt worden met andere externe providers, zoa
 - Grote afhankelijkheid van de Booking COM API. Bij problemen met deze API kunnen meerdere bouwstenen uitvallen.
 - Minder flexibiliteit om specifieke aanbieders weer te geven die niet via Booking COM beschikbaar zijn.
 
-Deze problemen zouden later opgelost kunnen worden door de applicatie uit te breiden met andere externe providers.
+Deze problemen zouden we later kunnen oplossen door de applicatie uit te breiden met andere externe providers.
