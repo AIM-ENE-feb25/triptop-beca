@@ -172,8 +172,7 @@ De Logging Service bevestigt de logging-status aan de API Gateway. Dit helpt bij
 
 Dit diagram laat de componenten uit de back-end zien die betrokken zijn bij het ophalen van restaurantdata via de externe service. De structuur is ingericht volgens een [hexagonale architectuur](#keuze-1). De `RestaurantService` communiceert niet direct met de API-implementatieklasse, maar maakt gebruik van een port-interface (RestaurantPort) die wordt geïmplementeerd door een adapterklasse (UberEatsScraperAdapter).
 
-De adapter is verantwoordelijk voor de communicatie met de externe Uber Eats API en zet de ontvangen data om naar de structuur van het domeinmodel. Binnen de adapter wordt het Template Method Pattern toegepast om de aanroep van de externe API te structureren. Dit houdt in dat de abstracte klasse, `APICaller`, de vaste stappen van de API-aanroep definieert. <!-- template method pattern verwijzen naar adr? -->
-Deze structuur wordt verder toegelicht in de paragraaf [Class diagram toevoegen van een nieuwe externe service](#724-dynamic-diagram-toevoegen-van-een-nieuwe-externe-service).
+De adapter is verantwoordelijk voor de communicatie met de externe Uber Eats API en zet de ontvangen data om naar de structuur van het domeinmodel. Binnen de adapter wordt het Template Method Pattern toegepast om de aanroep van de externe API te structureren. Dit houdt in dat de abstracte klasse, `APICaller`, de vaste stappen van de API-aanroep definieert. Deze structuur wordt verder toegelicht in de paragraaf [Class diagram toevoegen van een nieuwe externe service](#724-dynamic-diagram-toevoegen-van-een-nieuwe-externe-service).
 
 Bovenstaand diagram is beperkt tot de aanroep van restaurantdata. Andere bouwstenen (zoals hotels of autoverhuur) volgen dezelfde structuur, maar zijn niet in dit diagram meegenomen. Om dit te verduidelijken hebben we een diagram gemaakt waar, als voorbeeld, een tweede externe restaurantservice (Tripadvisor) is toegevoegd en een externe hotelservice (Booking COM). Dit diagram is opgenomen in [Bijlage A - Voorbeeld toevoegen van een externe service en stappenplan](./bijlageA.md), samen met een concreet stappenplan hoe je een nieuwe feature toevoegd.
 
@@ -181,7 +180,7 @@ Bovenstaand diagram is beperkt tot de aanroep van restaurantdata. Andere bouwste
 
 ![Afbeelding van component diagram](./ontwerpvraag-eva/dynamic-diagram-eva.svg)
 
-Dit diagram laat zien hoe de componenten samenwerken tijdens een runtime-scenario waarin de gebruiker restaurants opvraagt via de frontend. De service roept via de port de adapter aan, die vervolgens met de externe API communiceert. De interactie tussen de componenten is gebaseerd op de Ports en Adapters structuur en maakt gebruik van het Template Method Pattern om de stappen binnen de API-aanroep (zoals authenticatie en dataverwerking) te structureren. <!-- zie adr 006  --> Dit diagram is beperkt tot de aanroep van restaurantdata. Andere bouwstenen (zoals hotels of autoverhuur) volgen dezelfde structuur, maar zijn niet in dit diagram meegenomen.
+Dit diagram laat zien hoe de componenten samenwerken tijdens een runtime-scenario waarin de gebruiker restaurants opvraagt via de frontend. De service roept via de port de adapter aan, die vervolgens met de externe API communiceert. De interactie tussen de componenten is gebaseerd op de Ports en Adapters structuur en maakt gebruik van het Template Method Pattern om de stappen binnen de API-aanroep (zoals authenticatie en dataverwerking) te structureren. Dit diagram is beperkt tot de aanroep van restaurantdata. Andere bouwstenen (zoals hotels of autoverhuur) volgen dezelfde structuur, maar zijn niet in dit diagram meegenomen.
 
 #### 7.2.5 Component diagram aanroepen van externe services die niet beschikbaar zijn
 
@@ -247,7 +246,13 @@ De TriptopBackend gebruikt deze services om API-verzoeken te verwerken. Eerst wo
 
 ![Afbeelding van class diagram](./ontwerpvraag-eva/class-diagram-eva.svg)
 
-Om binnen de adapters consistentie te behouden in de manier waarop API’s worden aangeroepen, passen we het Template Method Pattern toe. De methode `executeAPICall()` in de abstracte klasse `APICaller` bepaalt de vaste structuur van een API-aanroep. In `tokenCheck()` wordt gecontroleerd of er een geldige token beschikbaar is. Zo niet, dan wordt `login()` uitgevoerd. In het prototype haalt `login()` de API key uit application.properties, maar in de constructiefase wordt deze methode gebruikt om de access token op te halen bij de officiële API’s. `APICall()` voert de daadwerkelijke API aanroep uit. De adapterklassen zelf verzorgen de concrete invulling van deze methoden per aanbieder. Dit zorgt voor een herbruikbare en consistente aanroepstructuur.
+Om binnen de adapters consistentie te behouden in de manier waarop API’s worden aangeroepen, passen we het Template Method Pattern toe. De methode `executeAPICall()` in de abstracte klasse `APICaller` bepaalt de vaste structuur van een API-aanroep. <!-- parameters toelichten --> In `checkToken()` wordt gecontroleerd of er een geldige token beschikbaar is. Zo niet, dan wordt `login()` uitgevoerd. In `login()` wordt de access token opgehaald bij de officiële API’s. Momenteel werken we met mockAPI's van RapidAPI, waarvoor geen tokens nodig zijn. Hierom wordt in het prototype de token op null gezet in `checkToken()`. `login()` print een String dat er is ingelogt bij de externe API, maar hier zit nog geen login logica achter. Dit gebeurt nu in de constructor van de adapter. Deze haalt de API key en URL uit application.properties. Het was de bedoeling om dit via de login methode te doen, zodat het nut van de Template Method pattern gedemonstreerd kon worden. Echter lukte dit niet, dus moest dit via de constructor. `callAPI()` voert de daadwerkelijke API aanroep uit. De adapterklassen zelf verzorgen de concrete invulling van deze methoden per aanbieder. Dit zorgt voor een herbruikbare en consistente aanroepstructuur. 
+
+<!-- wat is anders probleem? --> 
+
+
+
+> De Location class uit het domeinmodel is weggelaten i.v.m. leesbaarheid van het diagram.
 
 #### 7.3.3. Class diagram aanroepen van externe services die niet beschikbaar zijn
 
