@@ -307,6 +307,7 @@ De TriptopBackend gebruikt deze services om API-verzoeken te verwerken. Eerst wo
 #### 7.3.2. Class diagram toevoegen van een nieuwe externe service
 
 ![Afbeelding van class diagram](./ontwerpvraag-eva/class-diagram-eva.svg)
+
 Dit klassendiagram geeft de klassen weer die betrokken zijn bij het ophalen van restaurantdata via de externe service.
 
 Om binnen de adapters consistentie te behouden in de manier waarop externe API’s worden aangeroepen, passen we het Template Method Pattern toe. De abstracte klasse `APICaller` definieert de structuur van een API-aanroep via `executeAPICall()`. Deze methode bepaalt de vaste volgorde van stappen, namelijk het controleren van de token, eventueel inloggen en de daadwerkelijke API-aanroep.
@@ -319,13 +320,21 @@ Dit zorgt voor een herbruikbare en consistente aanroepstructuur, terwijl de spec
 
 > De Location class uit het domeinmodel is weggelaten i.v.m. leesbaarheid van het diagram.
 
-Voor meer informatie over Template Method Pattern, zie de volgende bron:
+Voor meer informatie over het Template Method Pattern, zie de volgende bron:
 
 - Het artikel [Template Method Design Pattern in Java](https://www.geeksforgeeks.org/template-method-design-pattern-in-java/) van Geeks for Geeks geeft een praktische uitleg van het pattern in Java.
 
 ##### Sequence Diagram toevoegen van een nieuwe externe service
 
 ![Afbeelding van sequence diagram](./ontwerpvraag-eva/sequence-diagram-eva.svg)
+
+Bovenstaand diagram geeft de stappen weer om restaurantdata op te halen. Het diagram geeft alleen het happy path weer. Er zijn dus geen edge cases meegenomen, zoals het mislukken van de API aanroep. Als de API aanroep mislukt, wordt er een foutmelding teruggegeven aan de reiziger. De stappen zijn als volgt:
+1. De reiziger stuurt een POST request naar de `RestaurantController` met een `RestaurantDTO` (een query en een address);
+2. `RestaurantController` roept `RestaurantService` aan met `getRestaurants(query, address)`;
+3. `RestaurantService` roept `UberEatsScraperAdapter` aan met `getRestaurants(query, address)` om de API-aanroep te doen;
+4. `UberEatsScraperAdapter` voert de API-aanroep uit via `executeAPICall(parameters)`. Als er geen geldige token beschikbaar is, wordt de loginmethode uitgevoerd. In het prototype is hier nog geen logica voor geïmplementeerd;
+5. `callAPI(parameters)` stuurt een POST request naar de Uber Eats Scraper API en krijgt een response met data terug;
+6. De response data wordt omgezet naar een List met Restaurant-objecten en als returnwaarde van de getRestaurants methode teruggegeven aan de reiziger.
 
 #### 7.3.3. Class diagram aanroepen van externe services die niet beschikbaar zijn
 
