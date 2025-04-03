@@ -323,6 +323,19 @@ Als de Uber Eats API niet beschikbaar is, wordt door middel van het **Strategy P
 ![Afbeelding van class diagram](./ontwerpvraag-burak/class-diagram-burak.svg)
 
 ##### Werking van diagram
+Het class diagram beschrijft de architectuur van het boekingssysteem en de interacties tussen de verschillende klassen en interfaces:
+
+- ReservationController: Dit is de controller die de boekingsaanvraag van de reiziger ontvangt. Het heeft een methode bookTrip die een BookingRequest ontvangt en een BookingResponse retourneert.
+
+- BookingService: Deze service verwerkt de boeking door de verschillende boekingsstaten te activeren. Het roept de processBooking-methode aan om de boeking te verwerken.
+
+- BookingState (interface): Deze interface definieert de methode handleRequest die wordt geïmplementeerd door de verschillende boekingsstaten. Het accepteert een BookingVolgorde context en een BookingRequest.
+
+- InitialState, HotelBookingState, FlightBookingState, CarBookingState: Deze klassen implementeren de BookingState interface en behandelen de specifieke fasen van de boeking (beginfase, hotel, vlucht en auto).
+
+- BookingAdapter: Dit is de adapter die de communicatie verzorgt met externe systemen, zoals de Booking.com API, om de gegevens voor hotel-, vlucht- en autoboekingen op te halen. Het implementeert de IAdapter interface.
+
+- IAdapter (interface): Deze interface definieert de methoden die door de adapter worden geïmplementeerd om hotels, vluchten en auto's te boeken en de bijbehorende gegevens op te halen.
 
 ##### Extra toelichting
 
