@@ -1,0 +1,45 @@
+@startuml
+
+autonumber
+
+actor Reiziger
+
+participant "RestaurantController" as Controller
+participant "RestaurantService" as Service
+participant "UberEatsScraperAdapter" as Adapter
+participant "Uber Eats Scraper API" as UberEatsAPI
+
+Reiziger -> Controller : POST /restaurants \n\
+{ \n\
+   "query": "Pizza" \n\
+   "address": "Amsterdam" \n\
+}
+
+Controller -> Service : getRestaurants(query, address)
+
+Service -> Adapter : getRestaurants(query, address)
+
+Adapter -> Adapter : executeAPICall(parameters)
+
+opt token == null
+    Adapter -> Adapter : login()
+end
+
+note left of Adapter
+    De logica van login() is in dit
+    prototype nog niet
+    geïmplementeerd
+end note
+
+Adapter -> Adapter : callAPI(parameters)
+
+Adapter -> UberEatsAPI : response = POST API URL
+
+Adapter -> Adapter : Parse response naar List<Restaurant>
+
+Adapter --> Service : List<Restaurant> restaurantList
+
+Service --> Controller : List<Restaurant> restaurantList
+
+Controller --> Reiziger : List<Restaurant> restaurantList
+@enduml
