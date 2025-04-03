@@ -234,6 +234,26 @@ Hoe werkt het?
 
 ##### Werking van diagram
 
+Containers en externe systemen:
+
+- TripTop (Hoofdapplicatie): De frontend applicatie geschreven in React die communiceert met de backend via API-aanroepen.
+
+- Database (NoSQL Redis): De opslag van gegevens zoals boekingsinformatie in een NoSQL database.
+
+- Booking COM API: Een extern systeem dat informatie biedt over accommodaties, vluchten, autohuur en andere boekingsgerelateerde gegevens.
+
+Componenten in de backend:
+
+- Reservatie Controller: Ontvangt de boekingsverzoeken van de gebruiker en verstuurt ze naar de Booking Service.
+
+- Booking Service: Verwerkt de boekingsaanvragen en schakelt tussen de verschillende Booking States.
+
+- Booking States: Bestaat uit de verschillende fasen van het boekingsproces, zoals hotel, vlucht, autoboekingen en begin state.
+
+- Booking Adapter: Verzorgt de communicatie met de externe Booking.com API voor het ophalen van boekingsdata.
+
+- Trip Repository: Slaat de boekingsgegevens op in de database.
+
 ##### Extra toelichting
 
 Het component diagram maakt gebruik van een state pattern. Dit is in het diagram te zien in de vorm van de Booking States component. Er werd hiervoor gekozen, omdat de koppeling tussen de vier gebruikte states hoog zijn(voor meer uitleg bekijk ADR 8 in hoofdstuk 8).
@@ -246,6 +266,22 @@ Hierdoor is ervoor gekozen bij nader inzien en overleg met een docent om dit bui
 ![Afbeelding van dynamic diagram](./ontwerpvraag-burak/dynamic-component-diagram-burak.svg)
 
 ##### Werking van diagram
+
+De volgorde in het diagram staat hier kort beschreven:
+
+1. TripTop maakt een boekingsverzoek aan via een API-aanroep naar de Reservatie Controller.
+
+2. De Reservatie Controller verstuurt de boekingsaanvraag naar de Booking Service.
+
+3. De Booking Service schakelt naar de Booking States, die verschillende fasen van de boeking vertegenwoordigen.
+
+4. De Booking States gebruiken de Booking Adapter om gegevens op te halen van de Booking.com API (zoals beschikbaarheid en prijzen).
+
+5. Na het ontvangen van de gegevens, stuurt de Booking States de resultaten terug naar de Booking Service.
+
+6. De Booking Service slaat de boekingsgegevens op in de Trip Repository en bevestigt de gegevens naar de Reservatie Controller.
+
+7. Ten slotte stuurt de Reservatie Controller de bevestiging terug naar de gebruiker via TripTop.
 
 ##### Extra toelichting
 
