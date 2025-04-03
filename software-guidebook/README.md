@@ -120,15 +120,29 @@ Elk plan heeft hogere kosten en is voor dit project niet te gebruiken. Hierom is
 
 ### 6.1 Open/Closed principe
 
-Het Open/Closed principe wordt gebruikt bij drie ontwerpvragen.
+Het Open/Closed principe (OCP) is 1 van de 5 [SOLID-principes](https://www.baeldung.com/solid-principles).
+> Definitie: Software entities (zoals classes, modules, functies etc.) moeten open zijn voor extensie, maar gesloten voor modificatie. 
+
+Dit houdt in dat je een bestaande codebase niet aangepast om nieuwe functionaliteit toe te voegen. In plaats daarvan voeg je nieuwe code toe via bijv. abstractie, overerving of interfaces.
+
+#### Consequenties van het toepassen van het Open/Closed principe
+Voordelen:
+- Makkelijk uit te breiden -> Bij het toevoegen van nieuwe functionaliteit kan je bestaande code uitbreiden in plaats van herschrijven.
+- Lager risico op bugs -> Door de bestaande code niet te wijzigen, verlaag je de kans dat je per ongeluk de werkende functionaliteit breekt.
+- Flexibeler -> Door het gebruik van polymorfisme kan je makkelijk nieuwe implementaties toevoegen.
+
+Nadelen:
+- Meer werk in het begin -> Je moet je bij het ontwerpen van code al voorbereiden op hoe je later toevoegingen of aanpassingen wil gaan maken.
+
+#### Het Open/Closed principe wordt gebruikt bij drie ontwerpvragen.
 
 1. Hoe ga je om met aanroepen van externe services die niet beschikbaar zijn en toch verwacht wordt dat er waardevolle output gegeven wordt? **(Burak)**
 2. Wat doe je als je vanuit Triptop meerdere externe services, of meerdere aanroepen naar dezelfde service, moet aanroepen en de volgorde van aanroepen van belang is? **(Atakan)**
-2. Hoe zorg je ervoor dat je makkelijk een nieuwe externe service kan toevoegen? **(Eva)**
+3. Hoe zorg je ervoor dat je makkelijk een nieuwe externe service kan toevoegen? **(Eva)**
 
 Deze ontwerpvragen gebruiken design patterns waarbij het Open/Closed principe centraal staan, omdat het voor flexibiliteit zorgt.
 
-In de hoofdstukken [7.2.7](#727-component-diagram-meerdere-endpoints-aanroepen-in-dezelfde-api) en [7.2.5](#725-component-diagram-aanroepen-van-externe-services-die-niet-beschikbaar-zijn) is meer informatie te vinden over het Open/Closed principe.
+In de hoofdstukken [7.2.7](#727-component-diagram-meerdere-endpoints-aanroepen-in-dezelfde-api), [7.2.5](#725-component-diagram-aanroepen-van-externe-services-die-niet-beschikbaar-zijn) en [ADR-006](./adrs/006-nieuwe-service.md) is meer informatie te vinden over het Open/Closed principe binnen de context van de applicatie.
 
 ## 7. Software Architecture
 
