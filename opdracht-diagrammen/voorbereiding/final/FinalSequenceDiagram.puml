@@ -1,32 +1,34 @@
 @startuml
-actor Reiziger
-participant ReservationController
-participant BookingService
-participant InitialState
-participant HotelBookingState
-participant FlightBookingState
-participant CarBookingState
-participant BookingAdapter
+actor reiziger as "Reiziger"
+participant reservationController AS "reservationController:\n ReservationControllerController"
+participant bookingService AS "bookingService:\n BookingService"
+participant initialState AS "initialState:\n InitialState"
+participant hotelBookingState AS "hotelBookingState:\n HotelBookingState"
+participant flightBookingState AS "flightBookingState:\n FlightBookingState"
+participant carBookingState AS "carBookingState:\n CarBookingState"
+participant bookingAdapter AS "bookingAdapter:\n BookingAdapter"
 
-Reiziger -> ReservationController: 1. bookTrip(request: BookingRequest)
-ReservationController -> BookingService: 2. bookTrip(request: BookingRequest)
+reiziger -> reservationController: 1. bookTrip(request: BookingRequest)
+reservationController -> bookingService: 2. bookTrip(request: BookingRequest)
 
-BookingService -> InitialState: 3. processBooking(BookingRequest request)
+bookingService -> initialState: 3. processBooking(BookingRequest request)
 
-InitialState -> HotelBookingState: 4. HotelBookingState();
-HotelBookingState -> BookingAdapter: 5. handleRequest(BookingRequest request, BookingAdapterWrapper adapterWrapper)
-BookingAdapter --> HotelBookingState: 6. hotelBookingResponse
+initialState -> hotelBookingState: 4. setState(new HoteltBookingState());
+hotelBookingState -> bookingAdapter: 5. handleRequest(BookingRequest request, BookingAdapterWrapper adapterWrapper)
+bookingAdapter --> hotelBookingState: 6. hotelBookingResponse
+hotelBookingState --> bookingService: 7. hotelBookingResponse
 
-HotelBookingState -> FlightBookingState: 7. FlightBookingState();
-FlightBookingState -> BookingAdapter: 8. handleRequest(BookingRequest request, BookingAdapterWrapper adapterWrapper)
-BookingAdapter --> FlightBookingState: 9. flightBookingResponse
+hotelBookingState -> flightBookingState: 8. setState(new FlightBookingState());
+flightBookingState -> bookingAdapter: 9. handleRequest(BookingRequest request, BookingAdapterWrapper adapterWrapper)
+bookingAdapter --> flightBookingState: 10. flightBookingResponse
+flightBookingState --> bookingService: 11. flightBookingResponse
 
-FlightBookingState -> CarBookingState: 10. CarBookingState();
-CarBookingState -> BookingAdapter: 11. handleRequest(BookingRequest request, BookingAdapterWrapper adapterWrapper)
-BookingAdapter --> CarBookingState: 12. carBookingResponse
+flightBookingState -> carBookingState: 12. setState(new CarBookingState());
+carBookingState -> bookingAdapter: 13. handleRequest(BookingRequest request, BookingAdapterWrapper adapterWrapper)
+bookingAdapter --> carBookingState: 14. carBookingResponse
+carBookingState --> bookingService: 15. carBookingResponse
 
-CarBookingState -> InitialState: 13. InitialState();
-InitialState --> BookingService: 14. return BookingResponse
-BookingService --> ReservationController: 15. return BookingResponse
-ReservationController --> Reiziger: 16. return BookingResponse
+carBookingState -> initialState: 16. setState(new InitialState());
+bookingService --> reservationController: 17. return BookingResponse
+reservationController --> reiziger: 18. return BookingResponse
 @enduml
