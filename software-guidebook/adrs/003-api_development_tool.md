@@ -8,8 +8,7 @@ Geaccepteerd
 
 ## Context
 
-Voor het testen van de API calls worden er tussen de teamleden
-verschillende software gebruikt. Er is besloten om één tool te
+Voor het testen van de API calls worden er tussen de teamleden verschillende software gebruikt. Er is besloten om één tool te
 gaan gebruiken onderling, zodat er meer consistentie en efficiëntie is in de samenwerking.
 
 ## Alternatieven
@@ -17,7 +16,7 @@ gaan gebruiken onderling, zodat er meer consistentie en efficiëntie is in de sa
 | Criteria     | Postman                                                               | Insomnia                                                               | Unirest            | HttpClient         |
 | ------------ | --------------------------------------------------------------------- | ---------------------------------------------------------------------- | ------------------ | ------------------ |
 | UI/UX        | + (Gebruiksvriendelijk)                                               | + (Minimalistisch)                                                     | + (Code-gebaseerd) | + (Code-gebaseerd) |
-| Samenwerking | + (Teamworkspaces, cloud sync)                                        | - (Alleen lokaal)                                                      | - (Alleen lokaal)  | - (Alleen lokaal)  |
+| Samenwerking | + (Teamworkspaces, cloud sync)                                        | + (Teamworkspaces, cloud sync)                                                        | - (Alleen lokaal)  | - (Alleen lokaal)  |
 | Platform     | + (Windows, Mac, Linux)                                               | + (Windows, Mac, Linux)                                                | + (Java, Python)   | - (Java)           |
 | Kosten       | - (Postman heeft betaalde features wat niet toegankelijk zijn gratis) | - (Insomnia heeft betaalde features wat niet toegankelijk zijn gratis) | + (Open-Source)    | + (Open-Source)    |
 
