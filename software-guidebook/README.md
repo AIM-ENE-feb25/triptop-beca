@@ -111,8 +111,14 @@ Elk plan heeft hogere kosten en is voor dit project niet te gebruiken, daarom is
 
 ## 6. Principles
 
-> [!IMPORTANT]
-> Beschrijf zelf de belangrijkste architecturele en design principes die zijn toegepast in de software.
+### 6.1 Open/Closed principe
+
+Het Open/Closed principe wordt gebruikt bij twee ontwerpvragen.
+
+1. Hoe ga je om met aanroepen van externe services die niet beschikbaar zijn en toch verwacht wordt dat er waardevolle output gegeven wordt?
+2. Wat doe je als je vanuit Triptop meerdere externe services, of meerdere aanroepen naar dezelfde service, moet aanroepen en de volgorde van aanroepen van belang is?
+
+Deze ontwerpvragen gebruiken design patterns waarbij de Open/Closed principe centraal staan, omdat het voor flexibiliteit zorgt(kijk op hoofdstuk 7.2.7 voor meer uitleg).
 
 ## 7. Software Architecture
 
