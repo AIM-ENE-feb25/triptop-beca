@@ -155,9 +155,15 @@ Dit diagram toont alleen de happy path. Edge cases zijn momenteel nog niet in de
 ![Afbeelding van component diagram](ontwerpvraag-cas/component-diagram-cas.svg)
 
 Dit componentendiagram toont de structuur van de Triptop backend en hoe de verschillende onderdelen samenwerken om API-communicatie betrouwbaar te verwerken.
-De API Gateway is de kern van de backend en verwerkt API-verzoeken. Het implementeert de IApiClient-interface, die de standaard voor API-communicatie bepaalt. De API Gateway haalt data op en stuurt deze door naar externe APIs via HTTPS en JSON.
-Om de kwaliteit van de gegevens te waarborgen, controleert de Validation Service alle inkomende en uitgaande data. Daarnaast registreert de Logging Service alle API-verzoeken, responses en versies, zodat deze later kunnen worden geanalyseerd.
-De backend communiceert met verschillende externe APIs, bijvoorbeeld voor reis- of betalingsgegevens. Voordat data wordt verzonden, wordt deze eerst gevalideerd. De ontvangen response wordt gelogd en eventueel verder verwerkt.
+
+Binnen het systeem is de ApiState gedefinieerd als de interface die de communicatie tussen de verschillende API-versies en de Flight Service regelt, en het mogelijk maakt om dynamisch over te schakelen tussen verschillende versies van de API.
+ApiV1 en ApiV2 vertegenwoordigen de verschillende versies van de API en implementeren de ApiState interface. Beide versies verzorgen de communicatie met externe vluchtdata-API's via HTTPS en JSON. Ze zijn verantwoordelijk voor het ophalen van vluchtdata van de externe API, die wordt geleverd door verschillende providers.
+De Flight Service verzorgt de communicatie met de ApiV1 en ApiV2 componenten, afhankelijk van de versie die wordt gebruikt, en zorgt ervoor dat de gevraagde vluchtinformatie wordt opgehaald.
+
+In de tekening zijn ook de API Gateway en de ApiInterface te zien. We hebben gekozen om deze niet meer te gebruiken, maar nog wel te tonen in onze diagrammen.
+
+De reden waarom de ApiInterface niet meer wordt gebruikt is vanwege een misverstand tijdens het uitwerken van het prototype. Het werd later pas duidelijk dat de ApiInterface eigenlijk dezelfde functionaliteit heeft als de ApiState en dat het eigenlijk maar één bestand hoefte te zijn.
+De beslissing voor het niet gebruiken van de API Gateway wordt benoemt in [adr 004](./adrs/004-api_gateway.md).
 
 #### 7.2.2 Dynamic diagram integriteit externe API's
 
