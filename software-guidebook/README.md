@@ -97,8 +97,17 @@ Voordat deze casusomschrijving tot stand kwam, heeft de opdrachtgever de volgend
 
 ## 5. Constraints
 
-> [!IMPORTANT]
-> Beschrijf zelf de beperkingen die op voorhand bekend zijn die invloed hebben op keuzes die wel of niet gemaakt kunnen of mogen worden.
+Een belangrijke beperking binnen dit project is het gebruik van de externe API's via RapidAPI. De API's die in het applicatie worden gebruikt hebben allemaal een limiet op het aantal toegestane verzoeken per dag/week/maand, afhankelijk van het plan. Dit heeft invloed op hoe vaak en op welke manier onze applicatie API-aanvragen kan uitvoeren.
+
+### 5.1.1 API Request Limieten
+RapidAPI biedt verschillende abonnementsniveaus aan:
+
+- Basic: Beperkt aantal verzoeken per maand. Geschikt voor kleine testen, maar onbruikbaar voor productie.
+- Pro: Hogere limieten en rate limit weg.
+- Ultra: Geschikt voor middelgrote bedrijven met frequent gebruik.
+- Mega: De hoogste limieten, bedoeld voor grootschalige applicaties met intensief gebruik.
+
+Elk plan heeft hogere kosten en is voor dit project niet te gebruiken, daarom is er gekozen voor Basic wat gratis is.
 
 ## 6. Principles
 
