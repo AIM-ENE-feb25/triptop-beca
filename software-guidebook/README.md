@@ -100,6 +100,7 @@ Voordat deze casusomschrijving tot stand kwam, heeft de opdrachtgever de volgend
 Een belangrijke beperking binnen dit project is het gebruik van de externe API's via RapidAPI. De API's die in het applicatie worden gebruikt hebben allemaal een limiet op het aantal toegestane verzoeken per dag/week/maand, afhankelijk van het plan. Dit heeft invloed op hoe vaak en op welke manier onze applicatie API-aanvragen kan uitvoeren.
 
 ### 5.1.1 API Request Limieten
+
 RapidAPI biedt verschillende abonnementsniveaus aan:
 
 - Basic: Beperkt aantal verzoeken per maand. Geschikt voor kleine testen, maar onbruikbaar voor productie.
@@ -115,10 +116,12 @@ Elk plan heeft hogere kosten en is voor dit project niet te gebruiken, daarom is
 
 Het Open/Closed principe wordt gebruikt bij twee ontwerpvragen.
 
-1. Hoe ga je om met aanroepen van externe services die niet beschikbaar zijn en toch verwacht wordt dat er waardevolle output gegeven wordt?
-2. Wat doe je als je vanuit Triptop meerdere externe services, of meerdere aanroepen naar dezelfde service, moet aanroepen en de volgorde van aanroepen van belang is?
+1. Hoe ga je om met aanroepen van externe services die niet beschikbaar zijn en toch verwacht wordt dat er waardevolle output gegeven wordt? **(Burak)**
+2. Wat doe je als je vanuit Triptop meerdere externe services, of meerdere aanroepen naar dezelfde service, moet aanroepen en de volgorde van aanroepen van belang is? **(Atakan)**
 
-Deze ontwerpvragen gebruiken design patterns waarbij de Open/Closed principe centraal staan, omdat het voor flexibiliteit zorgt(kijk op hoofdstuk 7.2.7 voor meer uitleg).
+Deze ontwerpvragen gebruiken design patterns waarbij de Open/Closed principe centraal staan, omdat het voor flexibiliteit zorgt.
+
+In de hoofdstukken [7.2.7](#727-component-diagram-meerdere-endpoints-aanroepen-in-dezelfde-api) en [7.2.5](#725-component-diagram-aanroepen-van-externe-services-die-niet-beschikbaar-zijn) is meer informatie over de Open/Closed principle.
 
 ## 7. Software Architecture
 
@@ -359,6 +362,7 @@ Als de Uber Eats API niet beschikbaar is, wordt door middel van het **Strategy P
 ![Afbeelding van class diagram](./ontwerpvraag-burak/class-diagram-burak.svg)
 
 ##### Werking van diagram
+
 Het class diagram beschrijft de architectuur van het boekingssysteem en de interacties tussen de verschillende klassen en interfaces:
 
 - ReservationController: Dit is de controller die de boekingsaanvraag van de reiziger ontvangt. Het heeft een methode bookTrip die een BookingRequest ontvangt en een BookingResponse retourneert.
@@ -381,6 +385,7 @@ Dit is zo gedaan om de cohesie te vergroten. Daarnaast is er in het diagram te z
 De switchen van states wordt gedaan door de aanroep van een methode en de code in de service. Voor verduidelijking kijk naar sequencediagram meerdere endpoints aanroepen in dezelfde API.
 
 ##### Sequence diagram - meerdere endpoints aanroepen in dezelfde API
+
 ![Sequence diagram](./ontwerpvraag-burak/sequence-diagram-burak.svg)
 
 Het sequence diagram laat de volgorde zien van de verschillende klassen en states. Dit gaat als volgt
