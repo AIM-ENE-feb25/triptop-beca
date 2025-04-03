@@ -318,6 +318,10 @@ In `checkToken()` wordt gecontroleerd of er een geldige acccess token beschikbaa
 
 > De Location class uit het domeinmodel is weggelaten i.v.m. leesbaarheid van het diagram.
 
+##### Sequence Diagram toevoegen van een nieuwe externe service
+
+![Afbeelding van sequence diagram](./ontwerpvraag-eva/sequence-diagram-eva.svg)
+
 #### 7.3.3. Class diagram aanroepen van externe services die niet beschikbaar zijn
 
 ![Afbeelding van class diagram](./ontwerpvraag-atakan/code-diagram-atakan.svg)
@@ -333,7 +337,7 @@ Dit diagram laat zien hoe de verschillende onderdelen van het **Triptop backend-
   - **RetrieveFromCacheStrategy**: Haalt gegevens op uit de **cache** (tijdelijke opslag), zodat het systeem blijft werken als de API offline is.
 - **EatsFallbackException**: Wordt gebruikt als er helemaal geen gegevens beschikbaar zijn.
 
-##### Sequence Diagram - aanroepen van externe services die niet beschikbaar zijn
+##### Sequence Diagram aanroepen van externe services die niet beschikbaar zijn
 
 ![Afbeelding van sequence diagram](./ontwerpvraag-atakan/sequence-diagram-atakan.svg)
 
@@ -384,7 +388,7 @@ Dit geldt voor de volgende klasse. De domein klasse, de exception klassen en de 
 Dit is zo gedaan om de cohesie te vergroten. Daarnaast is er in het diagram te zien dat initialstate over gaat naar de hotelbookingstate, maar deze state niet naar de andere. Dit is zo gedaan om geen verwarring op te wekken, aangezien ze in werkelijkheid elkaar niet aanroepen, maar switchen van state.
 De switchen van states wordt gedaan door de aanroep van een methode en de code in de service. Voor verduidelijking kijk naar sequencediagram meerdere endpoints aanroepen in dezelfde API.
 
-##### Sequence diagram - meerdere endpoints aanroepen in dezelfde API
+##### Sequence diagram meerdere endpoints aanroepen in dezelfde API
 
 ![Sequence diagram](./ontwerpvraag-burak/sequence-diagram-burak.svg)
 
