@@ -1,7 +1,10 @@
 # ADR 007 - Externe API vs. Redis Cache
 
-**Datum:** 27-03-2025  
-**Status:** Geaccepteerd
+**Datum:** 27-03-2025
+
+## Status
+
+Geaccepteerd
 
 ## **Context**
 
@@ -40,4 +43,4 @@ Ik heb er voor gekozen om de **redis-cache oplossing** te gebruiken. Ik heb dit 
 
 ## Bronnen
 
-- Bealdung (2024), *Introduction to Spring Data Redis*, Geraadpleegd op 27 maart 2025, [Link naar de website](https://www.baeldung.com/spring-data-redis-tutorial)
+- Bealdung (2024), _Introduction to Spring Data Redis_, Geraadpleegd op 27 maart 2025, [Link naar de website](https://www.baeldung.com/spring-data-redis-tutorial)
