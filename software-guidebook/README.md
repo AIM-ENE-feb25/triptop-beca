@@ -232,7 +232,11 @@ Hoe werkt het?
 
 ![Afbeelding van component diagram](./ontwerpvraag-burak/component-diagram-burak.svg)
 
-Het component diagram hierboven maakt gebruik van een state pattern. Dit is in het diagram te zien in de vorm van de Booking States component. Er werd hiervoor gekozen, omdat de koppeling tussen de vier gebruikte states hoog zijn.
+##### Werking van diagram
+
+##### Extra toelichting
+
+Het component diagram maakt gebruik van een state pattern. Dit is in het diagram te zien in de vorm van de Booking States component. Er werd hiervoor gekozen, omdat de koppeling tussen de vier gebruikte states hoog zijn(voor meer uitleg bekijk ADR 8 in hoofdstuk 8).
 De details van de states worden uitgelicht in het klassediagram (te zien op hoofdstuk 7.3.4). Voor de design principe werd er gekozen voor een open/closed design. Dit staat nauw in verband met de states, die niet worden veranderd, maar wel uitgebreid kunnen worden.
 Het diagram laat ook een repository en database zien. Dit is meegenomen in het diagram om het verband tussen de componenten te kunnen laten zien, maar vallen wel buiten de scope van de ontwerpvraag.
 Hierdoor is ervoor gekozen bij nader inzien en overleg met een docent om dit buitenwege te laten bij de gemaakte prototype.
@@ -241,9 +245,13 @@ Hierdoor is ervoor gekozen bij nader inzien en overleg met een docent om dit bui
 
 ![Afbeelding van dynamic diagram](./ontwerpvraag-burak/dynamic-component-diagram-burak.svg)
 
-Het dynamic diagram laat de volgorde zien die de componenten aflopen. In totaal zijn er elf stappen beschreven. Er is alhoewel één plekken in het diagram wat meer uitleg vraagt.
+##### Werking van diagram
+
+##### Extra toelichting
+
+In totaal zijn er elf stappen beschreven. Er is alhoewel twee plekken in het diagram wat meer uitleg vraagt.
 Bij stap vijf gaat er één pijl naar de api, maar geen pijl terug. Dit is zo gedaan, omdat de pijl de context beschrijft op een manier dat laat zien dat er een reactie is.
-De adapter vraagt de beschikbaarheid op bij de api, nu wordt er al verteld wat er terug komt en is het niet noodzakelijk om het nog een te benoemen.
+De adapter vraagt de beschikbaarheid op bij de api, nu wordt er al verteld wat er terug komt en is het niet noodzakelijk om het nog een keer te benoemen.
 Hetzelfde gelt voor stap negen uiteraard.
 
 ### 7.3. Design & Code
@@ -313,6 +321,10 @@ Als de Uber Eats API niet beschikbaar is, wordt door middel van het **Strategy P
 #### 7.3.4 Class diagram meerdere endpoints aanroepen in dezelfde API
 
 ![Afbeelding van class diagram](./ontwerpvraag-burak/class-diagram-burak.svg)
+
+##### Werking van diagram
+
+##### Extra toelichting
 
 Het klasse diagram zoals te zien op het plaatje verantwoord niet elke klasse aanwezig in het prototype. Dit komt doordat vele klasse niet essentieel zijn om op te nemen in het diagram, als dit wel werd gedaan zou het voor meer onduidelijkheid zorgen.
 Dit geldt voor de volgende klasse. De domein klasse, de exception klassen en de adapter wrapper zijn buiten gesloten. De domein en exception klasse gelden voor zichzelf, maar de adapter wrapper in inprincipe een tussen klasse voor de states en de adapter.
