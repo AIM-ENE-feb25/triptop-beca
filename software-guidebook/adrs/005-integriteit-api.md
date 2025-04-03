@@ -8,32 +8,30 @@ Geaccepteerd
 
 ## **Context**
 
-Onze applicatie maakt gebruik van meerdere externe API’s voor het ontvangen van data. Het is cruciaal om de integriteit van deze data te waarborgen om ervoor te zorgen dat de gegevens correct en betrouwbaar zijn. Een probleem dat we moeten oplossen is het omgaan met veranderingen in de structuur van ontvangen data wanneer een API een nieuwe versie uitbrengt. Dit kan worden bereikt door verschillende methoden zoals validatie, logging, en het gebruik van beveiligde verbindingen.
+Onze applicatie maakt gebruik van meerdere externe API’s voor het ontvangen van data. Het is cruciaal om de integriteit van deze data te waarborgen om ervoor te zorgen dat de gegevens correct en betrouwbaar zijn.
+Een uitdaging is het omgaan met veranderingen in de structuur van ontvangen data wanneer een API een nieuwe versie uitbrengt.
 
 ## **Alternatieven**
 
-| Criteria                       | Validatie Service                                    | Logging Service                                                      | Beveiligde Verbindingen (HTTPS)                                                     |
-| ------------------------------ | ---------------------------------------------------- | -------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| **Data-integriteit**           | ++ (Controleert de juistheid van de data)            | + (Biedt traceerbaarheid en helpt bij het opsporen van fouten)       | ++ (Versleutelt data tijdens transmissie, voorkomt onderschepping en manipulatie)   |
-| **Complexiteit implementatie** | + (Eenvoudig te integreren met bestaande services)   | + (Eenvoudig te implementeren, vereist alleen logging configuratie)  | + (Standaard in moderne API-ontwikkeling, vereist certificaatbeheer)                |
-| **Prestaties**                 | - (Kan de responstijd beïnvloeden door extra checks) | - (Kan de prestaties beïnvloeden door extra logging overhead)        | + (Minimale impact op prestaties, afhankelijk van de implementatie)                 |
-| **Onderhoud en beheer**        | + (Beperkt onderhoud nodig)                          | + (Beperkt onderhoud nodig, afhankelijk van de logging configuratie) | + (Certificaatbeheer vereist periodieke updates en monitoring)                      |
-| **Kosten**                     | + (Weinig extra kosten)                              | + (Weinig extra kosten, afhankelijk van de hoeveelheid gelogde data) | + (Kosten voor certificaten en mogelijk hogere kosten voor beveiligde verbindingen) |
+| Criteria                          | Dynamische API-toewijzing                             | Handmatige versiekeuze via service               |
+|-----------------------------------|-------------------------------------------------------|--------------------------------------------------|
+| **Automatische API-transities**   | + (Elke API regelt eigen transitie)                   | - (Service moet versies beheren)                 |
+| **Low coupling**                  | + (Service hoeft API-versies niet te kennen)          | - (Service moet weten welke API actief is)       |
+| **High cohesion**                 | + (Transities en logica blijven binnen API’s)         | - (Logica verspreid over service en API’s)       |
+| **Schaalbaarheid**                | + (Nieuwe versies kunnen eenvoudig worden toegevoegd) | - (Elke nieuwe versie verhoogt de complexiteit)  |
+| **Complexiteit implementatie**    | - (API’s moeten transitiebeheer implementeren)        | - (Service wordt complexer bij meerdere versies) |
 
 ## **Beslissing**
 
-We hebben besloten om een combinatie van **Validatie Service**, **Logging Service**, en **Beveiligde Verbindingen (HTTPS)** te gebruiken om de integriteit van data die via externe API’s wordt verzonden of ontvangen te waarborgen. Logging zal ook worden gebruikt om versie-informatie van de API's vast te leggen, zodat veranderingen in de structuur van ontvangen data kunnen worden gedetecteerd en beheerd. Deze combinatie biedt een robuuste oplossing die zowel de juistheid van de data controleert, traceerbaarheid biedt, en de data beschermt tijdens transmissie.
+We hebben gekozen voor een toewijzing waarbij FlightService altijd met een ApiState werkt. De API-implementaties zijn zelf verantwoordelijk voor het doorsturen van de transitie naar een volgende versie, wat zorgt voor een flexibele en uitbreidbare architectuur.
 
 ## **Consequenties**
 
 ### **Voordelen:**
-
-- **Hoge data-integriteit**: Door validatie en beveiligde verbindingen wordt de juistheid en veiligheid van de data gewaarborgd.
-- **Traceerbaarheid**: Logging biedt inzicht, helpt bij het opsporen van fouten en legt versie-informatie vast.
-- **Beveiliging**: HTTPS zorgt ervoor dat de data tijdens transmissie versleuteld is, wat onderschepping en manipulatie voorkomt.
++ **Automatische API-overgangen** zonder externe service-logica.
++ **Low coupling & high cohesion**: API’s regelen zelf hun versies, zonder afhankelijkheid van de service.
++ **Flexibel uitbreidbaar**: Nieuwe API-versies kunnen eenvoudig worden toegevoegd.
++ **Beveiliging en betrouwbaarheid** door validatie, logging en HTTPS.
 
 ### **Nadelen:**
-
-- **Prestaties**: Extra validatie en logging kunnen de responstijd beïnvloeden.
-- **Onderhoud**: Certificaatbeheer voor HTTPS vereist periodieke updates en monitoring.
-- **Complexiteit**: Het combineren van meerdere methoden kan de implementatiecomplexiteit verhogen.
+- **Complexiteit**: API’s moeten hun eigen transitiebeheer implementeren.  
