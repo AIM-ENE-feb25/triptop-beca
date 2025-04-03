@@ -36,10 +36,10 @@ Als ontwerpprincipes hebben we gekozen voor het Open/Closed Principle en Program
 ## **Consequenties**
 
 ### **Voordelen:**
-+ **Automatische API-overgangen** zonder externe service-logica.
-+ **Low coupling & high cohesion**: API’s regelen zelf hun versies, zonder afhankelijkheid van de service.
-+ **Flexibel uitbreidbaar**: Nieuwe API-versies kunnen eenvoudig worden toegevoegd.
-+ **Beveiliging en betrouwbaarheid** door validatie, logging en HTTPS.
+- **Automatische API-overgangen** zonder externe service-logica.
+- **Low coupling & high cohesion**: API’s regelen zelf hun versies, zonder afhankelijkheid van de service.
+- **Flexibel uitbreidbaar**: Nieuwe API-versies kunnen eenvoudig worden toegevoegd.
+- **Beveiliging en betrouwbaarheid** door validatie, logging en HTTPS.
 
 ### **Nadelen:**
 - **Complexiteit**: API’s moeten hun eigen transitiebeheer implementeren.  
