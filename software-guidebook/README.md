@@ -246,13 +246,13 @@ De TriptopBackend gebruikt deze services om API-verzoeken te verwerken. Eerst wo
 
 ![Afbeelding van class diagram](./ontwerpvraag-eva/class-diagram-eva.svg)
 
-Om binnen de adapters consistentie te behouden in de manier waarop externe API’s worden aangeroepen, passen we het Template Method Pattern toe. De abstracte klasse `APICaller` definieert de structuur van een API-aanroep via `executeAPICall()`. Deze methode bepaalt de vaste volgorde van stappen, namelijk het controleren van de token, eventueel inloggen en de daadwerkelijke API-aanroep. <!-- parameters toelichten --> 
+Om binnen de adapters consistentie te behouden in de manier waarop externe API’s worden aangeroepen, passen we het Template Method Pattern toe. De abstracte klasse `APICaller` definieert de structuur van een API-aanroep via `executeAPICall()`. Deze methode bepaalt de vaste volgorde van stappen, namelijk het controleren van de token, eventueel inloggen en de daadwerkelijke API-aanroep. <!-- parameters toelichten -->
 
 In `checkToken()` wordt gecontroleerd of er een geldige acccess token beschikbaar is. Zo niet, dan wordt `login()` uitgevoerd. In `login()` wordt de access token opgehaald bij de officiële API’s. Omdat we in het prototype werken met mockAPI’s via RapidAPI (waar geen token vereist is), wordt in `checkToken()` de token op null gezet. `login()` print een String dat er is ingelogd, maar bevat nog geen inloglogica. Het was de bedoeling om de API key en URL op te halen uit application.properties in de loginmethode, zodat het nut van het Template Method pattern gedemonstreerd kon worden. Echter lukte dit niet, dus wordt dit via de constructor van de adapters gedaan.
 
-`callAPI()` voert de daadwerkelijke API aanroep uit. De adapterklassen zelf verzorgen de concrete invulling van deze methoden per aanbieder. Dit zorgt voor een herbruikbare en consistente aanroepstructuur. 
+`callAPI()` voert de daadwerkelijke API aanroep uit. De adapterklassen zelf verzorgen de concrete invulling van deze methoden per aanbieder. Dit zorgt voor een herbruikbare en consistente aanroepstructuur.
 
-<!-- uitleggen welk probleem dit pattern oplost --> 
+<!-- uitleggen welk probleem dit pattern oplost -->
 
 > De Location class uit het domeinmodel is weggelaten i.v.m. leesbaarheid van het diagram.
 
@@ -271,6 +271,30 @@ Dit diagram laat zien hoe de verschillende onderdelen van het **Triptop backend-
   - **RetrieveFromCacheStrategy**: Haalt gegevens op uit de **cache** (tijdelijke opslag), zodat het systeem blijft werken als de API offline is.
 - **EatsFallbackException**: Wordt gebruikt als er helemaal geen gegevens beschikbaar zijn.
 
+##### Sequence Diagram - aanroepen van externe services die niet beschikbaar zijn
+
+![Afbeelding van sequence diagram](./ontwerpvraag-atakan/sequence-diagram-atakan.svg)
+
+Dit diagram toont aan hoe de klasses in mijn applicatie samenwerken om de reiziger een bruikbare response te geven na het doen van een request. Het gaat als volgt:
+
+###### **Happy Path**
+
+1. **De gebruiker stuurt een POST-request** naar `/restaurants` met een `query` (zoekterm) en een `address` (locatie).
+2. **De request wordt verwerkt door de controller** (`EatsController`), die de service (`EatsServiceImpl`) aanroept om de gegevens op te halen.
+3. **De service probeert data op te halen via een strategie** (`RetrieveDataStrategy`), die eerst de **API-strategie** (`RetrieveFromAPIStrategy`) gebruikt.
+4. **De API-strategie roept een externe API aan** via `EatsAdapterImpl`, die een verzoek stuurt naar de **Uber Eats API**.
+5. **De API reageert met JSON-data**, die vervolgens wordt verwerkt en **opgeslagen in de repository** (`EatsRepository`), zodat het later gecached kan worden.
+6. **De data wordt teruggestuurd naar de gebruiker**, met een indicatie dat deze **niet uit de cache komt** (`cached=false`).
+
+###### **Edge Case: API is niet beschikbaar**
+
+Als de Uber Eats API niet beschikbaar is, wordt door middel van het **Strategy Pattern** overgestapt naar de **Cache Strategy**. Dit gaat als volgt:
+
+1. **Er wordt een `APIStrategyFailureException` gegooid.**
+2. **De applicatie probeert vervolgens de cache-strategie** (`RetrieveFromCacheStrategy`).
+3. **De cache-strategie zoekt in de database** (`EatsRepository`).
+4. **Als er restaurants worden gevonden, worden deze aan de gebruiker teruggegeven met `cached=true`.**
+
 #### 7.3.4 Class diagram meerdere endpoints aanroepen in dezelfde API
 
 ![Afbeelding van class diagram](./ontwerpvraag-burak/class-diagram-burak.svg)
@@ -279,6 +303,10 @@ Het klasse diagram zoals te zien op het plaatje verantwoord niet elke klasse aan
 Dit geldt voor de volgende klasse. De domein klasse, de exception klassen en de adapter wrapper zijn buiten gesloten. De domein en exception klasse gelden voor zichzelf, maar de adapter wrapper in inprincipe een tussen klasse voor de states en de adapter.
 Dit is zo gedaan om de cohesie te vergroten. Daarnaast is er in het diagram te zien dat initialstate over gaat naar de hotelbookingstate, maar deze state niet naar de andere. Dit is zo gedaan om geen verwarring op te wekken, aangezien ze in werkelijkheid elkaar niet aanroepen, maar switchen van state.
 De switchen van states wordt gedaan door de aanroep van een methode en de code in de service. Voor verduidelijking, de hotel state gaat naar vlucht state en vanaf daar naar auto state.
+
+##### Sequence diagram - meerdere endpoints aanroepen in dezelfde API
+
+![Sequence diagram](./ontwerpvraag-burak/sequence-diagram-burak.svg)
 
 ## 8. Architectural Decision Records
 
