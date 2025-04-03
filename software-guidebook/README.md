@@ -206,9 +206,13 @@ Dit diagram laat zien hoe de componenten samenwerken tijdens een runtime-scenari
 
 Dit component diagram toont de architectuur van het **Triptop** systeem, met name over de backend. De **Triptop Applicatie** stuurt verzoeken naar de backend, die bestaat uit meerdere componenten zoals de **EatsController**, **EatsService**, **EatsAdapter** en **EatsRepository**. Deze backend verwerkt API-aanvragen, beheert data en communiceert met externe systemen zoals de **UberEats API** en een **Redis Cache** voor tijdelijke opslag van restaurantgegevens.
 
-Voor mijn ontwerp heb ik gekozen voor het **Strategy Pattern**. Dit patroon maakt het mogelijk om flexibel te schakelen tussen verschillende strategieën als de UberEats API tijdelijk niet beschikbaar is. Bijvoorbeeld, in plaats van een foutmelding te geven, kan de applicatie overschakelen op een caching-strategie met Redis.
+##### Wat voor keuzes zijn er gemaakt?
 
-Voor de meest passende principe koos ik voor de **Open/Closed Principle (OCP)**. Dit principe stelt dat softwarecomponenten open moeten zijn voor uitbreiding, maar gesloten voor modificatie. Dit sluit goed aan bij het Strategy Pattern, omdat nieuwe strategieën kunnen worden toegevoegd zonder bestaande code te wijzigen. Hierdoor blijft de architectuur flexibel en onderhoudbaar.
+Tijdens het ontwerpen van mijn prototype, kwam ik erachter dat er meerdere manieren waren om mijn onderzoeksvraag te beantwoorden. Hierdoor zat ik te twijvelen tussen een alternatieve API of de Redis Cache. Uiteindelijk heb ik voor de redis cache gekozen. Mijn redenering is te vinden in [ADR 7](./adrs/007-api_or_cache.md).
+
+Voor mijn ontwerp heb ik gekozen voor het **Strategy Pattern**. Dit patroon maakt het mogelijk om flexibel te schakelen tussen verschillende strategieën als de UberEats API tijdelijk niet beschikbaar is. Bijvoorbeeld, in plaats van een foutmelding te geven, kan de applicatie overschakelen op een caching-strategie met Redis. Het Strategy Pattern heb ik geintegreerd in het [code diagram](#733-class-diagram-aanroepen-van-externe-services-die-niet-beschikbaar-zijn).
+
+Voor de meest passende principe koos ik voor de **Open/Closed Principle (OCP)**. Dit principe stelt dat softwarecomponenten open moeten zijn voor uitbreiding, maar gesloten voor modificatie. Dit sluit goed aan bij het Strategy Pattern, omdat nieuwe strategieën kunnen worden toegevoegd zonder bestaande code te wijzigen. Hierdoor blijft de architectuur flexibel en onderhoudbaar. Informatie over de Open/Closed principe is te vinden in [de principes hoofdstuk](#61-openclosed-principe) en de code implementatie is te zien in mijn [code diagram](#733-class-diagram-aanroepen-van-externe-services-die-niet-beschikbaar-zijn).
 
 #### 7.2.6 Dynamic diagram aanroepen van externe services die niet beschikbaar zijn
 
@@ -332,6 +336,16 @@ Dit diagram laat zien hoe de verschillende onderdelen van het **Triptop backend-
   - **RetrieveFromAPIStrategy**: Probeert gegevens op te halen via de UberEats API.
   - **RetrieveFromCacheStrategy**: Haalt gegevens op uit de **cache** (tijdelijke opslag), zodat het systeem blijft werken als de API offline is.
 - **EatsFallbackException**: Wordt gebruikt als er helemaal geen gegevens beschikbaar zijn.
+
+##### Hoe implementeer je een nieuwe strategie?
+
+Je kan een nieuwe strategie implementeren door het volgende te doen:
+
+1. Je maakt een nieuwe klasse in de `strategy` package. Laten we als voorbeeld `RetrieveFromAlternativeStrategy` maken.
+2. Annoteer deze klasse met `@Component` annotatie en implementeer de `RetrieveDataStrategy` interface.
+3. Neem de methode `retrieveData` op en codeer hoe de methode moet werken.
+
+Dit voldoet aan de Open/Closed principe, omdat je niks aan de "parent" klasse moet wijzigen om je nieuwe klasse werkend te krijgen en omdat je niks hoeft aan te passen aan de oude code om de nieuwe strategie te laten werken.
 
 ##### Sequence Diagram - aanroepen van externe services die niet beschikbaar zijn
 
