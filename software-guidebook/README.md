@@ -506,7 +506,7 @@ git clone https://github.com/AIM-ENE-feb25/triptop-beca.git
 
 #### Start redis
 
-Start redisdoor de volgende commando in te voeren:
+Start redis door de volgende commando in te voeren:
 
 ```
 sudo service redis-server start
