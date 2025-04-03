@@ -246,11 +246,13 @@ De TriptopBackend gebruikt deze services om API-verzoeken te verwerken. Eerst wo
 
 ![Afbeelding van class diagram](./ontwerpvraag-eva/class-diagram-eva.svg)
 
-Om binnen de adapters consistentie te behouden in de manier waarop API’s worden aangeroepen, passen we het Template Method Pattern toe. De methode `executeAPICall()` in de abstracte klasse `APICaller` bepaalt de vaste structuur van een API-aanroep. <!-- parameters toelichten --> In `checkToken()` wordt gecontroleerd of er een geldige token beschikbaar is. Zo niet, dan wordt `login()` uitgevoerd. In `login()` wordt de access token opgehaald bij de officiële API’s. Momenteel werken we met mockAPI's van RapidAPI, waarvoor geen tokens nodig zijn. Hierom wordt in het prototype de token op null gezet in `checkToken()`. `login()` print een String dat er is ingelogt bij de externe API, maar hier zit nog geen login logica achter. Dit gebeurt nu in de constructor van de adapter. Deze haalt de API key en URL uit application.properties. Het was de bedoeling om dit via de login methode te doen, zodat het nut van de Template Method pattern gedemonstreerd kon worden. Echter lukte dit niet, dus moest dit via de constructor. `callAPI()` voert de daadwerkelijke API aanroep uit. De adapterklassen zelf verzorgen de concrete invulling van deze methoden per aanbieder. Dit zorgt voor een herbruikbare en consistente aanroepstructuur. 
+Om binnen de adapters consistentie te behouden in de manier waarop externe API’s worden aangeroepen, passen we het Template Method Pattern toe. De abstracte klasse `APICaller` definieert de structuur van een API-aanroep via `executeAPICall()`. Deze methode bepaalt de vaste volgorde van stappen, namelijk het controleren van de token, eventueel inloggen en de daadwerkelijke API-aanroep. <!-- parameters toelichten --> 
 
-<!-- wat is anders probleem? --> 
+In `checkToken()` wordt gecontroleerd of er een geldige acccess token beschikbaar is. Zo niet, dan wordt `login()` uitgevoerd. In `login()` wordt de access token opgehaald bij de officiële API’s. Omdat we in het prototype werken met mockAPI’s via RapidAPI (waar geen token vereist is), wordt in `checkToken()` de token op null gezet. `login()` print een String dat er is ingelogd, maar bevat nog geen inloglogica. Het was de bedoeling om de API key en URL op te halen uit application.properties in de loginmethode, zodat het nut van het Template Method pattern gedemonstreerd kon worden. Echter lukte dit niet, dus wordt dit via de constructor van de adapters gedaan.
 
+`callAPI()` voert de daadwerkelijke API aanroep uit. De adapterklassen zelf verzorgen de concrete invulling van deze methoden per aanbieder. Dit zorgt voor een herbruikbare en consistente aanroepstructuur. 
 
+<!-- uitleggen welk probleem dit pattern oplost --> 
 
 > De Location class uit het domeinmodel is weggelaten i.v.m. leesbaarheid van het diagram.
 
@@ -269,7 +271,7 @@ Dit diagram laat zien hoe de verschillende onderdelen van het **Triptop backend-
   - **RetrieveFromCacheStrategy**: Haalt gegevens op uit de **cache** (tijdelijke opslag), zodat het systeem blijft werken als de API offline is.
 - **EatsFallbackException**: Wordt gebruikt als er helemaal geen gegevens beschikbaar zijn.
 
-#### 7.3.4 Class diagram meerdere endpoints in zelfde API
+#### 7.3.4 Class diagram meerdere endpoints aanroepen in dezelfde API
 
 ![Afbeelding van class diagram](./ontwerpvraag-burak/class-diagram-burak.svg)
 
