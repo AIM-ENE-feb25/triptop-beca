@@ -140,8 +140,8 @@ Nadelen:
 
 #### Het Open/Closed principe wordt gebruikt bij drie ontwerpvragen.
 
-1. Hoe ga je om met aanroepen van externe services die niet beschikbaar zijn en toch verwacht wordt dat er waardevolle output gegeven wordt? **(Burak)**
-2. Wat doe je als je vanuit Triptop meerdere externe services, of meerdere aanroepen naar dezelfde service, moet aanroepen en de volgorde van aanroepen van belang is? **(Atakan)**
+1. Hoe ga je om met aanroepen van externe services die niet beschikbaar zijn en toch verwacht wordt dat er waardevolle output gegeven wordt? **(Atakan)**
+2. Wat doe je als je vanuit Triptop meerdere externe services, of meerdere aanroepen naar dezelfde service, moet aanroepen en de volgorde van aanroepen van belang is? **(Burak)**
 3. Hoe zorg je ervoor dat je makkelijk een nieuwe externe service kan toevoegen? **(Eva)**
 
 Deze ontwerpvragen gebruiken design patterns waarbij het Open/Closed principe centraal staan, omdat het voor flexibiliteit zorgt.
