@@ -394,7 +394,9 @@ In `checkToken()` wordt gecontroleerd of er een geldige access token beschikbaar
 
 Dit zorgt voor een herbruikbare en consistente aanroepstructuur, terwijl de specifieke implementatie voor iedere aanbieder flexibel blijft. Dit is van belang in de constructiefase, wanneer we met de officiële API's gaan werken. De Template Method Pattern garandeert dat er eerst wordt ingelogd, mits er niet al een geldige token bestaat, en pas daarna een API aanroep gedaan wordt.
 
-> De Location class uit het domeinmodel is weggelaten i.v.m. leesbaarheid van het diagram.
+> De Location class uit het domeinmodel is weggelaten i.v.m. leesbaarheid van het diagram. Als vervanging hiervoor is een `String address` opgenomen.
+
+> De methode `executeAPICall()` is twee keer opgenomen in dit diagram, één keer met en één keer zonder parameters. De parameters die de methode getRestaurants(query, address) krijgt worden omgezet tot een Map genaamd 'parameters', zodat ze uniform kunnen worden doorgegeven aan de callAPI() methode. 
 
 Voor meer informatie over het Template Method Pattern, zie de volgende bron:
 
