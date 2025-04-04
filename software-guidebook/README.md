@@ -304,9 +304,9 @@ Containers en externe systemen:
 
 - TripTop (Hoofdapplicatie): De frontend applicatie geschreven in React die communiceert met de backend via API-aanroepen.
 
-- Database (NoSQL Redis): De opslag van gegevens zoals boekingsinformatie in een NoSQL database.
+- Database (NoSQL Redis): De opslag van gegevens.
 
-- Booking COM API: Een extern systeem dat informatie biedt over accommodaties, vluchten, autohuur en andere boekingsgerelateerde gegevens.
+- Booking COM API: Een extern systeem dat informatie geeft over hotels, vluchten, en autoverhuur.
 
 Componenten in de backend:
 
@@ -314,7 +314,7 @@ Componenten in de backend:
 
 - Booking Service: Verwerkt de boekingsaanvragen en schakelt tussen de verschillende Booking States.
 
-- Booking States: Bestaat uit de verschillende fasen van het boekingsproces, zoals hotel, vlucht, autoboekingen en begin state.
+- Booking States: Bestaat uit de verschillende states van het boekingsproces, zoals hotel, vlucht, autoboekingen en begin state.
 
 - Booking Adapter: Verzorgt de communicatie met de externe Booking.com API voor het ophalen van boekingsdata.
 
@@ -339,7 +339,7 @@ De volgorde in het diagram staat hier kort beschreven:
 
 2. De Reservatie Controller verstuurt de boekingsaanvraag naar de Booking Service.
 
-3. De Booking Service schakelt naar de Booking States, die verschillende fasen van de boeking vertegenwoordigen.
+3. De Booking Service schakelt naar de Booking States.
 
 4. De Booking States gebruiken de Booking Adapter om gegevens op te halen van de Booking.com API (zoals beschikbaarheid en prijzen).
 
@@ -468,13 +468,13 @@ Als de Uber Eats API niet beschikbaar is, wordt door middel van het **Strategy P
 
 ##### Werking van diagram
 
-Het class diagram beschrijft de architectuur van het boekingssysteem en de interacties tussen de verschillende klassen en interfaces:
+DEe architectuur van het boekingssysteem en de interacties tussen de verschillende klassen en interfaces:
 
 - ReservationController: Dit is de controller die de boekingsaanvraag van de reiziger ontvangt. Het heeft een methode bookTrip die een BookingRequest ontvangt en een BookingResponse retourneert.
 
-- BookingService: Deze service verwerkt de boeking door de verschillende boekingsstaten te activeren. Het roept de processBooking-methode aan om de boeking te verwerken.
+- BookingService: Deze service verwerkt de boeking door de verschillende boeking states te activeren. Het roept de processBooking-methode aan om de boeking te verwerken.
 
-- BookingState (interface): Deze interface definieert de methode handleRequest die wordt geïmplementeerd door de verschillende boekingsstaten. Het accepteert een BookingVolgorde context en een BookingRequest.
+- BookingState (interface): Deze interface definieert de methode handleRequest die wordt geïmplementeerd door de verschillende states. 
 
 - InitialState, HotelBookingState, FlightBookingState, CarBookingState: Deze klassen implementeren de BookingState interface en behandelen de specifieke fasen van de boeking (beginfase, hotel, vlucht en auto).
 
