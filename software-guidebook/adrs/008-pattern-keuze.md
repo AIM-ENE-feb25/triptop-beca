@@ -8,14 +8,13 @@ Geaccepteerd
 
 ## Context
 
-In de applicatie TripTop moeten meerdere externe services worden aangeroepen in een vaste volgorde. Dit betekent dat de volgende stappen van een boeking één voor één moeten plaats vinden:
+In de applicatie TripTop moet een externe service meerdere keren worden aangeroepen in een vaste volgorde. Dit betekent dat de volgende stappen van een boeking één voor één moeten plaats vinden:
 
 1. **Hotel boeken**
 2. **Vlucht boeken**
 3. **Auto huren**
-4. **Boeking bevestigen**
 
-Wij zoeken naar een pattern die deze stappen flexibel en goed onderhoudbaar maakt, waarbij de afhandeling van elke stap duidelijk gescheiden blijft.
+Wij zoeken naar een pattern die deze stappen flexibel en onderhoudbaar maakt, waarbij de afhandeling van elke stap duidelijk gescheiden blijft. Ook moeten er extra stappen toegevoegd kunnen worden zonder de originele code te veranderen.
 
 ## Alternatieven
 
@@ -31,10 +30,10 @@ We hebben verschillende ontwerppatronen overwogen:
 
 ## Keuze
 
-Wij hebben gekozen voor het State Pattern, waarbij elke stap van boeken een eigen State klasse heeft. De BookingVolgorde klasse beheert deze states en bepaalt de juiste volgorde van verwerking. Dit zorgt ervoor dat:
+Wij hebben gekozen voor het State Pattern, waarbij elke stap van boeken een eigen State klasse heeft. De states beheren zichzelf, waardoor ze automatisch switchen en hun eigen state bijhouden. Dit zorgt ervoor dat:
 
 - Elke stap duidelijk gescheiden blijft.
-- er eenvoudig nieuwe stappen kunnen toevoegen zonder de originele klasse te herschrijven.
+- Er eenvoudig nieuwe stappen kunnen toevoegen zonder de originele klasse te herschrijven.
 
 ## Consequenties
 
