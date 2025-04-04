@@ -10,7 +10,7 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ApiV2 implements ApiInterface {
+public class ApiV2 implements ApiState {
 
     @Override
     public Flight getFlights(String from, String to, String date) throws UnirestException {
