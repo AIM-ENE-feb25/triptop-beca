@@ -186,6 +186,9 @@ In het containerdiagram is het aantal externe providers lager ten opzichte van h
 
 De frontend applicatie communiceert met de backend, die de benodigde gegevens uit de database haalt en de externe systemen via de API Gateway aanroept om aanvullende informatie op te halen of handelingen uit te voeren, zoals het boeken van tickets of het verifiëren van de identiteit van de reiziger.
 
+> In de tekening is ook de API Gateway te zien. We hebben gekozen om deze niet meer te gebruiken, maar nog wel te tonen in onze diagrammen.
+De beslissing voor het niet gebruiken van de API Gateway wordt benoemt in [ADR-004](./adrs/004-api_gateway.md).
+
 #### 7.1.2 Dynamisch container diagram voor Inloggen scenario
 
 ![Afbeelding van dynamisch login container diagram](./login-diagram.svg)
@@ -195,6 +198,9 @@ Dit diagram beschrijft de dynamische architectuur van de Triptop applicatie bij 
 Met deze token stuurt de frontend een validatieverzoek naar de backend. De backend controleert de token en haalt de bijbehorende gegevens op uit de database. Na het ophalen van de gegevens stuurt de backend het resultaat van de inlogpoging terug naar de frontend. Als alles correct is verlopen, wordt de reiziger ingelogd en krijgt hij/zij toegang tot de applicatie.
 
 Dit diagram toont alleen de happy path. Edge cases zijn momenteel nog niet in de scope en worden later behandeld.
+
+> In de tekening is ook de API Gateway te zien. We hebben gekozen om deze niet meer te gebruiken, maar nog wel te tonen in onze diagrammen.
+De beslissing voor het niet gebruiken van de API Gateway wordt benoemt in [ADR-004](./adrs/004-api_gateway.md).
 
 #### 7.1.3 Dynamisch container diagram voor Reis boeken scenario
 
@@ -218,9 +224,9 @@ Binnen het systeem is de ApiState gedefinieerd als de interface die de communica
 ApiV1 en ApiV2 vertegenwoordigen de verschillende versies van de API en implementeren de ApiState interface. Beide versies verzorgen de communicatie met externe vluchtdata-API's via HTTPS en JSON. Ze zijn verantwoordelijk voor het ophalen van vluchtdata van de externe API, die wordt geleverd door verschillende providers.
 De Flight Service verzorgt de communicatie met de ApiV1 en ApiV2 componenten, afhankelijk van de versie die wordt gebruikt, en zorgt ervoor dat de gevraagde vluchtinformatie wordt opgehaald.
 
-Tijdens het uitprogrammeren van het prototype ontstond er een misverstand. Het werd later pas duidelijk dat de ApiInterface eigenlijk dezelfde functionaliteit heeft als de ApiState en dat het eigenlijk maar één bestand hoefte te zijn. Toch is er besloten om de ApiInterface te houden aangezien deze al was geïmplementeerd en het tijd zou kosten om het er uit te halen.
+> Tijdens het uitprogrammeren van het prototype ontstond er een misverstand. Het werd later pas duidelijk dat de ApiInterface eigenlijk dezelfde functionaliteit heeft als de ApiState en dat het eigenlijk maar één bestand hoefte te zijn. Toch is er besloten om de ApiInterface te houden aangezien deze al was geïmplementeerd en het tijd zou kosten om het er uit te halen.
 
-In de tekening is ook de API Gateway te zien. We hebben gekozen om deze niet meer te gebruiken, maar nog wel te tonen in onze diagrammen.
+> In de tekening is ook de API Gateway te zien. We hebben gekozen om deze niet meer te gebruiken, maar nog wel te tonen in onze diagrammen.
 De beslissing voor het niet gebruiken van de API Gateway wordt benoemt in [ADR-004](./adrs/004-api_gateway.md).
 
 #### 7.2.2 Dynamic diagram integriteit externe API's
@@ -236,9 +242,9 @@ Indien ApiV1 geen bevredigend resultaat oplevert, wordt het verzoek doorgestuurd
 ApiV2 maakt vervolgens verbinding met een externe API om de meest actuele vluchtinformatie op te halen.
 Nadat de juiste gegevens zijn opgehaald, stuurt de ApiState-component de vluchtinformatie terug naar de Flight Service en die stuurt de informatie door naar de Flight Controller.
 
-Tijdens het uitprogrammeren van het prototype ontstond er een misverstand. Het werd later pas duidelijk dat de ApiInterface eigenlijk dezelfde functionaliteit heeft als de ApiState en dat het eigenlijk maar één bestand hoefte te zijn. Toch is er besloten om de ApiInterface te houden aangezien deze al was geïmplementeerd en het tijd zou kosten om het er uit te halen.
+ > Tijdens het uitprogrammeren van het prototype ontstond er een misverstand. Het werd later pas duidelijk dat de ApiInterface eigenlijk dezelfde functionaliteit heeft als de ApiState en dat het eigenlijk maar één bestand hoefte te zijn. Toch is er besloten om de ApiInterface te houden aangezien deze al was geïmplementeerd en het tijd zou kosten om het er uit te halen.
 
-In de tekening is ook de API Gateway te zien. We hebben gekozen om deze niet meer te gebruiken, maar nog wel te tonen in onze diagrammen.
+ > In de tekening is ook de API Gateway te zien. We hebben gekozen om deze niet meer te gebruiken, maar nog wel te tonen in onze diagrammen.
 De beslissing voor het niet gebruiken van de API Gateway wordt benoemt in [ADR-004](./adrs/004-api_gateway.md).
 
 #### 7.2.3 Component diagram toevoegen van een nieuwe externe service
@@ -366,7 +372,7 @@ Het klassendiagram toont de structuur van het systeem voor het ophalen van vluch
 
 De ApiState-interface is de basis voor de API-states en bevat methoden om vluchtgegevens op te halen en over te schakelen naar een volgende staat. Deze interface wordt geïmplementeerd door ApiV1 en ApiV2, die elk hun eigen versie van getFlights() bevatten. De API's houden daarnaast een referentie bij naar een volgende API-state, zodat de overgang naar een nieuwere API-versie eenvoudig kan worden beheerd.
 
-Tijdens het uitprogrammeren van het prototype ontstond er een misverstand. Het werd later pas duidelijk dat de ApiInterface eigenlijk dezelfde functionaliteit heeft als de ApiState en dat het eigenlijk maar één bestand hoefte te zijn. Toch is er besloten om de ApiInterface te houden aangezien deze al was geïmplementeerd en het tijd zou kosten om het er uit te halen.
+> Tijdens het uitprogrammeren van het prototype ontstond er een misverstand. Het werd later pas duidelijk dat de ApiInterface eigenlijk dezelfde functionaliteit heeft als de ApiState en dat het eigenlijk maar één bestand hoefte te zijn. Toch is er besloten om de ApiInterface te houden aangezien deze al was geïmplementeerd en het tijd zou kosten om het er uit te halen.
 
 #### Sequence diagram integriteit externe API's
 
