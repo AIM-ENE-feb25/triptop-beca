@@ -121,17 +121,21 @@ Elk plan heeft hogere kosten en is voor dit project niet te gebruiken. Hierom is
 ### 6.1 Open/Closed Principe
 
 Het Open/Closed principe (OCP) is 1 van de 5 [SOLID-principes](https://www.baeldung.com/solid-principles).
-> Definitie: Software entities (zoals classes, modules, functies etc.) moeten open zijn voor extensie, maar gesloten voor modificatie. 
 
-Dit houdt in dat je een bestaande codebase niet aangepast om nieuwe functionaliteit toe te voegen. In plaats daarvan voeg je nieuwe code toe via bijv. abstractie, overerving of interfaces (BigBoxCode, 2025b). 
+> Definitie: Software entities (zoals classes, modules, functies etc.) moeten open zijn voor extensie, maar gesloten voor modificatie.
+
+Dit houdt in dat je een bestaande codebase niet aangepast om nieuwe functionaliteit toe te voegen. In plaats daarvan voeg je nieuwe code toe via bijv. abstractie, overerving of interfaces (BigBoxCode, 2025b).
 
 #### Consequenties van het toepassen van het Open/Closed principe
+
 Voordelen:
+
 - Makkelijk uit te breiden -> Bij het toevoegen van nieuwe functionaliteit kan je bestaande code uitbreiden in plaats van herschrijven.
 - Lager risico op bugs -> Door de bestaande code niet te wijzigen, verlaag je de kans dat je per ongeluk de werkende functionaliteit breekt.
 - Flexibeler -> Door het gebruik van polymorfisme kan je makkelijk nieuwe implementaties toevoegen.
 
 Nadelen:
+
 - Meer werk in het begin -> Je moet je bij het ontwerpen van code al voorbereiden op hoe je later toevoegingen of aanpassingen wil gaan maken.
 
 #### Het Open/Closed principe wordt gebruikt bij drie ontwerpvragen.
@@ -147,16 +151,20 @@ In de hoofdstukken [7.2.7](#727-component-diagram-meerdere-endpoints-aanroepen-i
 ### 6.2 Dependency Inversion Principe
 
 Het Dependency Inversion principe (DIP) is ook 1 van de 5 SOLID-principes.
+
 > Definitie: Abstracties moeten niet afhankelijk zijn van details, maar details moeten afhankelijk zijn van abstracties.
 
 Dit houdt in dat hoog-niveau modulen niet direct afhankelijk mogen zijn van laag-niveau modulen, maar beiden van abstracties (interfaces of abstracte klassen). Dit principe zorgt ervoor dat hoog-niveau logica niet afhankelijk is van specifieke implementaties, maar van abstracties. Dit zorgt ervoor dat de code flexibeler en makkelijker uitbreidbaar is. Nieuwe implementaties kunnen worden toegevoegd zonder de code op hoog niveau te wijzigen (BigBoxCode, 2025a).
 
 #### Consequenties van het toepassen van het Dependency Inversion principe
+
 Voordelen:
+
 - Makkelijk uit te breiden -> Nieuwe implementaties kunnen gemakkelijk worden toegevoegd zonder de bestaande logica te breken.
 - Flexibeler -> Door het verminderen van afhankelijkheden tussen modulen wordt code flexibeler.
 
 Nadelen:
+
 - Complexer -> Het toevoegen van abstracties kan code complexer maken.
 
 #### Het Dependency Inversion principe wordt gebruikt bij één ontwerpvraag.
@@ -164,6 +172,7 @@ Nadelen:
 1. Hoe zorg je ervoor dat je makkelijk een nieuwe externe service kan toevoegen? **(Eva)**
 
 ##### Bronnenlijst
+
 - BigBoxCode. (2025, januari 13). Design Principle: Open/Closed Principle(OCP). BigBoxCode. https://bigboxcode.com/design-principle-open-closed-principle-ocp
 
 - BigBoxCode. (2025b, 13 januari). Design Principle: Dependency Inversion Principle(DIP). BigBoxCode. https://bigboxcode.com/design-principle-dependency-inversion-principle-dip
@@ -187,7 +196,7 @@ In het containerdiagram is het aantal externe providers lager ten opzichte van h
 De frontend applicatie communiceert met de backend, die de benodigde gegevens uit de database haalt en de externe systemen via de API Gateway aanroept om aanvullende informatie op te halen of handelingen uit te voeren, zoals het boeken van tickets of het verifiëren van de identiteit van de reiziger.
 
 > In de tekening is ook de API Gateway te zien. We hebben gekozen om deze niet meer te gebruiken, maar nog wel te tonen in onze diagrammen.
-De beslissing voor het niet gebruiken van de API Gateway wordt benoemt in [ADR-004](./adrs/004-api_gateway.md).
+> De beslissing voor het niet gebruiken van de API Gateway wordt benoemt in [ADR-004](./adrs/004-api_gateway.md).
 
 #### 7.1.2 Dynamisch container diagram voor Inloggen scenario
 
@@ -200,7 +209,7 @@ Met deze token stuurt de frontend een validatieverzoek naar de backend. De backe
 Dit diagram toont alleen de happy path. Edge cases zijn momenteel nog niet in de scope en worden later behandeld.
 
 > In de tekening is ook de API Gateway te zien. We hebben gekozen om deze niet meer te gebruiken, maar nog wel te tonen in onze diagrammen.
-De beslissing voor het niet gebruiken van de API Gateway wordt benoemt in [ADR-004](./adrs/004-api_gateway.md).
+> De beslissing voor het niet gebruiken van de API Gateway wordt benoemt in [ADR-004](./adrs/004-api_gateway.md).
 
 #### 7.1.3 Dynamisch container diagram voor Reis boeken scenario
 
@@ -227,7 +236,7 @@ De Flight Service verzorgt de communicatie met de ApiV1 en ApiV2 componenten, af
 > Tijdens het uitprogrammeren van het prototype ontstond er een misverstand. Het werd later pas duidelijk dat de ApiInterface eigenlijk dezelfde functionaliteit heeft als de ApiState en dat het eigenlijk maar één bestand hoefte te zijn. Toch is er besloten om de ApiInterface te houden aangezien deze al was geïmplementeerd en het tijd zou kosten om het er uit te halen.
 
 > In de tekening is ook de API Gateway te zien. We hebben gekozen om deze niet meer te gebruiken, maar nog wel te tonen in onze diagrammen.
-De beslissing voor het niet gebruiken van de API Gateway wordt benoemt in [ADR-004](./adrs/004-api_gateway.md).
+> De beslissing voor het niet gebruiken van de API Gateway wordt benoemt in [ADR-004](./adrs/004-api_gateway.md).
 
 #### 7.2.2 Dynamic diagram integriteit externe API's
 
@@ -242,10 +251,10 @@ Indien ApiV1 geen bevredigend resultaat oplevert, wordt het verzoek doorgestuurd
 ApiV2 maakt vervolgens verbinding met een externe API om de meest actuele vluchtinformatie op te halen.
 Nadat de juiste gegevens zijn opgehaald, stuurt de ApiState-component de vluchtinformatie terug naar de Flight Service en die stuurt de informatie door naar de Flight Controller.
 
- > Tijdens het uitprogrammeren van het prototype ontstond er een misverstand. Het werd later pas duidelijk dat de ApiInterface eigenlijk dezelfde functionaliteit heeft als de ApiState en dat het eigenlijk maar één bestand hoefte te zijn. Toch is er besloten om de ApiInterface te houden aangezien deze al was geïmplementeerd en het tijd zou kosten om het er uit te halen.
+> Tijdens het uitprogrammeren van het prototype ontstond er een misverstand. Het werd later pas duidelijk dat de ApiInterface eigenlijk dezelfde functionaliteit heeft als de ApiState en dat het eigenlijk maar één bestand hoefte te zijn. Toch is er besloten om de ApiInterface te houden aangezien deze al was geïmplementeerd en het tijd zou kosten om het er uit te halen.
 
- > In de tekening is ook de API Gateway te zien. We hebben gekozen om deze niet meer te gebruiken, maar nog wel te tonen in onze diagrammen.
-De beslissing voor het niet gebruiken van de API Gateway wordt benoemt in [ADR-004](./adrs/004-api_gateway.md).
+> In de tekening is ook de API Gateway te zien. We hebben gekozen om deze niet meer te gebruiken, maar nog wel te tonen in onze diagrammen.
+> De beslissing voor het niet gebruiken van de API Gateway wordt benoemt in [ADR-004](./adrs/004-api_gateway.md).
 
 #### 7.2.3 Component diagram toevoegen van een nieuwe externe service
 
@@ -261,7 +270,7 @@ Bovenstaand diagram is beperkt tot de aanroep van restaurantdata. Andere bouwste
 
 ![Afbeelding van component diagram](./ontwerpvraag-eva/dynamic-diagram-eva.svg)
 
-Dit diagram laat zien hoe de componenten samenwerken tijdens een runtime-scenario waarin de gebruiker restaurants opvraagt via de front-end. De service roept via de port de adapter aan, die vervolgens met de externe API communiceert. De interactie tussen de componenten is gebaseerd op de Ports en Adapters structuur en maakt gebruik van het Template Method Pattern om de stappen binnen de API-aanroep (zoals authenticatie en dataverwerking) te structureren. 
+Dit diagram laat zien hoe de componenten samenwerken tijdens een runtime-scenario waarin de gebruiker restaurants opvraagt via de front-end. De service roept via de port de adapter aan, die vervolgens met de externe API communiceert. De interactie tussen de componenten is gebaseerd op de Ports en Adapters structuur en maakt gebruik van het Template Method Pattern om de stappen binnen de API-aanroep (zoals authenticatie en dataverwerking) te structureren.
 
 Dit diagram is beperkt tot de aanroep van restaurantdata. Andere bouwstenen (zoals hotels of autoverhuur) volgen dezelfde structuur, maar zijn niet in dit diagram meegenomen.
 
@@ -402,7 +411,7 @@ Dit zorgt voor een herbruikbare en consistente aanroepstructuur, terwijl de spec
 
 > De Location class uit het domeinmodel is weggelaten i.v.m. leesbaarheid van het diagram. Als vervanging hiervoor is een `String address` opgenomen.
 
-> De methode `executeAPICall()` is twee keer opgenomen in dit diagram, één keer met en één keer zonder parameters. De parameters die de methode getRestaurants(query, address) krijgt worden omgezet tot een Map genaamd 'parameters', zodat ze uniform kunnen worden doorgegeven aan de callAPI() methode. 
+> De methode `executeAPICall()` is twee keer opgenomen in dit diagram, één keer met en één keer zonder parameters. De parameters die de methode getRestaurants(query, address) krijgt worden omgezet tot een Map genaamd 'parameters', zodat ze uniform kunnen worden doorgegeven aan de callAPI() methode.
 
 Voor meer informatie over het Template Method Pattern, zie de volgende bron:
 
@@ -425,7 +434,7 @@ Bovenstaand diagram geeft de stappen weer om restaurantdata op te halen. Het dia
 
 ![Afbeelding van class diagram](./ontwerpvraag-atakan/code-diagram-atakan.svg)
 
-Dit diagram laat zien hoe de verschillende onderdelen van het **Triptop backend-systeem** met elkaar samenwerken. Het belangrijkste doel van dit systeem is om restaurantgegevens op te halen, zelfs als de externe UberEats API niet beschikbaar is.
+Dit diagram laat zien hoe de verschillende onderdelen van het **Triptop backend-systeem** met elkaar samenwerken. Het belangrijkste doel van dit systeem is om restaurantgegevens op te halen, zelfs als de externe UberEats API niet beschikbaar is, in plaats van direct een foutmelding geven.
 
 ##### Wat gebeurt er in het systeem?
 
@@ -482,7 +491,7 @@ DEe architectuur van het boekingssysteem en de interacties tussen de verschillen
 
 - BookingService: Deze service verwerkt de boeking door de verschillende boeking states te activeren. Het roept de processBooking-methode aan om de boeking te verwerken.
 
-- BookingState (interface): Deze interface definieert de methode handleRequest die wordt geïmplementeerd door de verschillende states. 
+- BookingState (interface): Deze interface definieert de methode handleRequest die wordt geïmplementeerd door de verschillende states.
 
 - InitialState, HotelBookingState, FlightBookingState, CarBookingState: Deze klassen implementeren de BookingState interface en behandelen de specifieke fasen van de boeking (beginfase, hotel, vlucht en auto).
 
